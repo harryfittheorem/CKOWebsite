@@ -265,6 +265,8 @@
     let markers = [];
     let userLocation = null;
     let currentMapStyle = 'default';
+    let searchMarker = null;
+    let geocoder;
 
     // Initialize map
     function initMap() {
@@ -273,6 +275,9 @@
         center: { lat: 39.8283, lng: -98.5795 },
         mapTypeId: 'roadmap'
       });
+
+      // Initialize geocoder
+      geocoder = new google.maps.Geocoder();
 
       // Get user location
       if (navigator.geolocation) {
@@ -394,12 +399,18 @@
       });
     }
 
-    // Search functionality
+    // Search functionality with geocoding and radius filtering
     document.getElementById('searchForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const searchValue = document.getElementById('searchInput').value.trim().toLowerCase();
+      const searchValue = document.getElementById('searchInput').value.trim();
 
       if (!searchValue) {
+        // Clear search marker if exists
+        if (searchMarker) {
+          searchMarker.setMap(null);
+          searchMarker = null;
+        }
+        userLocation = null;
         addMarkers(CKO_LOCATIONS);
         displayLocations(CKO_LOCATIONS);
         map.setCenter({ lat: 39.8283, lng: -98.5795 });
@@ -407,27 +418,89 @@
         return;
       }
 
-      const filtered = CKO_LOCATIONS.filter(loc => {
-        return loc.zip.includes(searchValue) || 
-               loc.city.toLowerCase().includes(searchValue) || 
-               loc.state.toLowerCase().includes(searchValue);
+      // Use geocoder to convert search input to coordinates
+      geocoder.geocode({ address: searchValue }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const searchLocation = {
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+          };
+
+          // Update userLocation to the searched location
+          userLocation = searchLocation;
+
+          // Clear previous search marker
+          if (searchMarker) {
+            searchMarker.setMap(null);
+          }
+
+          // Add marker for searched location
+          searchMarker = new google.maps.Marker({
+            position: searchLocation,
+            map: map,
+            title: 'Search Location',
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: '#ff0000',
+              fillOpacity: 0.8,
+              strokeColor: '#ffffff',
+              strokeWeight: 2
+            }
+          });
+
+          // Calculate distances and filter locations within 50 miles
+          const locationsWithDistance = CKO_LOCATIONS.map(loc => ({
+            ...loc,
+            distance: calculateDistance(searchLocation.lat, searchLocation.lng, loc.lat, loc.lng)
+          }));
+
+          // Filter to locations within 50 miles
+          const filtered = locationsWithDistance.filter(loc => loc.distance <= 50);
+
+          // Sort by distance (closest first)
+          filtered.sort((a, b) => a.distance - b.distance);
+
+          if (filtered.length > 0) {
+            addMarkers(filtered);
+            displayLocations(filtered);
+
+            // Center map on search location
+            map.setCenter(searchLocation);
+
+            // Adjust zoom to show search location and nearby studios
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(searchLocation);
+            filtered.forEach(loc => bounds.extend({ lat: loc.lat, lng: loc.lng }));
+            map.fitBounds(bounds);
+          } else {
+            // No locations found within 50 miles
+            addMarkers([]);
+            displayLocations([]);
+            map.setCenter(searchLocation);
+            map.setZoom(10);
+
+            const list = document.getElementById('locationsList');
+            list.innerHTML = '<div class="text-center py-8"><p class="text-gray-400 mb-2">No CKO locations found within 50 miles of this location.</p><p class="text-gray-300 text-sm">Try searching a different area.</p></div>';
+          }
+        } else {
+          // Geocoding failed
+          alert('Location not found. Please try a different search term (e.g., city name, zip code, or address).');
+        }
       });
-
-      if (filtered.length > 0) {
-        addMarkers(filtered);
-        displayLocations(filtered);
-
-        const bounds = new google.maps.LatLngBounds();
-        filtered.forEach(loc => bounds.extend({ lat: loc.lat, lng: loc.lng }));
-        map.fitBounds(bounds);
-      } else {
-        displayLocations([]);
-      }
     });
 
     // Clear search
     document.getElementById('clearBtn').addEventListener('click', () => {
       document.getElementById('searchInput').value = '';
+
+      // Clear search marker if exists
+      if (searchMarker) {
+        searchMarker.setMap(null);
+        searchMarker = null;
+      }
+
+      userLocation = null;
       addMarkers(CKO_LOCATIONS);
       displayLocations(CKO_LOCATIONS);
       map.setCenter({ lat: 39.8283, lng: -98.5795 });
