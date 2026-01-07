@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKO Kickboxing Franchise</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body {
+font-family: 'Inter', sans-serif;
+-webkit-font-smoothing: antialiased;
+}
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-track {
+background: #18181b;
+}
+::-webkit-scrollbar-thumb {
+background: #3f3f46;
+border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+background: #52525b;
+}
+.text-glow {
+text-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+}
+</style></head>
+
+<body class="bg-black text-zinc-300 antialiased selection:bg-yellow-500 selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="fixed z-50 bg-black border-b border-zinc-900 top-0 right-0 left-0 h-20 w-full">
+    <div class="flex lg:pl-10 w-full h-full pl-6 items-center justify-between">
+        <!-- Logo -->
+        <div class="flex flex-col leading-none cursor-pointer select-none group" onclick="window.location.href='index.html'">
+            <span class="group-hover:text-zinc-300 transition-colors text-3xl font-extrabold italic text-white tracking-tighter" onclick="window.location.href='index.html'" role="button">CKO</span>
+            <span class="text-[10px] uppercase group-hover:text-yellow-400 transition-colors font-semibold text-yellow-500 tracking-widest" onclick="window.location.href='index.html'" role="button">Kickboxing</span>
+        </div>
+
+        <!-- Desktop Navigation (Centered) -->
+        <div class="hidden lg:flex items-center gap-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <a href="index.html" class="uppercase hover:text-yellow-500 transition-colors text-xs font-semibold text-white tracking-wider">
+                Home
+            </a>
+            <a href="about-page.html" class="uppercase hover:text-yellow-500 transition-colors text-xs font-semibold text-white tracking-wider">
+                About
+            </a>
+            <a href="kickboxing.html" class="uppercase hover:text-yellow-500 transition-colors text-xs font-semibold text-white tracking-wider">
+                Kickboxing
+            </a>
+            <a href="group-fitness.html" class="uppercase hover:text-yellow-500 transition-colors text-xs font-semibold text-white tracking-wider">
+                Group Fitness
+            </a>
+        </div>
+
+        <!-- Right Side: CTA & Mobile Menu -->
+        <div class="flex items-center h-full">
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center pr-6 h-full">
+                <button class="text-zinc-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu h-6 w-6"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Hero Section with Video -->
+    <section class="relative h-screen min-h-[700px] w-full overflow-hidden flex items-center justify-center">
+        <!-- Video Background -->
+        <div class="absolute inset-0 z-0">
+            <video autoplay="" muted="" loop="" playsinline="" class="h-full w-full object-cover opacity-60">
+                <source src="https://www.ckokickboxing.com/wp-content/themes/franchise/assets/images/cko-vid.mp4" type="video/mp4">
+            </video>
+            <!-- Heavy Vignette/Overlay for Text Readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60"></div>
+            <div class="bg-black/20 absolute top-0 right-0 bottom-0 left-0"></div>
+        </div>
+
+        <div class="relative z-10 mx-auto max-w-7xl px-6 text-center pt-20">
+            <div class="max-w-4xl mr-auto ml-auto space-y-8">
+                <h1 class="flex flex-col items-center justify-center text-5xl font-bold uppercase leading-none tracking-tighter text-white md:text-7xl lg:text-8xl">
+                    <span class="">Own a</span>
+                    <span class="text-yellow-500 text-glow">CKO Kickboxing</span>
+                    <span class="">Franchise</span>
+                </h1>
+
+                <p class="mx-auto max-w-xl text-lg text-zinc-300 md:text-xl font-medium leading-relaxed">
+                    Build a passionate community and transform lives with a proven, results-based fitness program
+                    designed for scalability.
+                </p>
+
+                <div class="flex flex-col items-center justify-center gap-4 sm:flex-row pt-4">
+                    <a href="#contact" class="inline-flex items-center justify-center rounded-sm bg-yellow-500 px-10 py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-yellow-400 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+                        Ignite Your Passion
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right ml-2 h-4 w-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                </div>
+
+                <div class="pt-12 flex items-center justify-center gap-2 text-xs font-medium text-zinc-400 uppercase tracking-widest">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="star" class="lucide lucide-star h-3 w-3 fill-yellow-500 text-yellow-500"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+                    <span>Proven Business Model</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro / Video Section -->
+    <section class="border-b border-zinc-900 bg-black py-24 md:py-32">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="grid gap-16 lg:grid-cols-2 lg:items-center">
+
+                <!-- Video Thumbnail Styled Dark -->
+                <div class="group relative aspect-video w-full overflow-hidden bg-zinc-900 shadow-2xl shadow-black border border-zinc-800">
+                    <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="CKO Kickboxing" class="h-full w-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-80">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <button class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/20 bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-yellow-500 hover:border-yellow-500 hover:text-black hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="play" class="lucide lucide-play h-8 w-8 fill-current"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"></path></svg>
+                        </button>
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <p class="text-xs font-bold uppercase tracking-widest text-yellow-500">Watch Video</p>
+                        <p class="text-lg font-semibold text-white uppercase tracking-tight">The CKO Experience</p>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="space-y-10">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="h-[1px] w-12 bg-yellow-500"></div>
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-yellow-500">Our Philosophy</h2>
+                        </div>
+                        <h3 class="text-4xl font-semibold uppercase tracking-tight text-white md:text-5xl lg:leading-tight">
+                            This business is <br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Life Changing</span>
+                        </h3>
+                    </div>
+                    <div class="space-y-6 text-lg text-zinc-400 leading-relaxed font-light">
+                        <p>
+                            The philosophy we use at CKO Kickboxing with our members is the same one we use to approach
+                            franchising. We build a passionate support team around our members that can deliver our
+                            proven, results-based fitness program.
+                        </p>
+                        <p>
+                            We've carried this philosophy over to the franchising side of our business. The heartbeat of
+                            our corporate team is supporting our franchisees and guiding them to positive growth.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why CKO Section - Grid Style -->
+    <section class="bg-zinc-950 py-24 relative overflow-hidden">
+        <!-- Background decorative element -->
+        <div class="absolute top-0 right-0 h-96 w-96 rounded-full bg-yellow-500/5 blur-[120px]"></div>
+
+        <div class="mx-auto max-w-7xl px-6 relative z-10">
+            <div class="mx-auto max-w-3xl text-center space-y-6 mb-16">
+                <h2 class="text-4xl font-semibold uppercase tracking-tight text-white md:text-5xl">Why
+                    <span class="text-yellow-500">CKO?</span></h2>
+                <p class="text-lg font-medium text-zinc-500">Find out what makes CKO Kickboxing so unique in the fitness
+                    industry.</p>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-3">
+                <!-- Card 1 -->
+                <div class="group p-8 rounded-sm bg-black border border-zinc-900 hover:border-yellow-500/50 transition-colors duration-300">
+                    <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" class="lucide lucide-users h-6 w-6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                    </div>
+                    <h3 class="text-xl font-bold uppercase tracking-tight text-white mb-3">Community First</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed">Build a tribe of dedicated members who support each
+                        other's fitness journeys.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group p-8 rounded-sm bg-black border border-zinc-900 hover:border-yellow-500/50 transition-colors duration-300">
+                    <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up h-6 w-6"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold uppercase tracking-tight text-white mb-3">Scalable Model</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed">Designed for growth with streamlined operations and
+                        comprehensive support systems.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group p-8 rounded-sm bg-black border border-zinc-900 hover:border-yellow-500/50 transition-colors duration-300">
+                    <div class="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="dumbbell" class="lucide lucide-dumbbell h-6 w-6"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"></path><path d="m2.5 21.5 1.4-1.4"></path><path d="m20.1 3.9 1.4-1.4"></path><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"></path><path d="m9.6 14.4 4.8-4.8"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold uppercase tracking-tight text-white mb-3">Proven Results</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed">A workout that burns up to 1,200 calories, keeping
+                        members coming back for more.</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <button class="inline-flex items-center rounded-sm border border-zinc-800 bg-transparent px-8 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all">
+                    View franchise video
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="film" class="lucide lucide-film ml-2 h-4 w-4"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M7 3v18"></path><path d="M3 7.5h4"></path><path d="M3 12h18"></path><path d="M3 16.5h4"></path><path d="M17 3v18"></path><path d="M17 7.5h4"></path><path d="M17 16.5h4"></path></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discover Difference Section -->
+    <section class="py-24 md:py-32 bg-black">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="grid gap-16 lg:grid-cols-2 lg:items-start">
+
+                <!-- List Content -->
+                <div class="order-2 lg:order-1 space-y-12">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="h-[1px] w-12 bg-yellow-500"></div>
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-yellow-500">Discover The</h2>
+                        </div>
+                        <h3 class="text-4xl font-semibold uppercase tracking-tight text-white md:text-5xl">
+                            CKO Difference
+                        </h3>
+                    </div>
+
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4 group">
+                            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-zinc-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check h-3 w-3 font-bold"><path d="M20 6 9 17l-5-5"></path></svg>
+                            </div>
+                            <span class="text-lg text-zinc-300 group-hover:text-white transition-colors">Real Estate Support &amp; Design assistance</span>
+                        </li>
+                        <li class="flex items-start gap-4 group">
+                            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-zinc-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check h-3 w-3 font-bold"><path d="M20 6 9 17l-5-5"></path></svg>
+                            </div>
+                            <span class="text-lg text-zinc-300 group-hover:text-white transition-colors">Prime Territories Still Available</span>
+                        </li>
+                        <li class="flex items-start gap-4 group">
+                            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-zinc-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check h-3 w-3 font-bold"><path d="M20 6 9 17l-5-5"></path></svg>
+                            </div>
+                            <span class="text-lg text-zinc-300 group-hover:text-white transition-colors">Comprehensive Training on Operations</span>
+                        </li>
+                        <li class="flex items-start gap-4 group">
+                            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-zinc-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check h-3 w-3 font-bold"><path d="M20 6 9 17l-5-5"></path></svg>
+                            </div>
+                            <span class="text-lg text-zinc-300 group-hover:text-white transition-colors">Entrepreneur's Franchise 500: 4 Years In A Row</span>
+                        </li>
+                        <li class="flex items-start gap-4 group">
+                            <div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-zinc-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check h-3 w-3 font-bold"><path d="M20 6 9 17l-5-5"></path></svg>
+                            </div>
+                            <span class="text-lg text-zinc-300 group-hover:text-white transition-colors">Low Start-Up Cost &amp; Monthly Breakeven models</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Image -->
+                <div class="order-1 lg:order-2">
+                    <div class="aspect-[4/3] overflow-hidden bg-zinc-900 border border-zinc-800">
+                        <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" alt="CKO Team" class="h-full w-full object-cover grayscale opacity-70 transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-105">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="border-y border-zinc-900 bg-zinc-950 py-24 md:py-32">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mb-20 text-center">
+                <h2 class="text-4xl font-semibold uppercase tracking-tight md:text-6xl text-white">Impact Your
+                    <span class="text-zinc-600">Community</span></h2>
+            </div>
+
+            <div class="grid gap-16 lg:grid-cols-2 lg:items-center">
+
+                <!-- Image -->
+                <div class="aspect-[4/3] overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl shadow-black/50">
+                    <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="CKO Kickboxing" class="h-full w-full object-cover opacity-80">
+                </div>
+
+                <!-- Content -->
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <h3 class="text-3xl font-semibold uppercase tracking-tight text-white">
+                            Invest in a business <br>
+                            <span class="text-yellow-500">You'll Love</span>
+                        </h3>
+                    </div>
+                    <div class="space-y-6 text-lg text-zinc-400 leading-relaxed font-light">
+                        <p>
+                            CKO Kickboxing franchises are built on the idea that everyone should love going to work in
+                            the morning.
+                        </p>
+                        <p>
+                            Our franchisees are engaged and motivated from the second they step foot in the gym. This is
+                            the ideal attitude for other individuals that are ready to change their lives and positively
+                            impact those around them.
+                        </p>
+                    </div>
+                    <a href="#contact" class="inline-flex items-center text-sm font-bold uppercase tracking-wider text-yellow-500 hover:text-white transition-colors">
+                        Learn about investment requirements <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right ml-2 h-4 w-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Form Section -->
+    <section id="contact" class="py-24 md:py-32 bg-black relative">
+        <div class="mx-auto max-w-3xl px-6 relative z-10">
+            <div class="mb-12 text-center space-y-4">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-yellow-500">Ready to CKO?</h2>
+                <h3 class="text-4xl font-semibold uppercase tracking-tight text-white md:text-5xl">Contact For More Info
+                </h3>
+                <p class="text-zinc-500">Fill out the form below to receive our franchise information report.</p>
+            </div>
+
+            <form class="space-y-6 rounded-sm border border-zinc-800 bg-zinc-900/50 p-8 md:p-12 backdrop-blur-sm">
+                <div class="grid gap-6 md:grid-cols-2">
+                    <div class="space-y-2">
+                        <label for="firstName" class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">First Name*</label>
+                        <input type="text" id="firstName" class="w-full rounded-sm border border-zinc-700 bg-zinc-950 p-3 text-sm text-white placeholder-zinc-700 outline-none transition-all focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="JANE">
+                    </div>
+                    <div class="space-y-2">
+                        <label for="lastName" class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Last Name*</label>
+                        <input type="text" id="lastName" class="w-full rounded-sm border border-zinc-700 bg-zinc-950 p-3 text-sm text-white placeholder-zinc-700 outline-none transition-all focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="DOE">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="email" class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Email Address*</label>
+                    <input type="email" id="email" class="w-full rounded-sm border border-zinc-700 bg-zinc-950 p-3 text-sm text-white placeholder-zinc-700 outline-none transition-all focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="JANE@EXAMPLE.COM">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="phone" class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Phone Number*</label>
+                    <input type="tel" id="phone" class="w-full rounded-sm border border-zinc-700 bg-zinc-950 p-3 text-sm text-white placeholder-zinc-700 outline-none transition-all focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="(555) 555-5555">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="location" class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Interested Area</label>
+                    <div class="relative">
+                        <select id="location" class="w-full appearance-none rounded-sm border border-zinc-700 bg-zinc-950 p-3 text-sm text-white outline-none transition-all focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500">
+                            <option>Select Region...</option>
+                            <option>Northeast</option>
+                            <option>South</option>
+                            <option>Midwest</option>
+                            <option>West</option>
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" class="lucide lucide-chevron-down absolute right-3 top-3.5 h-4 w-4 text-zinc-500 pointer-events-none"><path d="m6 9 6 6 6-6"></path></svg>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="investment" class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Total Investment</label>
+                    <div class="relative">
+                        <select id="investment" class="w-full appearance-none rounded-sm border border-zinc-700 bg-zinc-950 p-3 text-sm text-white outline-none transition-all focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500">
+                            <option>Select Amount...</option>
+                            <option>$50k - $100k</option>
+                            <option>$100k - $250k</option>
+                            <option>$250k+</option>
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" class="lucide lucide-chevron-down absolute right-3 top-3.5 h-4 w-4 text-zinc-500 pointer-events-none"><path d="m6 9 6 6 6-6"></path></svg>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <p class="text-[10px] text-zinc-600 leading-tight text-justify">
+                        1. Notice Regarding Franchise Offers and Sales. This information is not intended as an offer to
+                        sell, or the solicitation of an offer to buy, a franchise.
+                    </p>
+                </div>
+
+                <button type="submit" class="w-full rounded-sm bg-yellow-500 py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-yellow-400 hover:shadow-[0_0_20px_rgba(234,179,8,0.4)]">
+                    Submit Request
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- As Seen On -->
+    <section class="border-t border-zinc-900 bg-black py-16">
+        <div class="mx-auto max-w-7xl px-6 text-center">
+            <h4 class="mb-10 text-xs font-bold uppercase tracking-widest text-zinc-600">As Seen On</h4>
+            <div class="flex flex-wrap items-center justify-center gap-12 grayscale opacity-40 hover:opacity-100 transition-opacity duration-500">
+                <div class="text-xl font-bold font-serif text-white">REUTERS</div>
+                <div class="text-xl font-bold text-white">YAHOO!</div>
+                <div class="flex flex-col leading-none text-xs text-left font-bold text-white">
+                    <span>EY Entrepreneur</span>
+                    <span>Of The Year</span>
+                </div>
+                <div class="h-10 w-10 rounded-full bg-white text-black flex items-center justify-center font-bold italic text-sm">
+                    abc</div>
+                <div class="text-xl font-bold tracking-tighter text-white">NBC</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-black py-12">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
+
+                <!-- Left: Logo -->
+                <div class="flex items-center gap-2">
+                    <div class="flex flex-col leading-none">
+                        <span class="text-xl font-black italic tracking-tighter text-white">CKO</span>
+                        <span class="text-[8px] font-bold tracking-widest text-yellow-500 uppercase">Kickboxing</span>
+                    </div>
+                </div>
+
+                <!-- Right: Links -->
+                <div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                    <a href="#" class="hover:text-yellow-500 transition-colors">Home</a>
+                    <a href="#" class="hover:text-yellow-500 transition-colors">About</a>
+                    <a href="#" class="hover:text-yellow-500 transition-colors">Results</a>
+                    <a href="#" class="hover:text-yellow-500 transition-colors">Contact Us</a>
+                </div>
+            </div>
+
+            <div class="mt-12 flex flex-col items-center justify-between gap-6 border-t border-zinc-900 pt-8 text-[10px] text-zinc-600 md:flex-row uppercase tracking-wider">
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="facebook" class="lucide lucide-facebook h-4 w-4"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                    <a href="#" class="hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="instagram" class="lucide lucide-instagram h-4 w-4"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></a>
+                </div>
+
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms &amp; Conditions</a>
+                    <a href="#" class="hover:text-white transition-colors">Accessibility</a>
+                </div>
+
+                <p>© 2024 CKO Kickboxing.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body></html>
