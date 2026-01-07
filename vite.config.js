@@ -21,7 +21,8 @@ export default defineConfig({
         kickboxing: resolve(__dirname, 'kickboxing.html'),
         schedule: resolve(__dirname, 'schedule-page.html'),
         thankYou: resolve(__dirname, 'thank-you-page.html'),
-        locationTemplate: resolve(__dirname, 'location-template.html')
+        locationTemplate: resolve(__dirname, 'location-template.html'),
+        leagueCity: resolve(__dirname, 'league-city.html')
       }
     }
   }

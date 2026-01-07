@@ -393,7 +393,7 @@
           <p class="text-xs text-accent mb-3">${Math.round(distance)} MILES AWAY</p>
           <a href="tel:${location.phone}" class="text-accent font-bold hover:text-yellow-500 transition block mb-3">${location.phone}</a>
           <a href="form-submit-page.html?location=${encodeURIComponent(location.name)}&studio=${encodeURIComponent(location.city)}" class="w-full bg-accent text-black font-bold py-2 hover:bg-yellow-500 transition block text-center mb-2">BOOK CLASS →</a>
-          <button class="w-full bg-gray-700 text-white font-bold py-2 hover:bg-gray-600 transition">VIEW LOCATION</button>
+          <a href="${location.name === 'CKO League City' ? 'league-city.html' : '#'}" class="w-full bg-gray-700 text-white font-bold py-2 hover:bg-gray-600 transition block text-center ${location.name !== 'CKO League City' ? 'opacity-50 cursor-not-allowed' : ''}">VIEW LOCATION</a>
         `;
         list.appendChild(card);
       });
