@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Your Location - CKO Kickboxing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#ffc20e',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTZE4IZcJnR6VGfhLIzXjfrhyzvyvDObE&libraries=marker,places,geocoding,geometry"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      font-feature-settings: "cv11", "ss01";
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: "Oswald", sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ffc20e;
+      border-radius: 4px;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+    }
+    .location-card {
+      border: 1px solid rgba(255, 194, 14, 0.3);
+      background-color: #1a1a1a;
+      transition: all 0.3s ease;
+    }
+    .location-card:hover {
+      background-color: #2a2a2a;
+      border-color: #ffc20e;
+    }
+    .map-style-btn {
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid rgba(255, 194, 14, 0.3);
+      background-color: transparent;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 8px;
+    }
+    .map-style-btn.active {
+      background-color: #ffc20e;
+      color: black;
+      border-color: #ffc20e;
+    }
+    .map-style-btn:hover {
+      background-color: #ffc20e;
+      color: black;
+    }
+  </style>
+</head>
+<body class="antialiased text-white bg-black">
+  <!-- Top Bar -->
+  <div class="hidden md:flex text-xs uppercase font-semibold text-gray-400 tracking-[0.15em] bg-[#0a0a0a] z-50 border-white/5 border-b py-2 px-8 relative items-center justify-between">
+    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/5" aria-label="Open search">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="grid-3x3" class="lucide lucide-grid-3x3 w-4 h-4" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M3 15h18"></path><path d="M9 3v18"></path><path d="M15 3v18"></path></svg>
+    </button>
+    <div class="flex items-center gap-8">
+      <a href="franchise-page.html" class="hover:text-white transition-colors">Own a Franchise</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sticky w-full top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10 shadow-2xl">
+    <div class="flex h-20 max-w-[1600px] mx-auto px-6 relative items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group z-50 shrink-0">
+        <img src="https://i.ibb.co/rRwkwHR2/cko-logo-2.png" alt="CKO Kickboxing Logo" class="w-auto h-10 object-contain" role="button">
+        <span class="hidden sm:inline text-lg font-bold">CKO Kickboxing</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-12 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <a href="index.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Home</a>
+        <a href="about-page.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">About</a>
+        <a href="kickboxing.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Kickboxing</a>
+        <a href="group-fitness.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Group Fitness</a>
+      </div>
+      <div class="hidden md:flex items-center shrink-0"></div>
+      <button id="mobile-menu-btn" class="lg:hidden p-2 text-white hover:text-accent transition-colors" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" id="menu-icon" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" id="close-icon" class="lucide lucide-x w-6 h-6 hidden" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden bg-black text-white absolute w-full top-20 left-0 px-6 pb-8 border-b border-white/10 shadow-2xl">
+      <div class="flex flex-col space-y-6 pt-8 text-2xl font-heading font-semibold uppercase tracking-widest text-center">
+        <a href="index.html" class="block hover:text-accent transition-colors">Home</a>
+        <a href="about-page.html" class="block hover:text-accent transition-colors">About</a>
+        <a href="kickboxing.html" class="block hover:text-accent transition-colors">Kickboxing</a>
+        <a href="group-fitness.html" class="block hover:text-accent transition-colors">Group Fitness</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex flex-col md:flex-row gap-0 flex-1 overflow-hidden min-h-screen">
+    <!-- Left Sidebar - Search and Location List -->
+    <div class="w-full md:w-96 bg-black border-r border-white/10 p-6 overflow-y-auto flex flex-col">
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-accent">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          FIND YOUR STUDIO
+        </h2>
+        
+        <form id="searchForm" class="space-y-3">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Enter City, State, or Zip Code"
+            class="w-full px-4 py-3 bg-black border-2 border-accent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+          <div class="flex gap-2">
+            <button
+              type="submit"
+              class="flex-1 bg-accent text-black font-bold py-3 hover:bg-yellow-500 transition"
+            >
+              GO
+            </button>
+            <button
+              type="button"
+              id="clearBtn"
+              class="flex-1 bg-gray-700 text-white font-bold py-3 hover:bg-gray-600 transition"
+            >
+              CLEAR
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Location List -->
+      <div id="locationsList" class="space-y-4 flex-1 overflow-y-auto">
+        <!-- Locations will be populated here by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Right Side - Map -->
+    <div class="flex-1 relative bg-gray-300">
+      <!-- Map Style Buttons -->
+      <div class="absolute top-4 right-4 z-10 flex gap-2">
+        <button class="map-style-btn active" data-style="default">Map</button>
+        <button class="map-style-btn" data-style="satellite">Satellite</button>
+      </div>
+      <div id="map"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-white/10 py-12 mt-20">
+    <div class="max-w-[1600px] mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <img src="https://i.ibb.co/rRwkwHR2/cko-logo-2.png" alt="CKO Kickboxing" class="h-8 mb-4">
+          <p class="text-gray-400 text-sm">Experience the ultimate kickboxing workout.</p>
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-accent mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="index.html" class="hover:text-accent transition">Home</a></li>
+            <li><a href="about-page.html" class="hover:text-accent transition">About</a></li>
+            <li><a href="kickboxing.html" class="hover:text-accent transition">Kickboxing</a></li>
+            <li><a href="group-fitness.html" class="hover:text-accent transition">Group Fitness</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-accent mb-4">Contact</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="tel:+1234567890" class="hover:text-accent transition">1-800-CKO-KICK</a></li>
+            <li><a href="mailto:info@ckokickboxing.com" class="hover:text-accent transition">info@ckokickboxing.com</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-accent mb-4">Follow Us</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-accent transition">Facebook</a></li>
+            <li><a href="#" class="hover:text-accent transition">Instagram</a></li>
+            <li><a href="#" class="hover:text-accent transition">Twitter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 text-center text-sm text-gray-400">
+        <p>&copy; <span id="year">2026</span> CKO Kickboxing. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // All 47 CKO Locations with coordinates
+    const CKO_LOCATIONS = [
+      { name: "CKO Foothill Ranch", address: "26781 Rancho Pkwy", city: "Lake Forest", state: "CA", zip: "92630", phone: "949.614.5143", lat: 33.5487, lng: -117.6915 },
+      { name: "CKO Miramar", address: "7094 Miramar Rd #116", city: "San Diego", state: "CA", zip: "92121", phone: "858.695.8427", lat: 32.9204, lng: -117.2396 },
+      { name: "CKO Simi Valley", address: "2955 Cochran St Unit A1", city: "Simi Valley", state: "CA", zip: "93065", phone: "805.210.5880", lat: 34.2694, lng: -118.7815 },
+      { name: "CKO South Bay", address: "4439 Redondo Beach Blvd", city: "Lawndale", state: "CA", zip: "90260", phone: "424.256.8224", lat: 33.9821, lng: -118.3523 },
+      { name: "CKO Brickell (Miami)", address: "151 SW 7th St", city: "Miami", state: "FL", zip: "33130", phone: "786.228.7690", lat: 25.7580, lng: -80.1933 },
+      { name: "CKO Doral", address: "3887 N.W 107TH AVE, SUITE 106", city: "Miami", state: "FL", zip: "33178", phone: "(305)456-3963", lat: 25.8213, lng: -80.3650 },
+      { name: "CKO Hollywood", address: "2000 Harrison St. Suite 6", city: "Hollywood", state: "FL", zip: "33020", phone: "954.362.4459", lat: 26.0112, lng: -80.1495 },
+      { name: "CKO Kendall", address: "12777 SW 88th Street", city: "Miami", state: "FL", zip: "33186", phone: "305.954.0008", lat: 25.6988, lng: -80.3850 },
+      { name: "CKO River Landing", address: "1420 NW North River Drive Suite 330", city: "Miami", state: "FL", zip: "33125", phone: "786.254.7185", lat: 25.7653, lng: -80.2717 },
+      { name: "CKO GR Downtown", address: "820 Monroe Ave NW #150", city: "Grand Rapids", state: "MI", zip: "49503", phone: "616.920.0335", lat: 42.9632, lng: -85.6789 },
+      { name: "CKO Las Vegas", address: "5375 S Fort Apache Rd, #106", city: "Las Vegas", state: "NV", zip: "89148", phone: "702.970.9287", lat: 36.0726, lng: -115.2845 },
+      { name: "CKO Londonderry", address: "4 Orchard View Drive", city: "Londonderry", state: "NH", zip: "03053", phone: "603.965.3067", lat: 42.8674, lng: -71.4272 },
+      { name: "CKO Allendale", address: "47 W Allendale Ave", city: "Allendale", state: "NJ", zip: "07401", phone: "201.236.1000", lat: 40.9789, lng: -74.1234 },
+      { name: "CKO Bayonne", address: "744 Broadway", city: "Bayonne", state: "NJ", zip: "07002", phone: "201.535.5112", lat: 40.6689, lng: -74.1156 },
+      { name: "CKO Cedar Grove", address: "416 Pompton Ave", city: "Cedar Grove", state: "NJ", zip: "07009", phone: "973.507.9106", lat: 40.8234, lng: -74.2156 },
+      { name: "CKO Chatham", address: "650 Shunpike Rd", city: "Chatham Township", state: "NJ", zip: "07928", phone: "973.966.0066", lat: 40.7945, lng: -74.3567 },
+      { name: "CKO Cherry Hill", address: "1558 Kings Hwy N", city: "Cherry Hill", state: "NJ", zip: "08034", phone: "856.535.1888", lat: 39.9234, lng: -74.9856 },
+      { name: "CKO Clark", address: "301 Central Ave", city: "Clark", state: "NJ", zip: "07066", phone: "732.707.1256", lat: 40.6156, lng: -74.3045 },
+      { name: "CKO Emerson", address: "500 Kinderkamack Rd", city: "Emerson", state: "NJ", zip: "07630", phone: "201.525.8354", lat: 40.9512, lng: -74.0234 },
+      { name: "CKO Freehold", address: "536 Park Ave", city: "Freehold", state: "NJ", zip: "07728", phone: "732.333.0891", lat: 40.2567, lng: -74.2789 },
+      { name: "CKO Hamilton", address: "621 US-130", city: "Hamilton Township", state: "NJ", zip: "08691", phone: "609.838.2872", lat: 40.2234, lng: -74.6789 },
+      { name: "CKO Harrison", address: "1100 Frank E Rodger Blvd S, Unit C", city: "Harrison", state: "NJ", zip: "07029", phone: "973.554.3000", lat: 40.7567, lng: -74.1567 },
+      { name: "CKO Hoboken", address: "900 Madison St. Suite 2", city: "Hoboken", state: "NJ", zip: "07030", phone: "201.963.7774", lat: 40.7356, lng: -74.0314 },
+      { name: "CKO Jersey City", address: "150 Bay St. Building - Provost Street Side", city: "Jersey City", state: "NJ", zip: "07302", phone: "201.360.3072", lat: 40.7178, lng: -74.0431 },
+      { name: "CKO Roselle", address: "711 E 1ST AVE.", city: "Roselle", state: "NJ", zip: "07203", phone: "(908)620-6117", lat: 40.6456, lng: -74.2567 },
+      { name: "CKO Lodi", address: "449 Main St", city: "Lodi", state: "NJ", zip: "07644", phone: "973.777.7761", lat: 40.8756, lng: -74.0934 },
+      { name: "CKO Maplewood", address: "1933 Springfield Ave", city: "Maplewood", state: "NJ", zip: "07040", phone: "973.981.0599", lat: 40.7345, lng: -74.2678 },
+      { name: "CKO Middletown", address: "1700 NJ-35", city: "Middletown", state: "NJ", zip: "07748", phone: "732.671.4256", lat: 40.3956, lng: -74.0789 },
+      { name: "CKO North Brunswick", address: "2182 US-130", city: "North Brunswick Township", state: "NJ", zip: "08902", phone: "732.334.7738", lat: 40.4234, lng: -74.4567 },
+      { name: "CKO Oceanport", address: "700 Oceanport Avenue", city: "Oceanport", state: "NJ", zip: "07757", phone: "732.996.7186", lat: 40.3234, lng: -74.0045 },
+      { name: "CKO Roxbury", address: "180 Howard Blvd Suite 12", city: "Mount Arlington", state: "NJ", zip: "07856", phone: "862.803.1294", lat: 40.8234, lng: -74.5678 },
+      { name: "CKO Toms River", address: "1770 Hooper Ave", city: "Toms River", state: "NJ", zip: "08753", phone: "732-732-2054", lat: 39.7934, lng: -74.1956 },
+      { name: "CKO Wallkill", address: "342 Main Street", city: "Ogdensburg", state: "NJ", zip: "07349", phone: "973.513.3779", lat: 40.9123, lng: -74.3456 },
+      { name: "CKO West New York", address: "4914 John Fitzgerald Kennedy Blvd", city: "West New York", state: "NJ", zip: "07093", phone: "201.546.1010", lat: 40.7856, lng: -74.0123 },
+      { name: "CKO Woodbridge", address: "1009 St Georges Ave", city: "Colonia", state: "NJ", zip: "07067", phone: "732.931.2055", lat: 40.5678, lng: -74.2456 },
+      { name: "CKO Clinton Hill", address: "525 Myrtle Ave", city: "Brooklyn", state: "NY", zip: "11205", phone: "718.306.9433", lat: 40.6856, lng: -73.9567 },
+      { name: "CKO Croton", address: "48 Maple Street", city: "Croton on Hudson", state: "NY", zip: "10520", phone: "914.930.1919", lat: 41.1856, lng: -73.8934 },
+      { name: "CKO Franklin Square", address: "893 Hempstead Turnpike", city: "Franklin Square", state: "NY", zip: "11010", phone: "516.884.8757", lat: 40.7156, lng: -73.6234 },
+      { name: "CKO Great Kills", address: "4255 Amboy Rd", city: "Staten Island", state: "NY", zip: "10308", phone: "718.984.5425", lat: 40.5456, lng: -74.2234 },
+      { name: "CKO Park Slope", address: "333 Schermerhorn Street", city: "Brooklyn", state: "NY", zip: "11217", phone: "718.858.8500", lat: 40.6634, lng: -73.9856 },
+      { name: "CKO Sheepshead Bay", address: "2615 E 17th St", city: "Brooklyn", state: "NY", zip: "11235", phone: "347.587.5715", lat: 40.5756, lng: -73.9456 },
+      { name: "CKO Throggs Neck", address: "815 Hutchinson Parkway", city: "Bronx", state: "NY", zip: "10465", phone: "718.513.6868", lat: 40.8456, lng: -73.8234 },
+      { name: "CKO Tottenville", address: "236 Richmond Valley Rd", city: "Staten Island", state: "NY", zip: "10309", phone: "718.984.5269", lat: 40.5234, lng: -74.2567 },
+      { name: "CKO Warwick", address: "48 Ronald Reagan Blvd", city: "Warwick", state: "NY", zip: "10990", phone: "845.605.2690", lat: 41.3156, lng: -74.1234 },
+      { name: "CKO South Philly", address: "2053 W Oregon Ave", city: "Philadelphia", state: "PA", zip: "19145", phone: "267.519.8625", lat: 39.9234, lng: -75.2156 },
+      { name: "CKO Yardley", address: "1617 Big Oak Rd", city: "Yardley", state: "PA", zip: "19067", phone: "215.321.3355", lat: 40.2156, lng: -74.8234 },
+      { name: "CKO Myrtle Beach", address: "568 George Bishop Parkway", city: "Myrtle Beach", state: "SC", zip: "29579", phone: "843.796.3274", lat: 33.6956, lng: -78.8934 },
+      { name: "CKO League City", address: "830 W Main Street", city: "League City", state: "TX", zip: "77573", phone: "281.724.4422", lat: 29.4934, lng: -95.1156 },
+      { name: "CKO San Antonio", address: "17700 US Hwy 281, Suite 500", city: "San Antonio", state: "TX", zip: "78232", phone: "210.402.1285", lat: 29.5234, lng: -98.4567 }
+    ];
+
+    let map;
+    let markers = [];
+    let userLocation = null;
+    let currentMapStyle = 'default';
+    let searchMarker = null;
+    let geocoder;
+
+    // Initialize map
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: { lat: 39.8283, lng: -98.5795 },
+        mapTypeId: 'roadmap'
+      });
+
+      // Initialize geocoder
+      geocoder = new google.maps.Geocoder();
+
+      // Get user location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          },
+          () => {
+            userLocation = { lat: 39.8283, lng: -98.5795 };
+          }
+        );
+      }
+
+      // Add all markers
+      addMarkers(CKO_LOCATIONS);
+      displayLocations(CKO_LOCATIONS);
+    }
+
+    // Add markers to map with boxing glove icons
+    function addMarkers(locations) {
+      // Clear existing markers
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];
+
+      locations.forEach((location, index) => {
+        // Create custom boxing glove SVG icon
+        const gloveIcon = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28">
+            <circle cx="32" cy="32" r="30" fill="#ffc20e" stroke="#000" stroke-width="2"/>
+            <g fill="#000">
+              <ellipse cx="20" cy="16" rx="8" ry="10"/>
+              <ellipse cx="44" cy="16" rx="8" ry="10"/>
+              <path d="M 32 26 L 28 36 L 36 36 Z"/>
+              <path d="M 18 38 Q 14 42 16 50 Q 18 56 24 56 Q 28 56 28 50 L 28 42 Q 28 38 24 38 Z"/>
+              <path d="M 46 38 Q 50 42 48 50 Q 46 56 40 56 Q 36 56 36 50 L 36 42 Q 36 38 40 38 Z"/>
+              <rect x="20" y="40" width="4" height="8" rx="2"/>
+              <rect x="40" y="40" width="4" height="8" rx="2"/>
+            </g>
+          </svg>
+        `;
+
+        const marker = new google.maps.Marker({
+          position: { lat: location.lat, lng: location.lng },
+          map: map,
+          title: location.name,
+          icon: {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(gloveIcon),
+            scaledSize: new google.maps.Size(28, 28),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(14, 28)
+          }
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <div style="padding: 12px; font-family: Arial, sans-serif; max-width: 250px; color: #000;">
+              <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${location.name}</h3>
+              <p style="margin: 0 0 4px 0; font-size: 13px;">${location.address}</p>
+              <p style="margin: 0 0 8px 0; font-size: 13px;">${location.city}, ${location.state} ${location.zip}</p>
+              <a href="tel:${location.phone}" style="color: #ffc20e; text-decoration: none; font-weight: bold;">${location.phone}</a>
+            </div>
+          `
+        });
+
+        marker.addListener('click', () => {
+          markers.forEach(m => {
+            if (m.infoWindow) m.infoWindow.close();
+          });
+          infoWindow.open(map, marker);
+        });
+
+        marker.infoWindow = infoWindow;
+        markers.push(marker);
+      });
+    }
+
+    // Calculate distance between two coordinates
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 3959; // Earth's radius in miles
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // Display locations in sidebar
+    function displayLocations(locations) {
+      const list = document.getElementById('locationsList');
+      list.innerHTML = '';
+
+      if (locations.length === 0) {
+        list.innerHTML = '<div class="text-center py-8"><p class="text-gray-400">No locations found. Try a different search.</p></div>';
+        return;
+      }
+
+      locations.forEach(location => {
+        const distance = userLocation 
+          ? calculateDistance(userLocation.lat, userLocation.lng, location.lat, location.lng)
+          : 0;
+
+        const card = document.createElement('div');
+        card.className = 'location-card p-4';
+        card.innerHTML = `
+          <h3 class="font-bold text-lg mb-2">${location.name}</h3>
+          <p class="text-sm text-gray-300 mb-1">${location.address}</p>
+          <p class="text-sm text-gray-300 mb-3">${location.city}, ${location.state} ${location.zip}</p>
+          <p class="text-xs text-accent mb-3">${Math.round(distance)} MILES AWAY</p>
+          <a href="tel:${location.phone}" class="text-accent font-bold hover:text-yellow-500 transition block mb-3">${location.phone}</a>
+          <a href="form-submit-page.html?location=${encodeURIComponent(location.name)}&studio=${encodeURIComponent(location.city)}" class="w-full bg-accent text-black font-bold py-2 hover:bg-yellow-500 transition block text-center mb-2">BOOK CLASS →</a>
+          <button class="w-full bg-gray-700 text-white font-bold py-2 hover:bg-gray-600 transition">VIEW LOCATION</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Search functionality with geocoding and radius filtering
+    document.getElementById('searchForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const searchValue = document.getElementById('searchInput').value.trim();
+
+      if (!searchValue) {
+        // Clear search marker if exists
+        if (searchMarker) {
+          searchMarker.setMap(null);
+          searchMarker = null;
+        }
+        userLocation = null;
+        addMarkers(CKO_LOCATIONS);
+        displayLocations(CKO_LOCATIONS);
+        map.setCenter({ lat: 39.8283, lng: -98.5795 });
+        map.setZoom(4);
+        return;
+      }
+
+      // Use geocoder to convert search input to coordinates
+      geocoder.geocode({ address: searchValue }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const searchLocation = {
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+          };
+
+          // Update userLocation to the searched location
+          userLocation = searchLocation;
+
+          // Clear previous search marker
+          if (searchMarker) {
+            searchMarker.setMap(null);
+          }
+
+          // Add marker for searched location
+          searchMarker = new google.maps.Marker({
+            position: searchLocation,
+            map: map,
+            title: 'Search Location',
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: '#ff0000',
+              fillOpacity: 0.8,
+              strokeColor: '#ffffff',
+              strokeWeight: 2
+            }
+          });
+
+          // Calculate distances and filter locations within 50 miles
+          const locationsWithDistance = CKO_LOCATIONS.map(loc => ({
+            ...loc,
+            distance: calculateDistance(searchLocation.lat, searchLocation.lng, loc.lat, loc.lng)
+          }));
+
+          // Filter to locations within 50 miles
+          const filtered = locationsWithDistance.filter(loc => loc.distance <= 50);
+
+          // Sort by distance (closest first)
+          filtered.sort((a, b) => a.distance - b.distance);
+
+          if (filtered.length > 0) {
+            addMarkers(filtered);
+            displayLocations(filtered);
+
+            // Center map on search location
+            map.setCenter(searchLocation);
+
+            // Adjust zoom to show search location and nearby studios
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(searchLocation);
+            filtered.forEach(loc => bounds.extend({ lat: loc.lat, lng: loc.lng }));
+            map.fitBounds(bounds);
+          } else {
+            // No locations found within 50 miles
+            addMarkers([]);
+            displayLocations([]);
+            map.setCenter(searchLocation);
+            map.setZoom(10);
+
+            const list = document.getElementById('locationsList');
+            list.innerHTML = '<div class="text-center py-8"><p class="text-gray-400 mb-2">No CKO locations found within 50 miles of this location.</p><p class="text-gray-300 text-sm">Try searching a different area.</p></div>';
+          }
+        } else {
+          // Geocoding failed
+          alert('Location not found. Please try a different search term (e.g., city name, zip code, or address).');
+        }
+      });
+    });
+
+    // Clear search
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+
+      // Clear search marker if exists
+      if (searchMarker) {
+        searchMarker.setMap(null);
+        searchMarker = null;
+      }
+
+      userLocation = null;
+      addMarkers(CKO_LOCATIONS);
+      displayLocations(CKO_LOCATIONS);
+      map.setCenter({ lat: 39.8283, lng: -98.5795 });
+      map.setZoom(4);
+    });
+
+    // Map style toggle
+    document.querySelectorAll('.map-style-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.map-style-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const style = btn.getAttribute('data-style');
+        if (style === 'satellite') {
+          map.setMapTypeId('satellite');
+        } else {
+          map.setMapTypeId('roadmap');
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      const menuIcon = document.getElementById('menu-icon');
+      const closeIcon = document.getElementById('close-icon');
+      menu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Initialize map when page loads
+    window.addEventListener('load', initMap);
+    initMap();
+  </script>
+</body>
+</html>

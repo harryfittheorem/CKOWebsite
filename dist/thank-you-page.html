@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKO Kickboxing - Booking Confirmed</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Oswald:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body {
+font-family: "Inter", sans-serif;
+font-feature-settings: "cv11", "ss01";
+-webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+font-family: "Oswald", sans-serif;
+}
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-track {
+background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+background: #fec400;
+border-radius: 4px;
+}
+/* Brand Colors */
+.text-accent {
+color: #fec400;
+}
+.bg-accent {
+background-color: #fec400;
+}
+.border-accent {
+border-color: #fec400;
+}
+/* Reveal Animation */
+.reveal-on-scroll {
+opacity: 0;
+transform: translateY(30px);
+transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-on-scroll.is-visible {
+opacity: 1;
+transform: translateY(0);
+}
+.mobile-scale-in {
+transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.delay-100 {
+transition-delay: 100ms;
+}
+.delay-200 {
+transition-delay: 200ms;
+}
+.delay-300 {
+transition-delay: 300ms;
+}
+</style>
+<style id="alls-style-font-merriweather">
+.font-merriweather {
+font-family: "Merriweather", serif !important;
+}
+</style>
+<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist">
+.font-geist {
+font-family: "Geist", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-roboto">
+.font-roboto {
+font-family: "Roboto", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-montserrat">
+.font-montserrat {
+font-family: "Montserrat", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-poppins">
+.font-poppins {
+font-family: "Poppins", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"><style id="all-fonts-style-font-playfair">
+.font-playfair {
+font-family: "Playfair Display", serif !important;
+}
+</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-instrument-serif">
+.font-instrument-serif {
+font-family: "Instrument Serif", serif !important;
+}
+</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-bricolage">
+.font-bricolage {
+font-family: "Bricolage Grotesque", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-jakarta">
+.font-jakarta {
+font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-manrope">
+.font-manrope {
+font-family: "Manrope", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-space-grotesk">
+.font-space-grotesk {
+font-family: "Space Grotesk", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-work-sans">
+.font-work-sans {
+font-family: "Work Sans", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-pt-serif">
+.font-pt-serif {
+font-family: "PT Serif", serif !important;
+}
+</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">
+.font-geist-mono {
+font-family: "Geist Mono", monospace !important;
+}
+</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-space-mono">
+.font-space-mono {
+font-family: "Space Mono", monospace !important;
+}
+</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-quicksand">
+.font-quicksand {
+font-family: "Quicksand", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-nunito">
+.font-nunito {
+font-family: "Nunito", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-newsreader" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap"><style id="all-fonts-style-font-newsreader">
+.font-newsreader {
+font-family: "Newsreader", serif !important;
+}
+</style><link id="all-fonts-link-font-google-sans-flex" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-google-sans-flex">
+.font-google-sans-flex {
+font-family: "Google Sans Flex", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-oswald" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-oswald">
+.font-oswald {
+font-family: "Oswald", sans-serif !important;
+}
+</style><link id="all-fonts-link-font-dm-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-dm-sans">
+.font-dm-sans {
+font-family: "DM Sans", sans-serif !important;
+}
+</style></head>
+
+  <body class="antialiased bg-black text-white">
+    <!-- Top Bar -->
+    <div class="hidden md:flex text-[10px] uppercase z-50 font-semibold text-gray-400 tracking-[0.15em] bg-[#0a0a0a] border-white/5 border-b pt-2 pr-8 pb-2 pl-8 relative items-center justify-between">
+      <!-- Left Icon -->
+      <button class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="grid-3x3" class="lucide lucide-grid-3x3 w-3.5 h-3.5"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M3 15h18"></path><path d="M9 3v18"></path><path d="M15 3v18"></path></svg>
+      </button>
+
+      <!-- Right Links -->
+      <div class="flex items-center gap-8">
+        <a href="franchise-page.html" class="hover:text-white transition-colors">Own a Franchise</a>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky w-full top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10 shadow-2xl transition-all duration-300">
+      <div class="flex h-20 max-w-[1600px] mr-auto ml-auto pr-6 pl-6 relative items-center justify-between">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center justify-start group z-50 shrink-0">
+          <img src="https://i.ibb.co/rRwkwHR2/cko-logo-2.png" alt="CKO Kickboxing" class="h-8 md:h-10 w-auto object-contain">
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden lg:flex gap-10 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 gap-x-10 gap-y-10 items-center">
+          <a href="index.html" class="uppercase hover:text-accent transition-colors text-xs font-semibold text-white tracking-[0.15em] font-heading">Home</a>
+          <a href="about-page.html" class="uppercase hover:text-accent transition-colors text-xs font-semibold text-white tracking-[0.15em] font-heading">About</a>
+          <a href="kickboxing.html" class="uppercase hover:text-accent transition-colors text-xs font-semibold text-white tracking-[0.15em] font-heading">Kickboxing</a>
+          <a href="group-fitness.html" class="uppercase hover:text-accent transition-colors text-xs font-semibold text-white tracking-[0.15em] font-heading">Group Fitness</a>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="hidden md:flex items-center shrink-0 gap-6"></div>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu w-6 h-6"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Hero Section with Video -->
+    <section class="min-h-[600px] flex overflow-hidden bg-black h-[85vh] relative items-center justify-center">
+      <!-- Background Video & Overlay -->
+      <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <iframe class="absolute w-[300%] h-[300%] lg:w-[150%] lg:h-[150%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none object-cover opacity-60" src="https://www.youtube.com/embed/S_yWGemBM9Q?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=S_yWGemBM9Q&amp;controls=0&amp;showinfo=0&amp;modestbranding=1&amp;rel=0&amp;iv_load_policy=3&amp;playsinline=1&amp;enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-black/50 to-black z-10 opacity-95"></div>
+        <div class="absolute inset-0 bg-black/40 z-10"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="relative z-20 text-center px-6 max-w-4xl mx-auto flex flex-col items-center pointer-events-none">
+        <!-- Status Badge -->
+        <div class="reveal-on-scroll is-visible inline-flex items-center gap-2 bg-[#fec400]/10 border border-[#fec400]/20 rounded-full px-4 py-1.5 mb-6 backdrop-blur-md">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-4 h-4 text-[#fec400]"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+          <span class="text-[#fec400] text-[10px] font-semibold uppercase tracking-widest">Booking Confirmed</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="font-heading text-6xl md:text-8xl lg:text-9xl font-semibold text-white leading-[0.9] uppercase tracking-tighter mb-6 reveal-on-scroll is-visible">
+          You're
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">In!</span>
+        </h1>
+
+        <!-- Subhead -->
+        <p class="text-gray-300 text-lg md:text-2xl font-light leading-relaxed mb-10 max-w-2xl reveal-on-scroll delay-100 is-visible mx-auto">
+          <span class="block text-white font-medium text-2xl mb-3 tracking-wide font-heading uppercase">Welcome to the Family.</span>
+          We've sent a confirmation email with all the details. Get ready for the best hour of your day.
+        </p>
+
+        <!-- Actions -->
+        <div class="reveal-on-scroll delay-200 is-visible w-full max-w-md pointer-events-auto flex flex-col md:flex-row gap-4 justify-center">
+          
+
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- Preparation Grid -->
+    <section id="prep" class="bg-black relative z-20 -mt-10 md:-mt-20 pb-20 px-4 md:px-8">
+      <div class="max-w-[1600px] mx-auto">
+        <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <!-- Info Card -->
+          <div class="group relative h-[400px] md:h-[500px] bg-[#0a0a0a] border border-white/10 p-8 md:p-10 flex flex-col justify-center reveal-on-scroll mobile-scale-in">
+            <div class="absolute top-0 right-0 p-8 opacity-20">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="info" class="lucide lucide-info w-16 h-16 text-[#fec400]"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+            </div>
+
+            <span class="text-[#fec400] text-[10px] font-semibold uppercase tracking-[0.2em] mb-4 block">First Class Prep</span>
+
+            <h3 class="font-heading text-3xl md:text-4xl font-semibold uppercase text-white mb-4 leading-[0.9] tracking-tight">
+              Arrive
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">15 Mins</span>
+              Early
+            </h3>
+
+            <p class="text-gray-400 text-base leading-relaxed mb-8 font-light border-l border-white/10 pl-4">
+              We need this time to meet you, introduce you to your instructor, and get your hands wrapped safely before the warm-up begins.
+            </p>
+
+            <div class="mt-auto">
+              <div class="text-xs font-semibold uppercase tracking-widest text-white mb-2">Check-in Process:</div>
+              <div class="flex gap-2">
+                <div class="h-1 flex-1 bg-accent rounded-full"></div>
+                <div class="h-1 flex-1 bg-white/20 rounded-full"></div>
+                <div class="h-1 flex-1 bg-white/20 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 1 (Gear) - Updated Image -->
+          <div class="group relative h-[400px] md:h-[500px] overflow-hidden bg-[#111] reveal-on-scroll mobile-scale-in delay-100">
+            <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-700 md:group-hover:scale-110" alt="CKO Gear">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+            <div class="absolute bottom-8 left-8 right-8 z-20">
+              <div class="bg-accent text-black text-[10px] font-semibold px-2 py-1 inline-block uppercase tracking-widest mb-3">Gear</div>
+              <h3 class="font-heading text-3xl font-semibold uppercase text-white mb-2 tracking-tight">Gloves &amp; Wraps</h3>
+              <p class="text-gray-300 text-base font-light leading-snug">
+                Don't have them? No problem. We have loaner gloves for your first class, and wraps available for purchase.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2 (Hydration) - Updated Image -->
+          <div class="group relative h-[400px] md:h-[500px] overflow-hidden bg-[#111] reveal-on-scroll mobile-scale-in delay-200">
+            <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-700 md:group-hover:scale-110" alt="Essentials">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+            <div class="absolute bottom-8 left-8 right-8 z-20">
+              <div class="bg-white/20 text-white text-[10px] font-semibold px-2 py-1 inline-block uppercase tracking-widest mb-3 border border-white/20">
+                Essentials
+              </div>
+              <h3 class="font-heading text-3xl font-semibold uppercase text-white mb-2 tracking-tight">Water &amp; Towel</h3>
+              <p class="text-gray-300 text-base font-light leading-snug">
+                You will sweat. A lot. Bring a large water bottle and a towel to keep dry during active rest periods.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3 (Attitude) - Updated Image -->
+          <div class="group relative h-[400px] md:h-[500px] overflow-hidden bg-[#111] reveal-on-scroll mobile-scale-in delay-300">
+            <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-700 md:group-hover:scale-110" alt="Mindset">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+            <div class="absolute bottom-8 left-8 right-8 z-20">
+              <div class="bg-white/20 text-white text-[10px] font-semibold px-2 py-1 inline-block uppercase tracking-widest mb-3 border border-white/20">
+                Mindset
+              </div>
+              <h3 class="font-heading text-3xl font-semibold uppercase text-white mb-2 tracking-tight">Go At Your Pace</h3>
+              <p class="text-gray-300 text-base font-light leading-snug">
+                It's you vs. the bag. Our instructors will push you, but listen to your body. Have fun!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bring a Friend Section -->
+    <section class="py-24 bg-[#0a0a0a] relative overflow-hidden">
+      <div class="absolute -top-20 left-0 text-[200px] font-heading font-semibold text-white/5 whitespace-nowrap select-none pointer-events-none">
+        WORKOUT BUDDY
+      </div>
+
+      <div class="max-w-[1600px] mx-auto px-6 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+          <div class="reveal-on-scroll">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="h-[1px] w-12 bg-accent"></div>
+              <span class="text-accent text-xs font-semibold uppercase tracking-[0.3em]">Share The Energy</span>
+            </div>
+
+            <h2 class="font-heading text-5xl lg:text-7xl font-semibold uppercase text-white leading-[0.9] mb-8 tracking-tight">
+              Everything is Better
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">With Friends</span>
+            </h2>
+
+            <p class="text-gray-400 text-xl mb-8 leading-relaxed font-light border-l border-white/10 pl-6">
+              Nervous about your first class? Bring a friend along! Working out with a partner increases accountability and makes the experience even more fun.
+            </p>
+
+            <div class="bg-[#111] border border-white/10 p-8 rounded-sm mb-8">
+              <h3 class="text-white font-heading text-2xl font-medium uppercase tracking-tight mb-3">Guest Pass <span class="text-accent">Access</span></h3>
+              <p class="text-gray-400 text-base font-light leading-relaxed mb-6">
+                As a first-timer, you can bring one guest for free to your first session. Just have them arrive early with you to sign the waiver.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <button class="flex-1 bg-white/10 hover:bg-white/20 text-white border border-white/10 font-semibold py-3 px-4 text-xs uppercase tracking-widest rounded-sm transition-colors text-center">
+                  Copy Invite Link
+                </button>
+                <button class="flex-1 bg-white/10 hover:bg-[#25D366]/20 hover:text-[#25D366] hover:border-[#25D366] text-white border border-white/10 font-semibold py-3 px-4 text-xs uppercase tracking-widest rounded-sm transition-all text-center flex items-center justify-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="share-2" class="lucide lucide-share-2 w-4 h-4"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
+                  Send via WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative reveal-on-scroll mobile-scale-in delay-200">
+            <div class="absolute -inset-4 bg-[#fec400]/20 blur-2xl rounded-full opacity-20"></div>
+            <img src="https://i.ibb.co/GQv9NHQZ/l.webp" alt="Friends High Five" class="w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000 relative z-10 rounded-sm">
+            <div class="absolute inset-0 z-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="bg-[#111] py-24">
+      <div class="max-w-[1400px] mx-auto px-6">
+        <div class="text-center mb-16 reveal-on-scroll">
+          <h2 class="font-heading text-4xl font-semibold uppercase text-white tracking-tight">First Timer <span class="text-accent">FAQ</span></h2>
+          <p class="text-gray-400 mt-4 font-light text-base">Common questions before your first punch.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="group p-8 border border-white/5 hover:border-accent/50 bg-black transition-all duration-300 reveal-on-scroll">
+            <div class="mb-4 text-accent">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="help-circle" class="lucide lucide-help-circle w-8 h-8"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg>
+            </div>
+            <h3 class="font-heading text-lg font-semibold uppercase text-white mb-2 tracking-wide">Is it hard?</h3>
+            <p class="text-gray-500 text-base leading-relaxed font-light">
+              It's challenging, but you control the intensity. Instructors provide modifications for every fitness level.
+            </p>
+          </div>
+
+          <div class="group p-8 border border-white/5 hover:border-accent/50 bg-black transition-all duration-300 reveal-on-scroll delay-100">
+            <div class="mb-4 text-accent">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="shirt" class="lucide lucide-shirt w-8 h-8"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+            </div>
+            <h3 class="font-heading text-lg font-semibold uppercase text-white mb-2 tracking-wide">What should I wear?</h3>
+            <p class="text-gray-500 text-base leading-relaxed font-light">
+              Athletic wear that you can move freely in. You won't wear shoes on the mats, so socks or barefoot is fine (check studio policy).
+            </p>
+          </div>
+
+          <div class="group p-8 border border-white/5 hover:border-accent/50 bg-black transition-all duration-300 reveal-on-scroll delay-200">
+            <div class="mb-4 text-accent">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="timer" class="lucide lucide-timer w-8 h-8"><line x1="10" x2="14" y1="2" y2="2"></line><line x1="12" x2="15" y1="14" y2="11"></line><circle cx="12" cy="14" r="8"></circle></svg>
+            </div>
+            <h3 class="font-heading text-lg font-semibold uppercase text-white mb-2 tracking-wide">How long is class?</h3>
+            <p class="text-gray-500 text-base leading-relaxed font-light">
+              Most classes are 45 to 60 minutes long, including warm-up, bag work, and cool-down.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-12 text-center reveal-on-scroll">
+          <a href="mailto:support@ckokickboxing.com" class="text-gray-400 text-xs uppercase tracking-widest hover:text-white transition-colors border-b border-gray-700 pb-1">
+            Have more questions? Email the Studio
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="py-24 bg-[#F5F5F0] text-black">
+      <div class="max-w-[1400px] mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-16 items-center reveal-on-scroll">
+          <div class="relative p-4 border border-gray-200 bg-white shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500">
+            <img id="testimonial-image" src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" class="w-full h-96 object-cover md:grayscale contrast-110 transition-opacity duration-300" alt="Member">
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-8 py-3 shadow-lg border border-gray-100">
+              <span class="font-heading font-semibold text-xl uppercase tracking-widest whitespace-nowrap">Sarah M.</span>
+            </div>
+          </div>
+
+          <div id="testimonial-container">
+            <h3 class="font-heading text-4xl font-semibold uppercase mb-2 tracking-tight">You've Got <span class="text-accent">This.</span></h3>
+            <h4 class="font-heading text-xl font-medium uppercase text-gray-500 mb-8 tracking-wide">What members say about their first day:</h4>
+
+            <div>
+              <div class="flex text-accent gap-1 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+
+              <p class="text-gray-700 text-xl md:text-2xl font-light italic leading-relaxed mb-6">
+                “I was so nervous walking in, thinking everyone would be a pro. I couldn't have been more wrong. The instructor stayed with me, helped me with my form, and the person next to me high-fived me after class. I was hooked instantly.”
+              </p>
+
+              <div class="mb-8">
+                <div class="font-heading font-semibold text-lg uppercase">Sarah M.</div>
+                <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">Member since 2023</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-300 pt-10 pb-12">
+      <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-8">
+          <a href="#" class="group">
+            <div class="bg-black text-white px-6 py-2 rounded-[50%] flex flex-col items-center justify-center w-48 h-16 border-2 border-black group-hover:bg-white group-hover:text-black transition-colors">
+              <div class="font-heading font-semibold text-3xl italic tracking-tighter leading-none -mt-1 scale-x-125">CKO</div>
+              <div class="text-[10px] font-semibold uppercase tracking-[0.2em] leading-none mt-0">Kickboxing</div>
+            </div>
+          </a>
+
+          <nav class="flex gap-8 md:gap-8 text-xs font-heading font-semibold uppercase tracking-widest text-black">
+            <a href="index.html" class="hover:text-accent transition-colors">Home</a>
+            <a href="#" class="hover:text-accent transition-colors">My Account</a>
+            <a href="#" class="hover:text-accent transition-colors">Contact</a>
+          </nav>
+        </div>
+
+        <div class="w-full h-px bg-black mb-6"></div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-16">
+          <div class="flex gap-4 text-black">
+            <a href="#" class="hover:text-accent transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="w-5 h-5">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            <a href="#" class="hover:text-accent transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+
+          <div class="flex gap-6 text-xs text-black underline underline-offset-2 decoration-1 font-medium">
+            <a href="#" class="hover:no-underline hover:text-gray-600 transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:no-underline hover:text-gray-600 transition-colors">Terms &amp; Conditions</a>
+            <a href="#" class="hover:no-underline hover:text-gray-600 transition-colors">Accessibility</a>
+          </div>
+        </div>
+
+        <div class="text-center space-y-6">
+          <p class="text-[10px] text-gray-800">
+            © 2026 All Rights Reserved. <span class="underline">CKO Kickboxing</span>. Each franchise is independently owned and operated.
+          </p>
+
+          <div class="flex flex-col items-center justify-center gap-2">
+            <a href="#" class="text-[10px] text-black underline hover:no-underline font-semibold">Built By CyberMark</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons({ attrs: { "stroke-width": 1.5 } });
+
+      const observerOptions = { threshold: 0.15, rootMargin: "0px" };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("is-visible");
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".reveal-on-scroll").forEach((el) => observer.observe(el));
+    </script>
+  
+</body></html>
