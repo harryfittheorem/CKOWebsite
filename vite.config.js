@@ -20,7 +20,8 @@ export default defineConfig({
         groupFitness: resolve(__dirname, 'group-fitness.html'),
         kickboxing: resolve(__dirname, 'kickboxing.html'),
         schedule: resolve(__dirname, 'schedule-page.html'),
-        thankYou: resolve(__dirname, 'thank-you-page.html')
+        thankYou: resolve(__dirname, 'thank-you-page.html'),
+        locationTemplate: resolve(__dirname, 'location-template.html')
       }
     }
   }
