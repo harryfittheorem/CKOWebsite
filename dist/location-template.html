@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CKO Kickboxing - [Location Name]</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      font-feature-settings: "cv11", "ss01";
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: "Oswald", sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fec400;
+      border-radius: 4px;
+    }
+    .text-accent {
+      color: #fec400;
+    }
+    .bg-accent {
+      background-color: #fec400;
+    }
+    .border-accent {
+      border-color: #fec400;
+    }
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="antialiased text-white bg-black">
+
+  <!-- Top Bar -->
+  <div class="hidden md:flex text-xs uppercase font-semibold text-gray-400 tracking-[0.15em] bg-[#0a0a0a] z-50 border-white/5 border-b py-2 px-8 relative items-center justify-between">
+    <div class="flex items-center gap-8">
+      <a href="tel:+15551234567" class="hover:text-accent transition-colors flex items-center gap-2">
+        <i data-lucide="phone" class="w-3 h-3"></i>
+        (555) 123-4567
+      </a>
+      <a href="mailto:location@ckokickboxing.com" class="hover:text-accent transition-colors flex items-center gap-2">
+        <i data-lucide="mail" class="w-3 h-3"></i>
+        Email Us
+      </a>
+    </div>
+    <div class="flex items-center gap-8">
+      <a href="franchise-page.html" class="hover:text-white transition-colors">Own a Franchise</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sticky w-full top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10 shadow-2xl">
+    <div class="flex h-20 max-w-[1600px] mx-auto px-6 relative items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group z-50 shrink-0">
+        <img src="https://i.ibb.co/rRwkwHR2/cko-logo-2.png" alt="CKO Kickboxing Logo" class="w-auto h-10 object-contain">
+      </a>
+      <div class="hidden lg:flex items-center gap-12 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <a href="#about" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">About</a>
+        <a href="#schedule" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Schedule</a>
+        <a href="#programs" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Programs</a>
+        <a href="#pricing" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Pricing</a>
+      </div>
+      <a href="#book" class="hidden md:flex bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all">
+        Book Free Class
+      </a>
+      <button id="mobile-menu-btn" class="lg:hidden p-2 text-white hover:text-accent transition-colors" aria-label="Open menu">
+        <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+        <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-black text-white absolute w-full top-20 left-0 px-6 pb-8 border-b border-white/10 shadow-2xl">
+      <div class="flex flex-col space-y-6 pt-8 text-2xl font-heading font-semibold uppercase tracking-widest text-center">
+        <a href="#about" class="block hover:text-accent transition-colors">About</a>
+        <a href="#schedule" class="block hover:text-accent transition-colors">Schedule</a>
+        <a href="#programs" class="block hover:text-accent transition-colors">Programs</a>
+        <a href="#pricing" class="block hover:text-accent transition-colors">Pricing</a>
+        <a href="#book" class="mt-4 w-full bg-accent text-black font-semibold py-4 uppercase tracking-widest block">Book Free Class</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="min-h-[80vh] flex overflow-hidden bg-black relative items-center justify-center">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <iframe
+          class="absolute w-[300%] h-[300%] lg:w-[150%] lg:h-[150%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none object-cover opacity-90"
+          src="https://www.youtube.com/embed/S_yWGemBM9Q?autoplay=1&mute=1&loop=1&playlist=S_yWGemBM9Q&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&enablejsapi=1"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          title="CKO Kickboxing Background">
+        </iframe>
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black via-black/30 to-black z-10 opacity-90"></div>
+      <div class="absolute inset-0 bg-black/40 z-10"></div>
+    </div>
+
+    <div class="relative z-20 text-center px-6 max-w-5xl mx-auto">
+      <div class="mb-6">
+        <span class="text-accent text-sm font-semibold uppercase tracking-[0.3em]">CKO Kickboxing</span>
+      </div>
+      <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[0.95] uppercase tracking-tight mb-6">
+        [Location Name]
+      </h1>
+      <p class="text-gray-300 text-lg md:text-2xl font-light leading-relaxed mb-4 max-w-3xl mx-auto">
+        123 Main Street, City, State 12345
+      </p>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-10">
+        <a href="tel:+15551234567" class="flex items-center gap-2 text-white hover:text-accent transition-colors">
+          <i data-lucide="phone" class="w-4 h-4"></i>
+          <span class="font-medium">(555) 123-4567</span>
+        </a>
+        <span class="hidden md:block text-white/30">|</span>
+        <a href="mailto:location@ckokickboxing.com" class="flex items-center gap-2 text-white hover:text-accent transition-colors">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          <span class="font-medium">location@ckokickboxing.com</span>
+        </a>
+      </div>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+        <a href="#book" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-4 px-10 text-sm rounded-sm transition-all inline-flex items-center gap-2">
+          Book Free Class
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#schedule" class="bg-transparent border-2 border-white hover:border-accent hover:text-accent text-white font-semibold uppercase tracking-[0.2em] py-4 px-10 text-sm rounded-sm transition-all">
+          View Schedule
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Info Bar -->
+  <section class="bg-accent py-4">
+    <div class="max-w-[1600px] mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-black">
+        <div class="flex items-center gap-2">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+          <span class="font-semibold uppercase tracking-wider text-sm">Mon-Fri: 5AM-9PM | Sat-Sun: 7AM-6PM</span>
+        </div>
+        <div class="hidden md:block w-px h-6 bg-black/20"></div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="map-pin" class="w-5 h-5"></i>
+          <span class="font-semibold uppercase tracking-wider text-sm">Free Parking Available</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About This Location -->
+  <section id="about" class="py-24 bg-[#0a0a0a]">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal-on-scroll">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="h-[1px] w-12 bg-accent"></div>
+            <span class="text-accent text-sm font-semibold uppercase tracking-[0.3em]">About This Location</span>
+          </div>
+          <h2 class="font-heading text-5xl lg:text-6xl font-semibold uppercase text-white leading-[0.9] mb-8 tracking-tight">
+            Your Local <span class="text-accent">Fitness Home</span>
+          </h2>
+          <p class="text-gray-400 text-lg mb-6 leading-relaxed font-light">
+            Welcome to CKO Kickboxing [Location Name]! Our state-of-the-art facility features 40+ heavy bags, professional instructors, and a community that will motivate you every step of the way.
+          </p>
+          <p class="text-gray-400 text-base mb-8 leading-relaxed font-light">
+            Whether you're a complete beginner or a seasoned athlete, our welcoming environment and expert coaching will help you achieve your fitness goals while having the time of your life.
+          </p>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3 text-base text-gray-300 font-light">
+              <div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+              </div>
+              Climate-controlled facility
+            </li>
+            <li class="flex items-center gap-3 text-base text-gray-300 font-light">
+              <div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+              </div>
+              40+ heavy bags & equipment
+            </li>
+            <li class="flex items-center gap-3 text-base text-gray-300 font-light">
+              <div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+              </div>
+              Certified professional instructors
+            </li>
+            <li class="flex items-center gap-3 text-base text-gray-300 font-light">
+              <div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+              </div>
+              Private showers & changing rooms
+            </li>
+          </ul>
+          <a href="#book" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-4 px-10 text-xs rounded-sm transition-all inline-flex items-center gap-2">
+            Join Our Community
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+        <div class="reveal-on-scroll">
+          <div class="grid grid-cols-2 gap-4">
+            <img src="https://i.ibb.co/GQv9NHQZ/l.webp" alt="Gym facility" class="w-full h-64 object-cover rounded-sm">
+            <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Training session" class="w-full h-64 object-cover rounded-sm">
+            <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Group class" class="w-full h-64 object-cover rounded-sm col-span-2">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Programs -->
+  <section id="programs" class="py-24 bg-black">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Our Programs</div>
+        <h2 class="font-heading text-4xl md:text-5xl font-semibold uppercase text-white tracking-tight mb-4">
+          Classes That <span class="text-accent">Deliver Results</span>
+        </h2>
+        <p class="text-gray-400 text-lg font-light max-w-2xl mx-auto">
+          All classes include expert instruction, high-energy music, and a supportive community
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Program Card 1 -->
+        <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
+          <div class="h-48 overflow-hidden">
+            <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Kickboxing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          </div>
+          <div class="p-8">
+            <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Kickboxing</h3>
+            <p class="text-gray-400 text-base leading-relaxed mb-6 font-light">
+              Our signature 45-minute HIIT class. Burn up to 1,200 calories while learning real kickboxing techniques.
+            </p>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-accent font-semibold text-sm uppercase tracking-wider">45 Minutes</span>
+              <span class="text-gray-500 text-sm">All Levels</span>
+            </div>
+            <a href="#book" class="w-full bg-transparent border border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all block text-center">
+              Book Class
+            </a>
+          </div>
+        </div>
+
+        <!-- Program Card 2 -->
+        <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
+          <div class="h-48 overflow-hidden">
+            <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Group Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          </div>
+          <div class="p-8">
+            <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Group Fitness</h3>
+            <p class="text-gray-400 text-base leading-relaxed mb-6 font-light">
+              High-intensity circuit training combining strength, cardio, and core work. No bags required.
+            </p>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-accent font-semibold text-sm uppercase tracking-wider">50 Minutes</span>
+              <span class="text-gray-500 text-sm">All Levels</span>
+            </div>
+            <a href="#book" class="w-full bg-transparent border border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all block text-center">
+              Book Class
+            </a>
+          </div>
+        </div>
+
+        <!-- Program Card 3 -->
+        <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
+          <div class="h-48 overflow-hidden">
+            <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" alt="Private Training" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          </div>
+          <div class="p-8">
+            <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Private Training</h3>
+            <p class="text-gray-400 text-base leading-relaxed mb-6 font-light">
+              One-on-one coaching tailored to your specific goals and fitness level. Maximum results, personalized attention.
+            </p>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-accent font-semibold text-sm uppercase tracking-wider">30-60 Minutes</span>
+              <span class="text-gray-500 text-sm">Custom</span>
+            </div>
+            <a href="#book" class="w-full bg-transparent border border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all block text-center">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule -->
+  <section id="schedule" class="py-24 bg-[#0a0a0a]">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Class Schedule</div>
+        <h2 class="font-heading text-4xl md:text-5xl font-semibold uppercase text-white tracking-tight mb-4">
+          Find Your <span class="text-accent">Perfect Time</span>
+        </h2>
+        <p class="text-gray-400 text-lg font-light max-w-2xl mx-auto">
+          We offer classes throughout the day to fit your busy schedule
+        </p>
+      </div>
+
+      <div class="bg-black border border-white/10 rounded-sm overflow-hidden reveal-on-scroll">
+        <div class="p-8">
+          <div class="flex flex-col md:flex-row gap-4 mb-8">
+            <button class="schedule-day-btn active px-6 py-3 bg-accent text-black font-semibold uppercase tracking-wider text-sm rounded-sm transition-all">
+              Monday
+            </button>
+            <button class="schedule-day-btn px-6 py-3 bg-transparent border border-white/20 text-white font-semibold uppercase tracking-wider text-sm rounded-sm hover:border-accent hover:text-accent transition-all">
+              Tuesday
+            </button>
+            <button class="schedule-day-btn px-6 py-3 bg-transparent border border-white/20 text-white font-semibold uppercase tracking-wider text-sm rounded-sm hover:border-accent hover:text-accent transition-all">
+              Wednesday
+            </button>
+            <button class="schedule-day-btn px-6 py-3 bg-transparent border border-white/20 text-white font-semibold uppercase tracking-wider text-sm rounded-sm hover:border-accent hover:text-accent transition-all">
+              Thursday
+            </button>
+            <button class="schedule-day-btn px-6 py-3 bg-transparent border border-white/20 text-white font-semibold uppercase tracking-wider text-sm rounded-sm hover:border-accent hover:text-accent transition-all">
+              Friday
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Class Time Slot -->
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-6 border border-white/10 rounded-sm hover:border-accent/50 transition-all group">
+              <div class="flex-1">
+                <div class="flex items-center gap-4 mb-2">
+                  <span class="text-accent font-semibold text-lg font-heading">6:00 AM</span>
+                  <span class="text-white font-semibold uppercase tracking-wide">Kickboxing</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="user" class="w-3 h-3"></i>
+                    Instructor: Sarah Johnson
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    45 min
+                  </span>
+                </div>
+              </div>
+              <a href="#book" class="mt-4 md:mt-0 bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all">
+                Book Now
+              </a>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-6 border border-white/10 rounded-sm hover:border-accent/50 transition-all group">
+              <div class="flex-1">
+                <div class="flex items-center gap-4 mb-2">
+                  <span class="text-accent font-semibold text-lg font-heading">9:00 AM</span>
+                  <span class="text-white font-semibold uppercase tracking-wide">Group Fitness</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="user" class="w-3 h-3"></i>
+                    Instructor: Mike Rodriguez
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    50 min
+                  </span>
+                </div>
+              </div>
+              <a href="#book" class="mt-4 md:mt-0 bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all">
+                Book Now
+              </a>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-6 border border-white/10 rounded-sm hover:border-accent/50 transition-all group">
+              <div class="flex-1">
+                <div class="flex items-center gap-4 mb-2">
+                  <span class="text-accent font-semibold text-lg font-heading">12:00 PM</span>
+                  <span class="text-white font-semibold uppercase tracking-wide">Kickboxing</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="user" class="w-3 h-3"></i>
+                    Instructor: Jessica Lee
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    45 min
+                  </span>
+                </div>
+              </div>
+              <a href="#book" class="mt-4 md:mt-0 bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all">
+                Book Now
+              </a>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-6 border border-white/10 rounded-sm hover:border-accent/50 transition-all group">
+              <div class="flex-1">
+                <div class="flex items-center gap-4 mb-2">
+                  <span class="text-accent font-semibold text-lg font-heading">5:30 PM</span>
+                  <span class="text-white font-semibold uppercase tracking-wide">Kickboxing</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="user" class="w-3 h-3"></i>
+                    Instructor: David Chen
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    45 min
+                  </span>
+                </div>
+              </div>
+              <a href="#book" class="mt-4 md:mt-0 bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all">
+                Book Now
+              </a>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-6 border border-white/10 rounded-sm hover:border-accent/50 transition-all group">
+              <div class="flex-1">
+                <div class="flex items-center gap-4 mb-2">
+                  <span class="text-accent font-semibold text-lg font-heading">7:00 PM</span>
+                  <span class="text-white font-semibold uppercase tracking-wide">Group Fitness</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="user" class="w-3 h-3"></i>
+                    Instructor: Sarah Johnson
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    50 min
+                  </span>
+                </div>
+              </div>
+              <a href="#book" class="mt-4 md:mt-0 bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all">
+                Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <p class="text-gray-400 text-base mb-6">
+          Want to see the full weekly schedule?
+        </p>
+        <a href="schedule-page.html" class="bg-transparent border border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-[0.15em] py-4 px-10 text-sm rounded-sm transition-all inline-flex items-center gap-2">
+          View Full Schedule
+          <i data-lucide="calendar" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-24 bg-black">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Membership Options</div>
+        <h2 class="font-heading text-4xl md:text-5xl font-semibold uppercase text-white tracking-tight mb-4">
+          Choose Your <span class="text-accent">Plan</span>
+        </h2>
+        <p class="text-gray-400 text-lg font-light max-w-2xl mx-auto">
+          Flexible membership options to fit your lifestyle and budget
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Basic Plan -->
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-sm p-8 reveal-on-scroll hover:border-accent/50 transition-all">
+          <div class="text-center mb-8">
+            <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-2 tracking-wide">Starter</h3>
+            <div class="flex items-baseline justify-center gap-2 mb-4">
+              <span class="text-5xl font-bold text-accent">$99</span>
+              <span class="text-gray-400">/month</span>
+            </div>
+            <p class="text-gray-400 text-sm">Perfect for beginners</p>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              8 classes per month
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Access to all group classes
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Free glove rental
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Member-only events
+            </li>
+          </ul>
+          <a href="#book" class="w-full bg-transparent border border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all block text-center">
+            Get Started
+          </a>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="bg-[#0a0a0a] border-2 border-accent rounded-sm p-8 reveal-on-scroll relative">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-black px-6 py-1 text-xs font-semibold uppercase tracking-wider rounded-full">
+            Most Popular
+          </div>
+          <div class="text-center mb-8 mt-4">
+            <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-2 tracking-wide">Unlimited</h3>
+            <div class="flex items-baseline justify-center gap-2 mb-4">
+              <span class="text-5xl font-bold text-accent">$149</span>
+              <span class="text-gray-400">/month</span>
+            </div>
+            <p class="text-gray-400 text-sm">Best value for committed members</p>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Unlimited classes
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Access to all group classes
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Free glove rental
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Bring a guest once/month
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Priority class booking
+            </li>
+          </ul>
+          <a href="#book" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all block text-center">
+            Get Started
+          </a>
+        </div>
+
+        <!-- Elite Plan -->
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-sm p-8 reveal-on-scroll hover:border-accent/50 transition-all">
+          <div class="text-center mb-8">
+            <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-2 tracking-wide">Elite</h3>
+            <div class="flex items-baseline justify-center gap-2 mb-4">
+              <span class="text-5xl font-bold text-accent">$249</span>
+              <span class="text-gray-400">/month</span>
+            </div>
+            <p class="text-gray-400 text-sm">Maximum results & attention</p>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Unlimited classes
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              4 private training sessions
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Custom nutrition plan
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Personal progress tracking
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-300">
+              <i data-lucide="check" class="w-4 h-4 text-accent"></i>
+              Free CKO merchandise
+            </li>
+          </ul>
+          <a href="#book" class="w-full bg-transparent border border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all block text-center">
+            Get Started
+          </a>
+        </div>
+      </div>
+
+      <div class="text-center mt-12 p-6 border border-accent/30 rounded-sm bg-accent/5">
+        <p class="text-white text-base font-semibold mb-2">
+          First Class Always Free
+        </p>
+        <p class="text-gray-400 text-sm">
+          Try us out before committing. No credit card required.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map & Contact -->
+  <section id="contact" class="py-24 bg-[#0a0a0a]">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16">
+        <div class="reveal-on-scroll">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="h-[1px] w-12 bg-accent"></div>
+            <span class="text-accent text-sm font-semibold uppercase tracking-[0.3em]">Visit Us</span>
+          </div>
+          <h2 class="font-heading text-5xl lg:text-6xl font-semibold uppercase text-white leading-[0.9] mb-8 tracking-tight">
+            Come See <span class="text-accent">Our Gym</span>
+          </h2>
+
+          <div class="space-y-6 mb-8">
+            <div>
+              <h3 class="text-white font-semibold mb-2 uppercase tracking-wide text-sm">Location</h3>
+              <p class="text-gray-400 text-base">
+                123 Main Street<br>
+                City, State 12345
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-white font-semibold mb-2 uppercase tracking-wide text-sm">Hours</h3>
+              <div class="text-gray-400 text-base space-y-1">
+                <p>Monday - Friday: 5:00 AM - 9:00 PM</p>
+                <p>Saturday: 7:00 AM - 6:00 PM</p>
+                <p>Sunday: 8:00 AM - 6:00 PM</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-white font-semibold mb-2 uppercase tracking-wide text-sm">Contact</h3>
+              <div class="space-y-2">
+                <a href="tel:+15551234567" class="flex items-center gap-3 text-gray-400 hover:text-accent transition-colors">
+                  <i data-lucide="phone" class="w-4 h-4"></i>
+                  <span>(555) 123-4567</span>
+                </a>
+                <a href="mailto:location@ckokickboxing.com" class="flex items-center gap-3 text-gray-400 hover:text-accent transition-colors">
+                  <i data-lucide="mail" class="w-4 h-4"></i>
+                  <span>location@ckokickboxing.com</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <a href="https://maps.google.com" target="_blank" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-4 px-10 text-xs rounded-sm transition-all inline-flex items-center gap-2">
+            Get Directions
+            <i data-lucide="navigation" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div class="reveal-on-scroll">
+          <div class="bg-[#111] border border-white/10 rounded-sm overflow-hidden h-[500px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.27991517034!2d-74.25987368715491!3d40.69767006537532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking CTA -->
+  <section id="book" class="py-24 bg-black relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg')] bg-cover bg-center opacity-10"></div>
+    <div class="relative z-10 max-w-[1000px] mx-auto px-6 text-center">
+      <div class="reveal-on-scroll">
+        <h2 class="font-heading text-5xl md:text-6xl lg:text-7xl font-semibold uppercase text-white leading-[0.95] mb-6 tracking-tight">
+          Ready To Start Your <span class="text-accent">Fitness Journey?</span>
+        </h2>
+        <p class="text-gray-300 text-xl md:text-2xl font-light leading-relaxed mb-10 max-w-3xl mx-auto">
+          Book your first class free. No commitment, no credit card required.
+        </p>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+          <a href="form-submit-page.html" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-5 px-12 text-sm rounded-sm transition-all inline-flex items-center gap-2 text-center">
+            Book Free Class Now
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </a>
+          <a href="tel:+15551234567" class="bg-transparent border-2 border-white hover:border-accent hover:text-accent text-white font-semibold uppercase tracking-[0.2em] py-5 px-12 text-sm rounded-sm transition-all inline-flex items-center gap-2">
+            <i data-lucide="phone" class="w-5 h-5"></i>
+            Call Us
+          </a>
+        </div>
+        <p class="text-gray-500 text-sm mt-8">
+          Questions? Call us at <a href="tel:+15551234567" class="text-accent hover:underline">(555) 123-4567</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-white/10">
+    <div class="max-w-[1400px] mx-auto px-6 py-14">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div>
+          <div class="leading-none text-3xl font-semibold italic text-white tracking-tighter font-heading">CKO</div>
+          <div class="text-xs text-accent uppercase leading-none font-semibold tracking-[0.3em] mt-2">Kickboxing</div>
+          <p class="text-gray-500 text-base font-light leading-relaxed mt-6 max-w-sm">
+            [Location Name] - Your local fitness home for high-energy kickboxing and group fitness classes.
+          </p>
+        </div>
+
+        <div>
+          <div class="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold mb-4">Quick Links</div>
+          <ul class="space-y-3 text-base text-gray-400 font-light">
+            <li><a href="#about" class="hover:text-accent transition-colors">About</a></li>
+            <li><a href="#schedule" class="hover:text-accent transition-colors">Schedule</a></li>
+            <li><a href="#programs" class="hover:text-accent transition-colors">Programs</a></li>
+            <li><a href="#pricing" class="hover:text-accent transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold mb-4">Contact</div>
+          <ul class="space-y-3 text-base text-gray-400 font-light">
+            <li class="flex items-center gap-3">
+              <i data-lucide="phone" class="w-4 h-4 text-accent"></i>
+              <a href="tel:+15551234567" class="hover:text-accent transition-colors">(555) 123-4567</a>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="mail" class="w-4 h-4 text-accent"></i>
+              <a href="mailto:location@ckokickboxing.com" class="hover:text-accent transition-colors">location@ckokickboxing.com</a>
+            </li>
+            <li class="flex items-start gap-3">
+              <i data-lucide="map-pin" class="w-4 h-4 text-accent mt-1"></i>
+              <span>123 Main Street<br>City, State 12345</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold mb-4">Follow Us</div>
+          <div class="flex items-center gap-3 mb-6">
+            <a href="#" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Instagram">
+              <i data-lucide="instagram" class="w-5 h-5 text-gray-200"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Facebook">
+              <i data-lucide="facebook" class="w-5 h-5 text-gray-200"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="YouTube">
+              <i data-lucide="youtube" class="w-5 h-5 text-gray-200"></i>
+            </a>
+          </div>
+          <div class="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold mb-3">Other Locations</div>
+          <a href="find-your-location.html" class="text-accent hover:underline text-sm">Find a Location Near You</a>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-500 font-light">© 2024 CKO Kickboxing. All rights reserved.</p>
+        <div class="flex gap-6 text-xs text-gray-500 font-light">
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        menuIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+      });
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Intro Offer - CKO Kickboxing League City</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      font-feature-settings: "cv11", "ss01";
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: "Oswald", sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f5f5f5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fec400;
+      border-radius: 4px;
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px white inset !important;
+      -webkit-text-fill-color: #1a1a1a !important;
+    }
+    .package-option {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .package-option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    .package-option.selected {
+      border-color: #fec400;
+      background: linear-gradient(135deg, rgba(254, 196, 0, 0.08) 0%, rgba(254, 196, 0, 0.03) 100%);
+      box-shadow: 0 4px 16px rgba(254, 196, 0, 0.2);
+    }
+    .package-option.selected .check-icon {
+      display: block;
+    }
+    .loading-spinner {
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #fec400;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .pulse-dot {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .5;
+      }
+    }
+    .gradient-border {
+      position: relative;
+      background: white;
+    }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, #fec400, #ff6b00);
+      border-radius: 12px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gradient-border:hover::before {
+      opacity: 0.3;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/introOffer-u-eEDAE7.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+</head>
+<body class="antialiased bg-gray-50">
+
+  <!-- Top Bar -->
+  <div class="bg-black text-white py-2.5 px-4 md:px-8 text-center md:text-left">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-6">
+        <a href="tel:+12817244422" class="hover:text-[#fec400] transition-colors flex items-center gap-2">
+          <i data-lucide="phone" class="w-3 h-3"></i>
+          (281) 724-4422
+        </a>
+        <span class="text-gray-400">2910 Gulf Freeway S, League City, TX 77573</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i data-lucide="lock" class="w-3 h-3 text-[#fec400]"></i>
+        <span class="text-gray-400">Secure SSL Checkout</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="https://i.ibb.co/rRwkwHR2/cko-logo-2.png" alt="CKO Kickboxing" class="h-12 w-auto">
+        </a>
+        <a href="index.html" class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2 transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Image Banner -->
+  <div class="relative bg-gray-900 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="https://images.pexels.com/photos/4761778/pexels-photo-4761778.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="CKO Kickboxing Class in Action" class="w-full h-full object-cover opacity-60">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24 lg:py-32">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-red-600 text-white px-5 py-2.5 rounded-full text-sm font-bold uppercase mb-6 shadow-lg">
+          <span class="w-2 h-2 bg-white rounded-full pulse-dot"></span>
+          Limited Time Intro Offer
+        </div>
+        <h1 class="font-heading text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 uppercase tracking-tight leading-tight">
+          Start Your Fitness Journey
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-200 leading-relaxed mb-8">
+          Try CKO Kickboxing with our exclusive introductory packages. Transform your body, boost your confidence, and punch away stress!
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-6 text-white">
+          <div class="flex items-center gap-2">
+            <i data-lucide="flame" class="w-6 h-6 text-[#fec400]"></i>
+            <span class="font-semibold">Burn 1,200 Calories</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="users" class="w-6 h-6 text-[#fec400]"></i>
+            <span class="font-semibold">All Levels Welcome</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="award" class="w-6 h-6 text-[#fec400]"></i>
+            <span class="font-semibold">Expert Instructors</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+
+    <!-- Error Message -->
+    <div id="error-message" class="hidden mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg max-w-4xl mx-auto">
+      <div class="flex items-start gap-3">
+        <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+        <div>
+          <h4 class="font-semibold text-red-900 mb-1">Error</h4>
+          <p class="text-sm text-red-700" id="error-text"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
+
+      <!-- Left Column: Package Selection & Forms -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Package Selection -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
+          <div class="mb-8">
+            <h2 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-2 uppercase">Choose Your Intro Package</h2>
+            <p class="text-gray-600">Select the best option for your fitness goals</p>
+          </div>
+
+          <div id="packages-container" class="space-y-5">
+            <!-- Package Option 1: 3 Classes -->
+            <div class="package-option border-3 border-gray-300 rounded-xl p-6 md:p-7 relative overflow-hidden" data-package-id="intro-3-classes" onclick="selectPackage('intro-3-classes', 30, '3 Kickboxing Classes', 90)">
+              <div class="absolute top-5 right-5 check-icon text-[#fec400] hidden">
+                <i data-lucide="check-circle" class="w-7 h-7 fill-current"></i>
+              </div>
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div class="flex-1 pr-8">
+                  <h3 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-3 uppercase">3 Kickboxing Classes</h3>
+                  <p class="text-gray-600 mb-4 text-base">Perfect introduction to experience the CKO difference and kickstart your journey</p>
+                  <ul class="space-y-2.5 text-sm text-gray-700">
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Valid for 30 days from purchase date</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Complimentary gloves provided during all classes</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Expert certified instructor guidance</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>No long-term commitment required</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="text-center md:text-right flex-shrink-0">
+                  <div class="text-gray-400 line-through text-lg mb-1.5 font-medium">$90.00</div>
+                  <div class="text-[#fec400] text-5xl md:text-6xl font-bold leading-none mb-2">$30</div>
+                  <div class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-bold">
+                    <i data-lucide="tag" class="w-3.5 h-3.5"></i>
+                    Save $60
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Package Option 2: 5 Classes -->
+            <div class="relative">
+              <div class="absolute -top-3 left-4 bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase shadow-lg z-10">
+                Best Value
+              </div>
+              <div class="package-option selected border-3 border-gray-300 rounded-xl p-6 md:p-7 relative overflow-hidden" data-package-id="intro-5-classes" onclick="selectPackage('intro-5-classes', 40, '5 Kickboxing Classes', 150)">
+                <div class="absolute top-5 right-5 check-icon text-[#fec400]">
+                  <i data-lucide="check-circle" class="w-7 h-7 fill-current"></i>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div class="flex-1 pr-8">
+                  <h3 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-3 uppercase">5 Kickboxing Classes</h3>
+                  <p class="text-gray-600 mb-4 text-base">Build momentum and maximize results with more classes to transform your fitness</p>
+                  <ul class="space-y-2.5 text-sm text-gray-700">
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Valid for 30 days from purchase date</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Complimentary gloves provided during all classes</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Expert certified instructor guidance</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Free personalized nutrition guide (PDF)</span>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
+                      <span>Priority class booking access</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="text-center md:text-right flex-shrink-0">
+                  <div class="text-gray-400 line-through text-lg mb-1.5 font-medium">$150.00</div>
+                  <div class="text-[#fec400] text-5xl md:text-6xl font-bold leading-none mb-2">$40</div>
+                  <div class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-bold">
+                    <i data-lucide="tag" class="w-3.5 h-3.5"></i>
+                    Save $110
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- What's Included Section -->
+          <div class="mt-8 p-6 md:p-7 bg-gradient-to-br from-[#fec400]/10 via-[#fec400]/5 to-transparent rounded-xl border-2 border-[#fec400]/30">
+            <h4 class="font-heading text-xl font-bold text-gray-900 mb-5 uppercase flex items-center gap-2.5">
+              <i data-lucide="gift" class="w-6 h-6 text-[#fec400]"></i>
+              What's Included With Every Package
+            </h4>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="flame" class="w-5 h-5 text-[#fec400]"></i>
+                </div>
+                <div>
+                  <strong class="text-gray-900 block mb-1">High-Intensity Workouts</strong>
+                  <p class="text-gray-600">Burn up to 1,200 calories per 60-minute session</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="users" class="w-5 h-5 text-[#fec400]"></i>
+                </div>
+                <div>
+                  <strong class="text-gray-900 block mb-1">All Fitness Levels Welcome</strong>
+                  <p class="text-gray-600">Beginner to advanced, we modify for everyone</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="award" class="w-5 h-5 text-[#fec400]"></i>
+                </div>
+                <div>
+                  <strong class="text-gray-900 block mb-1">Certified Expert Instructors</strong>
+                  <p class="text-gray-600">Professional trainers guide every punch and kick</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="heart" class="w-5 h-5 text-[#fec400]"></i>
+                </div>
+                <div>
+                  <strong class="text-gray-900 block mb-1">Supportive Community</strong>
+                  <p class="text-gray-600">Join the CKO FitFam and make lasting friendships</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information Form -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
+          <h2 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-6 uppercase">Your Information</h2>
+
+          <div class="space-y-5">
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">First Name *</label>
+                <input type="text" id="firstName" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+              <div>
+                <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">Last Name *</label>
+                <input type="text" id="lastName" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+              <input type="email" id="email" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+            </div>
+
+            <div>
+              <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
+              <input type="tel" id="phone" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900" placeholder="(555) 555-5555">
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Information Form -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
+          <h2 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-6 uppercase flex items-center gap-2.5">
+            <i data-lucide="credit-card" class="w-7 h-7 text-gray-700"></i>
+            Payment Information
+          </h2>
+
+          <div class="space-y-5">
+            <div>
+              <label for="cardNumber" class="block text-sm font-semibold text-gray-700 mb-2">Card Number *</label>
+              <input type="text" id="cardNumber" required maxlength="19" placeholder="1234 5678 9012 3456" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label for="cardExpMonth" class="block text-sm font-semibold text-gray-700 mb-2">Month *</label>
+                <input type="text" id="cardExpMonth" required maxlength="2" placeholder="MM" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+              <div>
+                <label for="cardExpYear" class="block text-sm font-semibold text-gray-700 mb-2">Year *</label>
+                <input type="text" id="cardExpYear" required maxlength="4" placeholder="YYYY" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+              <div>
+                <label for="cardCvv" class="block text-sm font-semibold text-gray-700 mb-2">CVV *</label>
+                <input type="text" id="cardCvv" required maxlength="4" placeholder="123" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+            </div>
+
+            <div>
+              <label for="cardholderName" class="block text-sm font-semibold text-gray-700 mb-2">Cardholder Name *</label>
+              <input type="text" id="cardholderName" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+            </div>
+
+            <div>
+              <label for="billingZip" class="block text-sm font-semibold text-gray-700 mb-2">Billing Zip Code *</label>
+              <input type="text" id="billingZip" required maxlength="10" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+            </div>
+
+            <div class="flex items-start gap-3 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+              <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+              <div class="text-sm text-blue-900">
+                <p class="font-semibold mb-1">Your payment is 100% secure</p>
+                <p>All transactions are encrypted with bank-level security. We never store your full card details.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms & Conditions -->
+          <div class="mt-6 pt-6 border-t-2 border-gray-200">
+            <label class="flex items-start gap-3 cursor-pointer group">
+              <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 text-[#fec400] border-gray-300 rounded focus:ring-[#fec400] cursor-pointer">
+              <span class="text-sm text-gray-700 leading-relaxed">
+                I agree to the <a href="#" class="text-[#fec400] hover:underline font-semibold">Terms & Conditions</a> and <a href="#" class="text-[#fec400] hover:underline font-semibold">Liability Waiver</a>. I understand that all classes must be used within 30 days of purchase and are non-refundable after the first class.
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button onclick="processPayment()" id="submitPayment" class="mt-8 w-full bg-gradient-to-r from-[#fec400] to-[#f5b800] hover:from-[#e5b000] hover:to-[#d4a000] text-black font-bold uppercase tracking-wider py-5 px-8 rounded-xl transition-all text-lg shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 transform hover:scale-[1.02]">
+            <span id="submit-text">Complete Purchase - Claim Your Offer</span>
+            <i data-lucide="arrow-right" class="w-6 h-6" id="submit-arrow"></i>
+            <span id="submit-spinner" class="hidden loading-spinner"></span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Order Summary (Sticky) -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-xl border border-gray-200 p-6 sticky top-24">
+          <h3 class="font-heading text-xl font-bold text-gray-900 mb-5 uppercase border-b-2 border-gray-200 pb-3">Order Summary</h3>
+
+          <!-- Location Info -->
+          <div class="mb-6 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+            <div class="flex items-start gap-3">
+              <i data-lucide="map-pin" class="w-5 h-5 text-[#fec400] flex-shrink-0 mt-1"></i>
+              <div class="text-sm">
+                <p class="font-bold text-gray-900 mb-1">CKO Kickboxing League City</p>
+                <p class="text-gray-600 leading-relaxed">2910 Gulf Freeway S<br>League City, TX 77573</p>
+                <a href="tel:+12817244422" class="text-[#fec400] hover:underline font-semibold mt-2 inline-block">(281) 724-4422</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Package -->
+          <div class="space-y-3 mb-6">
+            <div class="flex justify-between items-start text-sm">
+              <span class="text-gray-600 font-medium">Package:</span>
+              <span class="text-gray-900 font-bold text-right" id="summary-package">5 Kickboxing Classes</span>
+            </div>
+            <div class="flex justify-between items-start text-sm">
+              <span class="text-gray-600 font-medium">Original Price:</span>
+              <span class="text-gray-400 line-through font-medium" id="summary-original">$150.00</span>
+            </div>
+            <div class="flex justify-between items-start text-sm pb-4 border-b border-gray-200">
+              <span class="text-green-600 font-bold">Your Savings:</span>
+              <span class="text-green-600 font-bold" id="summary-savings">-$110.00</span>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="pt-4 border-t-2 border-gray-300 mb-6">
+            <div class="flex justify-between items-center mb-3">
+              <span class="font-heading text-xl font-bold text-gray-900 uppercase">Total Due Today:</span>
+              <span class="font-heading text-4xl font-bold text-[#fec400]" id="summary-total">$40.00</span>
+            </div>
+            <p class="text-xs text-center text-gray-500 bg-green-50 py-2 px-3 rounded-lg border border-green-200">
+              <strong class="text-green-700">No hidden fees.</strong> No recurring charges. One-time payment.
+            </p>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
+            <div class="flex items-center gap-3 text-sm text-gray-700">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
+              </div>
+              <span>30-Day Money Back Guarantee</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm text-gray-700">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="shield" class="w-4 h-4 text-blue-600"></i>
+              </div>
+              <span>256-bit SSL Secure Payment</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm text-gray-700">
+              <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="calendar" class="w-4 h-4 text-[#fec400]"></i>
+              </div>
+              <span>Valid for 30 Days After Purchase</span>
+            </div>
+          </div>
+
+          <!-- Support -->
+          <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-center border border-gray-200">
+            <p class="text-sm text-gray-600 mb-2 font-medium">Questions? We're here to help!</p>
+            <a href="tel:+12817244422" class="text-[#fec400] hover:underline font-bold text-base block mb-1">(281) 724-4422</a>
+            <p class="text-xs text-gray-500">Monday - Friday: 6am - 8pm</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Why CKO Section -->
+    <div class="mt-16 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 md:p-12">
+      <h2 class="font-heading text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10 uppercase">Why Choose CKO Kickboxing?</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center group">
+          <div class="w-20 h-20 bg-gradient-to-br from-[#fec400]/20 to-[#fec400]/10 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="zap" class="w-10 h-10 text-[#fec400]"></i>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-gray-900 mb-3 uppercase">Burn 1,200 Calories</h3>
+          <p class="text-gray-600 leading-relaxed">High-intensity workouts that torch calories, build lean muscle, and boost your metabolism for hours after class</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-20 h-20 bg-gradient-to-br from-[#fec400]/20 to-[#fec400]/10 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="users" class="w-10 h-10 text-[#fec400]"></i>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-gray-900 mb-3 uppercase">Supportive Community</h3>
+          <p class="text-gray-600 leading-relaxed">Join a motivating community that celebrates every achievement and pushes you to reach your full potential</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-20 h-20 bg-gradient-to-br from-[#fec400]/20 to-[#fec400]/10 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="heart-pulse" class="w-10 h-10 text-[#fec400]"></i>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-gray-900 mb-3 uppercase">Ultimate Stress Relief</h3>
+          <p class="text-gray-600 leading-relaxed">Punch away stress and leave every class feeling energized, confident, and ready to conquer anything</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Proof -->
+    <div class="mt-12 text-center">
+      <div class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-6 py-3 rounded-full shadow-md border border-gray-200">
+        <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+        <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+        <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+        <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+        <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+        <span class="ml-2 font-semibold text-gray-900">4.9/5</span>
+        <span class="text-gray-500">from 500+ happy members</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white mt-20 py-10">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 text-center">
+      <p class="text-gray-400 text-sm">&copy; 2024 CKO Kickboxing League City. All rights reserved.</p>
+      <div class="mt-4 flex items-center justify-center gap-6 text-sm">
+        <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    function selectPackage(packageId, price, name, originalPrice) {
+      document.querySelectorAll('.package-option').forEach(opt => {
+        opt.classList.remove('selected');
+        opt.querySelector('.check-icon').classList.add('hidden');
+      });
+
+      const selectedOption = document.querySelector(`[data-package-id="${packageId}"]`);
+      selectedOption.classList.add('selected');
+      selectedOption.querySelector('.check-icon').classList.remove('hidden');
+
+      document.getElementById('summary-package').textContent = name;
+      document.getElementById('summary-total').textContent = `$${price.toFixed(2)}`;
+      document.getElementById('summary-original').textContent = `$${originalPrice.toFixed(2)}`;
+      document.getElementById('summary-savings').textContent = `-$${(originalPrice - price).toFixed(2)}`;
+
+      window.selectedPackageData = {
+        id: packageId,
+        price: price,
+        name: name,
+        originalPrice: originalPrice
+      };
+
+      lucide.createIcons();
+    }
+
+    selectPackage('intro-5-classes', 40, '5 Kickboxing Classes', 150);
+  </script>
+
+</body>
+</html>
