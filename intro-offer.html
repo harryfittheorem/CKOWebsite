@@ -127,22 +127,45 @@
     </div>
   </nav>
 
+  <!-- Hero Image Banner -->
+  <div class="relative bg-gray-900 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="https://i.postimg.cc/fL0f7HNW/image.png" alt="CKO Kickboxing Class in Action" class="w-full h-full object-cover opacity-60">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24 lg:py-32">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-red-600 text-white px-5 py-2.5 rounded-full text-sm font-bold uppercase mb-6 shadow-lg">
+          <span class="w-2 h-2 bg-white rounded-full pulse-dot"></span>
+          Limited Time Intro Offer
+        </div>
+        <h1 class="font-heading text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 uppercase tracking-tight leading-tight">
+          Start Your Fitness Journey
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-200 leading-relaxed mb-8">
+          Try CKO Kickboxing with our exclusive introductory packages. Transform your body, boost your confidence, and punch away stress!
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-6 text-white">
+          <div class="flex items-center gap-2">
+            <i data-lucide="flame" class="w-6 h-6 text-[#fec400]"></i>
+            <span class="font-semibold">Burn 1,200 Calories</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="users" class="w-6 h-6 text-[#fec400]"></i>
+            <span class="font-semibold">All Levels Welcome</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="award" class="w-6 h-6 text-[#fec400]"></i>
+            <span class="font-semibold">Expert Instructors</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
-
-    <!-- Hero Section -->
-    <div class="mb-10 text-center">
-      <div class="inline-flex items-center gap-2 bg-red-600 text-white px-5 py-2.5 rounded-full text-sm font-bold uppercase mb-4 shadow-lg">
-        <span class="w-2 h-2 bg-white rounded-full pulse-dot"></span>
-        Limited Time Intro Offer
-      </div>
-      <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 uppercase tracking-tight leading-tight">
-        Start Your Fitness Journey
-      </h1>
-      <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-        Try CKO Kickboxing with our exclusive introductory packages. Transform your body, boost your confidence, and punch away stress!
-      </p>
-    </div>
 
     <!-- Error Message -->
     <div id="error-message" class="hidden mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg max-w-4xl mx-auto">
@@ -209,14 +232,15 @@
             </div>
 
             <!-- Package Option 2: 5 Classes -->
-            <div class="package-option selected border-3 border-gray-300 rounded-xl p-6 md:p-7 relative overflow-hidden" data-package-id="intro-5-classes" onclick="selectPackage('intro-5-classes', 40, '5 Kickboxing Classes', 150)">
-              <div class="absolute top-4 left-4 md:top-5 md:left-5 bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase shadow-lg z-10">
+            <div class="relative">
+              <div class="absolute -top-3 left-4 bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase shadow-lg z-10">
                 Best Value
               </div>
-              <div class="absolute top-5 right-5 check-icon text-[#fec400]">
-                <i data-lucide="check-circle" class="w-7 h-7 fill-current"></i>
-              </div>
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mt-2">
+              <div class="package-option selected border-3 border-gray-300 rounded-xl p-6 md:p-7 relative overflow-hidden" data-package-id="intro-5-classes" onclick="selectPackage('intro-5-classes', 40, '5 Kickboxing Classes', 150)">
+                <div class="absolute top-5 right-5 check-icon text-[#fec400]">
+                  <i data-lucide="check-circle" class="w-7 h-7 fill-current"></i>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div class="flex-1 pr-8">
                   <h3 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-3 uppercase">5 Kickboxing Classes</h3>
                   <p class="text-gray-600 mb-4 text-base">Build momentum and maximize results with more classes to transform your fitness</p>
@@ -251,6 +275,7 @@
                     Save $110
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -472,48 +497,6 @@
         </div>
       </div>
 
-    </div>
-
-    <!-- Experience CKO Section with Image -->
-    <div class="mt-16 bg-gradient-to-br from-gray-900 to-black rounded-2xl shadow-2xl overflow-hidden">
-      <div class="grid md:grid-cols-2 gap-0 items-center">
-        <div class="p-8 md:p-12 text-white">
-          <div class="inline-flex items-center gap-2 bg-[#fec400] text-black px-4 py-2 rounded-full text-xs font-bold uppercase mb-6">
-            <i data-lucide="flame" class="w-4 h-4"></i>
-            Experience The Difference
-          </div>
-          <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6 uppercase leading-tight">
-            Real People.<br>Real Results.
-          </h2>
-          <p class="text-gray-300 text-lg leading-relaxed mb-6">
-            Join hundreds of members who have transformed their lives through the power of kickboxing. Our high-energy classes combine cardio, strength training, and stress relief in one incredible workout.
-          </p>
-          <ul class="space-y-4 text-base">
-            <li class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="check" class="w-5 h-5 text-[#fec400]"></i>
-              </div>
-              <span class="text-gray-200">Burn up to 1,200 calories per session</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="check" class="w-5 h-5 text-[#fec400]"></i>
-              </div>
-              <span class="text-gray-200">Expert trainers guide every move</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="check" class="w-5 h-5 text-[#fec400]"></i>
-              </div>
-              <span class="text-gray-200">Supportive, non-intimidating environment</span>
-            </li>
-          </ul>
-        </div>
-        <div class="relative h-full min-h-[400px] md:min-h-[500px]">
-          <img src="https://i.postimg.cc/fL0f7HNW/image.png" alt="CKO Kickboxing Class in Action" class="absolute inset-0 w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-r from-gray-900/50 via-transparent to-transparent md:hidden"></div>
-        </div>
-      </div>
     </div>
 
     <!-- Why CKO Section -->
