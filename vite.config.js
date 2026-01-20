@@ -15,6 +15,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         about: resolve(__dirname, 'about-page.html'),
         checkout: resolve(__dirname, 'checkout-page.html'),
+        introOffer: resolve(__dirname, 'intro-offer.html'),
         findLocation: resolve(__dirname, 'find-your-location.html'),
         formSubmit: resolve(__dirname, 'form-submit-page.html'),
         franchise: resolve(__dirname, 'franchise-page.html'),
