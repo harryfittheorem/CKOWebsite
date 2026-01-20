@@ -34,6 +34,7 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const clubreadyApiKey = Deno.env.get("CLUBREADY_API_KEY")!;
+    const clubreadyChainId = Deno.env.get("CLUBREADY_CHAIN_ID")!;
     const clubreadyStoreId = Deno.env.get("CLUBREADY_STORE_ID")!;
     const clubreadyApiUrl = Deno.env.get("CLUBREADY_API_URL")!;
 
@@ -50,10 +51,14 @@ Deno.serve(async (req: Request) => {
       dateOfBirth: dateOfBirth || null,
     };
 
-    const response = await fetch(`${clubreadyApiUrl}/users/prospects`, {
+    const searchParams = new URLSearchParams({
+      ApiKey: clubreadyApiKey,
+      ChainId: clubreadyChainId,
+    });
+
+    const response = await fetch(`${clubreadyApiUrl}/users/prospects?${searchParams}`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${clubreadyApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(prospectData),
