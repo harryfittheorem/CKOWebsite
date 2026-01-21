@@ -49,13 +49,12 @@ Deno.serve(async (req: Request) => {
 
     const searchParams = new URLSearchParams({
       ApiKey: clubreadyApiKey,
-      storeId: clubreadyStoreId,
-      email: "test@example.com"
+      StoreId: clubreadyStoreId,
     });
 
     const startTime = Date.now();
     const response = await fetch(
-      `${clubreadyApiUrl}/users/prospects/search?${searchParams}`,
+      `${clubreadyApiUrl}/sales/packages?${searchParams}`,
       {
         method: "GET",
         headers: {
@@ -65,7 +64,14 @@ Deno.serve(async (req: Request) => {
     );
 
     const duration = Date.now() - startTime;
-    const responseData = await response.json();
+    const responseText = await response.text();
+
+    let responseData;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch {
+      responseData = { raw: responseText };
+    }
 
     return new Response(
       JSON.stringify({

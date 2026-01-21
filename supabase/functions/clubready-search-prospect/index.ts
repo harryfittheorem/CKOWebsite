@@ -63,18 +63,19 @@ Deno.serve(async (req: Request) => {
 
     const searchParams = new URLSearchParams({
       ApiKey: clubreadyApiKey,
-      storeId: clubreadyStoreId,
+      StoreId: clubreadyStoreId,
+      ChainId: clubreadyChainId,
     });
 
     if (email) {
-      searchParams.append("email", email);
+      searchParams.append("Email", email);
     }
     if (phone) {
-      searchParams.append("phone", phone);
+      searchParams.append("Phone", phone);
     }
 
     const response = await fetch(
-      `${clubreadyApiUrl}/users/prospects/search?${searchParams}`,
+      `${clubreadyApiUrl}/users/find?${searchParams}`,
       {
         method: "GET",
         headers: {
@@ -84,29 +85,37 @@ Deno.serve(async (req: Request) => {
     );
 
     const duration = Date.now() - startTime;
-    const responseData = await response.json();
+    const responseText = await response.text();
+
+    let responseData;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch {
+      responseData = { raw: responseText };
+    }
 
     await supabase.from("payment_logs").insert({
-      endpoint: "/users/prospects/search",
-      request_data: { email, phone, storeId: clubreadyStoreId },
+      endpoint: "/users/find",
+      request_data: { email, phone, storeId: clubreadyStoreId, chainId: clubreadyChainId },
       response_data: responseData,
       status_code: response.status,
       duration_ms: duration,
     });
 
     if (!response.ok) {
-      throw new Error(responseData.message || "Failed to search prospect");
+      throw new Error(responseData.Message || responseData.message || "Failed to search user");
     }
 
-    const prospect = responseData.data || null;
+    const users = Array.isArray(responseData) ? responseData : [];
+    const prospect = users.length > 0 ? users[0] : null;
 
-    if (prospect && prospect.userId) {
+    if (prospect && prospect.UserId) {
       await supabase.from("prospects").upsert({
-        clubready_user_id: prospect.userId.toString(),
-        email: prospect.email,
-        phone: prospect.phone,
-        first_name: prospect.firstName,
-        last_name: prospect.lastName,
+        clubready_user_id: prospect.UserId.toString(),
+        email: prospect.Email || email,
+        phone: prospect.Phone || phone,
+        first_name: prospect.FirstName || "",
+        last_name: prospect.LastName || "",
         last_synced_at: new Date().toISOString(),
       }, {
         onConflict: "clubready_user_id"
@@ -116,7 +125,13 @@ Deno.serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         found: !!prospect,
-        prospect: prospect
+        prospect: prospect ? {
+          userId: prospect.UserId,
+          email: prospect.Email,
+          phone: prospect.Phone,
+          firstName: prospect.FirstName,
+          lastName: prospect.LastName,
+        } : null
       }),
       {
         headers: {

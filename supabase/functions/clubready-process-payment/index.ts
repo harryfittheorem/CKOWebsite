@@ -107,50 +107,60 @@ Deno.serve(async (req: Request) => {
 
     const startTime = Date.now();
 
-    const paymentData = {
-      storeId: parseInt(clubreadyStoreId),
-      userId: parseInt(clubreadyUserId),
-      packageId: parseInt(packageId),
-      payment: {
-        cardNumber,
-        expirationMonth: parseInt(cardExpMonth),
-        expirationYear: parseInt(cardExpYear),
-        cvv: cardCvv,
-        cardholderName: cardholderName || `${prospectData.first_name} ${prospectData.last_name}`,
-        billingZip: billingZip || "",
-      },
-    };
-
-    const searchParams = new URLSearchParams({
+    const formData = new URLSearchParams({
       ApiKey: clubreadyApiKey,
+      StoreId: clubreadyStoreId,
+      ChainId: clubreadyChainId,
+      Amount: packageData.price.toString(),
     });
 
-    const response = await fetch(`${clubreadyApiUrl}/sales/packages?${searchParams}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(paymentData),
-    });
+    formData.append("AcctToken", cardNumber);
+    formData.append("Last4", cardNumber.slice(-4));
+    formData.append("ExpMonth", cardExpMonth);
+    formData.append("ExpYear", cardExpYear);
+    formData.append("CVV", cardCvv);
+    formData.append("PostalCode", billingZip || "");
+
+    if (cardholderName) {
+      formData.append("NameOnCard", cardholderName);
+    }
+
+    const response = await fetch(
+      `${clubreadyApiUrl}/sales/member/${clubreadyUserId}/payment/makepayment`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+      }
+    );
 
     const duration = Date.now() - startTime;
-    const responseData = await response.json();
+    const responseText = await response.text();
+
+    let responseData;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch {
+      responseData = { raw: responseText };
+    }
 
     const sanitizedRequest = {
-      ...paymentData,
-      payment: {
-        cardNumber: `****${cardNumber.slice(-4)}`,
-        expirationMonth: paymentData.payment.expirationMonth,
-        expirationYear: paymentData.payment.expirationYear,
-        cvv: "***",
-        cardholderName: paymentData.payment.cardholderName,
-        billingZip: paymentData.payment.billingZip,
-      },
+      storeId: clubreadyStoreId,
+      chainId: clubreadyChainId,
+      userId: clubreadyUserId,
+      amount: packageData.price,
+      cardNumber: `****${cardNumber.slice(-4)}`,
+      expMonth: cardExpMonth,
+      expYear: cardExpYear,
+      cvv: "***",
+      postalCode: billingZip || "",
     };
 
     await supabase.from("payment_logs").insert({
       transaction_id: transaction.id,
-      endpoint: "/sales/packages",
+      endpoint: `/sales/member/${clubreadyUserId}/payment/makepayment`,
       request_data: sanitizedRequest,
       response_data: responseData,
       status_code: response.status,
@@ -162,24 +172,24 @@ Deno.serve(async (req: Request) => {
         .from("transactions")
         .update({
           status: "failed",
-          error_message: responseData.message || "Payment processing failed",
+          error_message: responseData.Message || responseData.message || "Payment processing failed",
         })
         .eq("id", transaction.id);
 
-      throw new Error(responseData.message || "Payment processing failed");
+      throw new Error(responseData.Message || responseData.message || "Payment processing failed");
     }
 
-    const sale = responseData.data;
+    const paymentId = responseData.PaymentId || responseData.paymentId || responseData.Id;
 
     await supabase
       .from("transactions")
       .update({
         status: "completed",
-        clubready_transaction_id: sale.saleId?.toString() || null,
+        clubready_transaction_id: paymentId?.toString() || null,
         completed_at: new Date().toISOString(),
         last_four: cardNumber.slice(-4),
         metadata: {
-          clubready_sale_id: sale.saleId,
+          clubready_payment_id: paymentId,
           package_name: packageData.name,
         },
       })
@@ -189,7 +199,7 @@ Deno.serve(async (req: Request) => {
       JSON.stringify({
         success: true,
         transactionId: transaction.id,
-        clubreadySaleId: sale.saleId,
+        clubreadyPaymentId: paymentId,
         amount: packageData.price,
         packageName: packageData.name,
       }),

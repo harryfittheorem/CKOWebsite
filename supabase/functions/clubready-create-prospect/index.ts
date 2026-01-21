@@ -16,7 +16,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { firstName, lastName, email, phone, dateOfBirth } = await req.json();
+    const { firstName, lastName, email, phone, dateOfBirth, packageId } = await req.json();
 
     if (!firstName || !lastName || !email) {
       return new Response(
@@ -55,54 +55,72 @@ Deno.serve(async (req: Request) => {
     }
 
     const clubreadyApiKey = config.api_key;
-    const clubreadyChainId = config.chain_id;
     const clubreadyStoreId = config.store_id;
     const clubreadyApiUrl = config.api_url;
 
     const startTime = Date.now();
 
-    const prospectData = {
-      storeId: parseInt(clubreadyStoreId),
-      firstName,
-      lastName,
-      email,
-      phone: phone || "",
-      dateOfBirth: dateOfBirth || null,
-    };
-
-    const searchParams = new URLSearchParams({
+    const formData = new URLSearchParams({
       ApiKey: clubreadyApiKey,
+      StoreId: clubreadyStoreId,
+      FirstName: firstName,
+      LastName: lastName,
+      Email: email,
     });
 
-    const response = await fetch(`${clubreadyApiUrl}/users/prospects?${searchParams}`, {
+    if (phone) {
+      formData.append("Phone", phone);
+    }
+    if (dateOfBirth) {
+      formData.append("DateOfBirth", dateOfBirth);
+    }
+    if (packageId) {
+      formData.append("PackageId", packageId);
+    }
+
+    const clientIp = req.headers.get("x-forwarded-for") || "127.0.0.1";
+
+    const response = await fetch(`${clubreadyApiUrl}/sales/agreement/addNewUser`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-Forwarded-For": clientIp,
       },
-      body: JSON.stringify(prospectData),
+      body: formData.toString(),
     });
 
     const duration = Date.now() - startTime;
-    const responseData = await response.json();
+    const responseText = await response.text();
+
+    let responseData;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch {
+      responseData = { raw: responseText };
+    }
 
     await supabase.from("payment_logs").insert({
-      endpoint: "/users/prospects",
-      request_data: prospectData,
+      endpoint: "/sales/agreement/addNewUser",
+      request_data: { firstName, lastName, email, phone, dateOfBirth, storeId: clubreadyStoreId },
       response_data: responseData,
       status_code: response.status,
       duration_ms: duration,
     });
 
     if (!response.ok) {
-      throw new Error(responseData.message || "Failed to create prospect");
+      throw new Error(responseData.Message || responseData.message || "Failed to create user");
     }
 
-    const prospect = responseData.data;
+    const userId = responseData.UserId || responseData.userId || responseData.Id;
+
+    if (!userId) {
+      throw new Error("User created but no UserId returned from ClubReady");
+    }
 
     const { data: dbProspect, error: dbError } = await supabase
       .from("prospects")
       .insert({
-        clubready_user_id: prospect.userId.toString(),
+        clubready_user_id: userId.toString(),
         email,
         phone: phone || null,
         first_name: firstName,
@@ -122,7 +140,7 @@ Deno.serve(async (req: Request) => {
         success: true,
         prospect: {
           id: dbProspect.id,
-          clubreadyUserId: prospect.userId,
+          clubreadyUserId: userId,
           email,
           firstName,
           lastName,
