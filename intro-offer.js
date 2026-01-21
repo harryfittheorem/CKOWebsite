@@ -119,6 +119,16 @@ async function searchOrCreateProspect() {
   }
 }
 
+const isTestMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.search.includes('test=true');
+
+if (isTestMode) {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; background: #fbbf24; color: #000; text-align: center; padding: 12px; font-weight: 600; z-index: 9999; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+  banner.innerHTML = '🧪 TEST MODE - No real charges will be made to ClubReady';
+  document.body.prepend(banner);
+  console.log('🧪 TEST MODE: Running in test mode - no real charges will be made');
+}
+
 async function processPayment() {
   hideError();
 
@@ -191,6 +201,13 @@ async function processPayment() {
   submitSpinner.classList.remove('hidden');
 
   try {
+    if (isTestMode) {
+      console.log('🧪 TEST MODE: Simulating payment without charging card');
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      window.location.href = `thank-you-page.html?packageName=${encodeURIComponent(window.selectedPackageData.name)}&amount=${window.selectedPackageData.price}`;
+      return;
+    }
+
     if (!prospectId || !clubreadyUserId) {
       await searchOrCreateProspect();
     }
@@ -212,6 +229,21 @@ async function processPayment() {
       email,
       phone
     };
+
+    const paymentResponse = await fetch(`${SUPABASE_URL}/functions/v1/clubready-process-payment`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(paymentData),
+    });
+
+    const paymentResult = await paymentResponse.json();
+
+    if (!paymentResponse.ok) {
+      throw new Error(paymentResult.error || 'Payment failed');
+    }
 
     window.location.href = `thank-you-page.html?packageName=${encodeURIComponent(window.selectedPackageData.name)}&amount=${window.selectedPackageData.price}`;
 
