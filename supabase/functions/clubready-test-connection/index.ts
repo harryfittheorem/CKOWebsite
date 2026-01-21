@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,22 +16,21 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const clubreadyApiKey = Deno.env.get("CLUBREADY_API_KEY");
-    const clubreadyChainId = Deno.env.get("CLUBREADY_CHAIN_ID");
-    const clubreadyStoreId = Deno.env.get("CLUBREADY_STORE_ID");
-    const clubreadyApiUrl = Deno.env.get("CLUBREADY_API_URL");
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    if (!clubreadyApiKey || !clubreadyChainId || !clubreadyStoreId || !clubreadyApiUrl) {
+    const { data: config, error: configError } = await supabase
+      .from("clubready_config")
+      .select("*")
+      .eq("id", 1)
+      .maybeSingle();
+
+    if (configError || !config) {
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Missing ClubReady configuration",
-          config: {
-            hasApiKey: !!clubreadyApiKey,
-            hasChainId: !!clubreadyChainId,
-            hasStoreId: !!clubreadyStoreId,
-            hasApiUrl: !!clubreadyApiUrl
-          }
+          error: "ClubReady configuration not found in database",
         }),
         {
           status: 500,
@@ -41,6 +41,11 @@ Deno.serve(async (req: Request) => {
         }
       );
     }
+
+    const clubreadyApiKey = config.api_key;
+    const clubreadyChainId = config.chain_id;
+    const clubreadyStoreId = config.store_id;
+    const clubreadyApiUrl = config.api_url;
 
     const searchParams = new URLSearchParams({
       ApiKey: clubreadyApiKey,

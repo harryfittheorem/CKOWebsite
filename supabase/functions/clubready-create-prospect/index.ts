@@ -33,12 +33,31 @@ Deno.serve(async (req: Request) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const clubreadyApiKey = Deno.env.get("CLUBREADY_API_KEY")!;
-    const clubreadyChainId = Deno.env.get("CLUBREADY_CHAIN_ID")!;
-    const clubreadyStoreId = Deno.env.get("CLUBREADY_STORE_ID")!;
-    const clubreadyApiUrl = Deno.env.get("CLUBREADY_API_URL")!;
-
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data: config, error: configError } = await supabase
+      .from("clubready_config")
+      .select("*")
+      .eq("id", 1)
+      .maybeSingle();
+
+    if (configError || !config) {
+      return new Response(
+        JSON.stringify({ error: "ClubReady configuration not found" }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    const clubreadyApiKey = config.api_key;
+    const clubreadyChainId = config.chain_id;
+    const clubreadyStoreId = config.store_id;
+    const clubreadyApiUrl = config.api_url;
 
     const startTime = Date.now();
 
