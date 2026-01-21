@@ -165,10 +165,10 @@
   </div>
 
   <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-8">
 
     <!-- Error Message -->
-    <div id="error-message" class="hidden mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg max-w-4xl mx-auto">
+    <div id="error-message" class="hidden mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
       <div class="flex items-start gap-3">
         <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
         <div>
@@ -178,321 +178,239 @@
       </div>
     </div>
 
-    <!-- Two Column Layout -->
-    <div class="grid lg:grid-cols-3 gap-8 items-start">
+    <!-- Two Column Layout: Form Left, Offers Right -->
+    <div class="grid lg:grid-cols-2 gap-8 items-start">
 
-      <!-- Left Column: Package Selection & Forms -->
-      <div class="lg:col-span-2 space-y-6">
+      <!-- Left Column: Contact & Payment Information -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
+        <h2 class="font-heading text-3xl font-bold text-gray-900 mb-6 uppercase">Complete Your Purchase</h2>
 
-        <!-- Package Selection -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
-          <div class="mb-8">
-            <h2 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-2 uppercase">Choose Your Intro Package</h2>
-            <p class="text-gray-600">Select the best option for your fitness goals</p>
+        <div class="space-y-6">
+          <!-- Contact Information -->
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Contact Information</h3>
+            <div class="space-y-4">
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-1.5">First Name *</label>
+                  <input type="text" id="firstName" required class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+                </div>
+                <div>
+                  <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-1.5">Last Name *</label>
+                  <input type="text" id="lastName" required class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+                </div>
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">Email Address *</label>
+                <input type="email" id="email" required class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+
+              <div>
+                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number *</label>
+                <input type="tel" id="phone" required class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900" placeholder="(555) 555-5555">
+              </div>
+            </div>
           </div>
 
-          <div id="packages-container" class="space-y-5">
-            <!-- Package Option 1: 3 Classes -->
-            <div class="package-option border-3 border-gray-300 rounded-xl p-6 md:p-7 relative overflow-hidden" data-package-id="intro-3-classes" onclick="selectPackage('intro-3-classes', 30, '3 Kickboxing Classes', 90)">
-              <div class="absolute top-5 right-5 check-icon text-[#fec400] hidden">
-                <i data-lucide="check-circle" class="w-7 h-7 fill-current"></i>
+          <!-- Payment Information -->
+          <div class="pt-6 border-t-2 border-gray-200">
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <i data-lucide="credit-card" class="w-5 h-5 text-gray-700"></i>
+              Payment Information
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <label for="cardNumber" class="block text-sm font-semibold text-gray-700 mb-1.5">Card Number *</label>
+                <input type="text" id="cardNumber" required maxlength="19" placeholder="1234 5678 9012 3456" class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
               </div>
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div class="flex-1 pr-8">
-                  <h3 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-3 uppercase">3 Kickboxing Classes</h3>
-                  <p class="text-gray-600 mb-4 text-base">Perfect introduction to experience the CKO difference and kickstart your journey</p>
-                  <ul class="space-y-2.5 text-sm text-gray-700">
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Valid for 30 days from purchase date</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Complimentary gloves provided during all classes</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Expert certified instructor guidance</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>No long-term commitment required</span>
-                    </li>
-                  </ul>
+
+              <div class="grid grid-cols-3 gap-3">
+                <div>
+                  <label for="cardExpMonth" class="block text-sm font-semibold text-gray-700 mb-1.5">Month *</label>
+                  <input type="text" id="cardExpMonth" required maxlength="2" placeholder="MM" class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
                 </div>
-                <div class="text-center md:text-right flex-shrink-0">
-                  <div class="text-gray-400 line-through text-lg mb-1.5 font-medium">$90.00</div>
-                  <div class="text-[#fec400] text-5xl md:text-6xl font-bold leading-none mb-2">$30</div>
-                  <div class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-bold">
-                    <i data-lucide="tag" class="w-3.5 h-3.5"></i>
-                    Save $60
-                  </div>
+                <div>
+                  <label for="cardExpYear" class="block text-sm font-semibold text-gray-700 mb-1.5">Year *</label>
+                  <input type="text" id="cardExpYear" required maxlength="4" placeholder="YYYY" class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+                </div>
+                <div>
+                  <label for="cardCvv" class="block text-sm font-semibold text-gray-700 mb-1.5">CVV *</label>
+                  <input type="text" id="cardCvv" required maxlength="4" placeholder="123" class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+                </div>
+              </div>
+
+              <div>
+                <label for="cardholderName" class="block text-sm font-semibold text-gray-700 mb-1.5">Cardholder Name *</label>
+                <input type="text" id="cardholderName" required class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+
+              <div>
+                <label for="billingZip" class="block text-sm font-semibold text-gray-700 mb-1.5">Billing Zip Code *</label>
+                <input type="text" id="billingZip" required maxlength="10" class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
+              </div>
+
+              <div class="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+                <p class="text-xs text-blue-900"><strong>Secure Payment:</strong> All transactions are encrypted with bank-level security.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms & Conditions -->
+          <div class="pt-6 border-t-2 border-gray-200">
+            <label class="flex items-start gap-3 cursor-pointer group">
+              <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 text-[#fec400] border-gray-300 rounded focus:ring-[#fec400] cursor-pointer">
+              <span class="text-sm text-gray-700 leading-relaxed">
+                I agree to the <a href="#" class="text-[#fec400] hover:underline font-semibold">Terms & Conditions</a> and <a href="#" class="text-[#fec400] hover:underline font-semibold">Liability Waiver</a>. Classes must be used within 30 days and are non-refundable after the first class.
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button onclick="processPayment()" id="submitPayment" class="w-full bg-gradient-to-r from-[#fec400] to-[#f5b800] hover:from-[#e5b000] hover:to-[#d4a000] text-black font-bold uppercase tracking-wider py-4 px-8 rounded-xl transition-all text-lg shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 transform hover:scale-[1.02]">
+            <span id="submit-text">Complete Purchase</span>
+            <i data-lucide="arrow-right" class="w-5 h-5" id="submit-arrow"></i>
+            <span id="submit-spinner" class="hidden loading-spinner"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Package Selection & Order Summary -->
+      <div class="space-y-6">
+        <!-- Package Selection -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <h2 class="font-heading text-2xl font-bold text-gray-900 mb-5 uppercase">Choose Your Package</h2>
+
+          <div id="packages-container" class="space-y-4">
+            <!-- Package Option 1: 2 Classes -->
+            <div class="package-option border-3 border-gray-300 rounded-xl p-5 relative cursor-pointer hover:shadow-lg transition-all" data-package-id="intro-2-classes" onclick="selectPackage('intro-2-classes', 40, '2 Classes + FREE GLOVES', 100)">
+              <div class="absolute top-4 right-4 check-icon text-[#fec400] hidden">
+                <i data-lucide="check-circle" class="w-6 h-6 fill-current"></i>
+              </div>
+              <div class="pr-10">
+                <h3 class="font-heading text-xl font-bold text-gray-900 mb-2 uppercase">2 Classes + FREE GLOVES</h3>
+                <p class="text-sm text-red-600 font-bold mb-3">FREE GLOVES ($50 Value)</p>
+                <div class="flex items-end gap-3 mb-3">
+                  <div class="text-[#fec400] text-4xl font-bold leading-none">$40</div>
+                  <div class="text-gray-400 line-through text-lg mb-1">Regular $100</div>
+                </div>
+                <div class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-bold">
+                  <i data-lucide="tag" class="w-3 h-3"></i>
+                  Save $60
                 </div>
               </div>
             </div>
 
             <!-- Package Option 2: 5 Classes -->
             <div class="relative">
-              <div class="absolute -top-3 left-4 bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase shadow-lg z-10">
+              <div class="absolute -top-2 left-3 bg-gradient-to-r from-red-600 to-red-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase shadow-lg z-10">
                 Best Value
               </div>
-              <div class="package-option selected border-3 border-gray-300 rounded-xl p-6 md:p-7 relative overflow-hidden" data-package-id="intro-5-classes" onclick="selectPackage('intro-5-classes', 40, '5 Kickboxing Classes', 150)">
-                <div class="absolute top-5 right-5 check-icon text-[#fec400]">
-                  <i data-lucide="check-circle" class="w-7 h-7 fill-current"></i>
+              <div class="package-option selected border-3 border-gray-300 rounded-xl p-5 relative cursor-pointer" data-package-id="intro-5-classes" onclick="selectPackage('intro-5-classes', 100, '5 Classes + FREE GLOVES', 150)">
+                <div class="absolute top-4 right-4 check-icon text-[#fec400]">
+                  <i data-lucide="check-circle" class="w-6 h-6 fill-current"></i>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div class="flex-1 pr-8">
-                  <h3 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-3 uppercase">5 Kickboxing Classes</h3>
-                  <p class="text-gray-600 mb-4 text-base">Build momentum and maximize results with more classes to transform your fitness</p>
-                  <ul class="space-y-2.5 text-sm text-gray-700">
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Valid for 30 days from purchase date</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Complimentary gloves provided during all classes</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Expert certified instructor guidance</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Free personalized nutrition guide (PDF)</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                      <i data-lucide="check" class="w-4 h-4 text-green-600 flex-shrink-0"></i>
-                      <span>Priority class booking access</span>
-                    </li>
-                  </ul>
-                </div>
-                <div class="text-center md:text-right flex-shrink-0">
-                  <div class="text-gray-400 line-through text-lg mb-1.5 font-medium">$150.00</div>
-                  <div class="text-[#fec400] text-5xl md:text-6xl font-bold leading-none mb-2">$40</div>
-                  <div class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-bold">
-                    <i data-lucide="tag" class="w-3.5 h-3.5"></i>
-                    Save $110
+                <div class="pr-10">
+                  <h3 class="font-heading text-xl font-bold text-gray-900 mb-2 uppercase">5 Classes + FREE GLOVES</h3>
+                  <p class="text-sm text-red-600 font-bold mb-3">FREE GLOVES ($50 Value)</p>
+                  <div class="flex items-end gap-3 mb-3">
+                    <div class="text-[#fec400] text-4xl font-bold leading-none">$100</div>
+                    <div class="text-gray-400 line-through text-lg mb-1">Regular $150</div>
+                  </div>
+                  <div class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-bold">
+                    <i data-lucide="tag" class="w-3 h-3"></i>
+                    Save $50
                   </div>
                 </div>
               </div>
-              </div>
             </div>
           </div>
 
-          <!-- What's Included Section -->
-          <div class="mt-8 p-6 md:p-7 bg-gradient-to-br from-[#fec400]/10 via-[#fec400]/5 to-transparent rounded-xl border-2 border-[#fec400]/30">
-            <h4 class="font-heading text-xl font-bold text-gray-900 mb-5 uppercase flex items-center gap-2.5">
-              <i data-lucide="gift" class="w-6 h-6 text-[#fec400]"></i>
-              What's Included With Every Package
+          <!-- What's Included -->
+          <div class="mt-5 p-4 bg-gradient-to-br from-[#fec400]/10 to-transparent rounded-xl border border-[#fec400]/30">
+            <h4 class="font-bold text-gray-900 mb-3 text-sm uppercase flex items-center gap-2">
+              <i data-lucide="gift" class="w-4 h-4 text-[#fec400]"></i>
+              What's Included
             </h4>
-            <div class="grid md:grid-cols-2 gap-4 text-sm">
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                  <i data-lucide="flame" class="w-5 h-5 text-[#fec400]"></i>
-                </div>
-                <div>
-                  <strong class="text-gray-900 block mb-1">High-Intensity Workouts</strong>
-                  <p class="text-gray-600">Burn up to 1,200 calories per 60-minute session</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                  <i data-lucide="users" class="w-5 h-5 text-[#fec400]"></i>
-                </div>
-                <div>
-                  <strong class="text-gray-900 block mb-1">All Fitness Levels Welcome</strong>
-                  <p class="text-gray-600">Beginner to advanced, we modify for everyone</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                  <i data-lucide="award" class="w-5 h-5 text-[#fec400]"></i>
-                </div>
-                <div>
-                  <strong class="text-gray-900 block mb-1">Certified Expert Instructors</strong>
-                  <p class="text-gray-600">Professional trainers guide every punch and kick</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#fec400]/20 flex items-center justify-center flex-shrink-0">
-                  <i data-lucide="heart" class="w-5 h-5 text-[#fec400]"></i>
-                </div>
-                <div>
-                  <strong class="text-gray-900 block mb-1">Supportive Community</strong>
-                  <p class="text-gray-600">Join the CKO FitFam and make lasting friendships</p>
-                </div>
-              </div>
-            </div>
+            <ul class="space-y-2 text-xs text-gray-700">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-green-600 flex-shrink-0"></i>
+                <span>Valid for 30 days from purchase</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-green-600 flex-shrink-0"></i>
+                <span>Expert certified instructors</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-green-600 flex-shrink-0"></i>
+                <span>All fitness levels welcome</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-green-600 flex-shrink-0"></i>
+                <span>No long-term commitment</span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <!-- Contact Information Form -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
-          <h2 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-6 uppercase">Your Information</h2>
+        <!-- Order Summary -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+          <h3 class="font-heading text-xl font-bold text-gray-900 mb-4 uppercase border-b-2 border-gray-200 pb-3">Order Summary</h3>
 
-          <div class="space-y-5">
-            <div class="grid md:grid-cols-2 gap-5">
-              <div>
-                <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">First Name *</label>
-                <input type="text" id="firstName" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-              </div>
-              <div>
-                <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">Last Name *</label>
-                <input type="text" id="lastName" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-              </div>
-            </div>
-
-            <div>
-              <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
-              <input type="email" id="email" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-            </div>
-
-            <div>
-              <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
-              <input type="tel" id="phone" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900" placeholder="(555) 555-5555">
-            </div>
-          </div>
-        </div>
-
-        <!-- Payment Information Form -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
-          <h2 class="font-heading text-2xl md:text-3xl font-bold text-gray-900 mb-6 uppercase flex items-center gap-2.5">
-            <i data-lucide="credit-card" class="w-7 h-7 text-gray-700"></i>
-            Payment Information
-          </h2>
-
-          <div class="space-y-5">
-            <div>
-              <label for="cardNumber" class="block text-sm font-semibold text-gray-700 mb-2">Card Number *</label>
-              <input type="text" id="cardNumber" required maxlength="19" placeholder="1234 5678 9012 3456" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-            </div>
-
-            <div class="grid grid-cols-3 gap-4">
-              <div>
-                <label for="cardExpMonth" class="block text-sm font-semibold text-gray-700 mb-2">Month *</label>
-                <input type="text" id="cardExpMonth" required maxlength="2" placeholder="MM" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-              </div>
-              <div>
-                <label for="cardExpYear" class="block text-sm font-semibold text-gray-700 mb-2">Year *</label>
-                <input type="text" id="cardExpYear" required maxlength="4" placeholder="YYYY" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-              </div>
-              <div>
-                <label for="cardCvv" class="block text-sm font-semibold text-gray-700 mb-2">CVV *</label>
-                <input type="text" id="cardCvv" required maxlength="4" placeholder="123" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-              </div>
-            </div>
-
-            <div>
-              <label for="cardholderName" class="block text-sm font-semibold text-gray-700 mb-2">Cardholder Name *</label>
-              <input type="text" id="cardholderName" required class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-            </div>
-
-            <div>
-              <label for="billingZip" class="block text-sm font-semibold text-gray-700 mb-2">Billing Zip Code *</label>
-              <input type="text" id="billingZip" required maxlength="10" class="w-full px-4 py-3.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#fec400] focus:border-[#fec400] transition-all text-gray-900">
-            </div>
-
-            <div class="flex items-start gap-3 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
-              <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
-              <div class="text-sm text-blue-900">
-                <p class="font-semibold mb-1">Your payment is 100% secure</p>
-                <p>All transactions are encrypted with bank-level security. We never store your full card details.</p>
+          <!-- Location -->
+          <div class="mb-5 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="flex items-start gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-[#fec400] flex-shrink-0 mt-1"></i>
+              <div class="text-xs">
+                <p class="font-bold text-gray-900">CKO League City</p>
+                <p class="text-gray-600">2910 Gulf Freeway S<br>League City, TX 77573</p>
+                <a href="tel:+12817244422" class="text-[#fec400] hover:underline font-semibold mt-1 inline-block">(281) 724-4422</a>
               </div>
             </div>
           </div>
 
-          <!-- Terms & Conditions -->
-          <div class="mt-6 pt-6 border-t-2 border-gray-200">
-            <label class="flex items-start gap-3 cursor-pointer group">
-              <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 text-[#fec400] border-gray-300 rounded focus:ring-[#fec400] cursor-pointer">
-              <span class="text-sm text-gray-700 leading-relaxed">
-                I agree to the <a href="#" class="text-[#fec400] hover:underline font-semibold">Terms & Conditions</a> and <a href="#" class="text-[#fec400] hover:underline font-semibold">Liability Waiver</a>. I understand that all classes must be used within 30 days of purchase and are non-refundable after the first class.
-              </span>
-            </label>
-          </div>
-
-          <!-- Submit Button -->
-          <button onclick="processPayment()" id="submitPayment" class="mt-8 w-full bg-gradient-to-r from-[#fec400] to-[#f5b800] hover:from-[#e5b000] hover:to-[#d4a000] text-black font-bold uppercase tracking-wider py-5 px-8 rounded-xl transition-all text-lg shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 transform hover:scale-[1.02]">
-            <span id="submit-text">Complete Purchase - Claim Your Offer</span>
-            <i data-lucide="arrow-right" class="w-6 h-6" id="submit-arrow"></i>
-            <span id="submit-spinner" class="hidden loading-spinner"></span>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Right Column: Order Summary (Sticky) -->
-      <div class="lg:col-span-1">
-        <div class="bg-white rounded-xl shadow-xl border border-gray-200 p-6 sticky top-24">
-          <h3 class="font-heading text-xl font-bold text-gray-900 mb-5 uppercase border-b-2 border-gray-200 pb-3">Order Summary</h3>
-
-          <!-- Location Info -->
-          <div class="mb-6 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
-            <div class="flex items-start gap-3">
-              <i data-lucide="map-pin" class="w-5 h-5 text-[#fec400] flex-shrink-0 mt-1"></i>
-              <div class="text-sm">
-                <p class="font-bold text-gray-900 mb-1">CKO Kickboxing League City</p>
-                <p class="text-gray-600 leading-relaxed">2910 Gulf Freeway S<br>League City, TX 77573</p>
-                <a href="tel:+12817244422" class="text-[#fec400] hover:underline font-semibold mt-2 inline-block">(281) 724-4422</a>
-              </div>
+          <!-- Package Details -->
+          <div class="space-y-2.5 mb-5">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Package:</span>
+              <span class="text-gray-900 font-bold text-right" id="summary-package">5 Classes + FREE GLOVES</span>
             </div>
-          </div>
-
-          <!-- Selected Package -->
-          <div class="space-y-3 mb-6">
-            <div class="flex justify-between items-start text-sm">
-              <span class="text-gray-600 font-medium">Package:</span>
-              <span class="text-gray-900 font-bold text-right" id="summary-package">5 Kickboxing Classes</span>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Regular Price:</span>
+              <span class="text-gray-400 line-through" id="summary-original">$150.00</span>
             </div>
-            <div class="flex justify-between items-start text-sm">
-              <span class="text-gray-600 font-medium">Original Price:</span>
-              <span class="text-gray-400 line-through font-medium" id="summary-original">$150.00</span>
-            </div>
-            <div class="flex justify-between items-start text-sm pb-4 border-b border-gray-200">
-              <span class="text-green-600 font-bold">Your Savings:</span>
-              <span class="text-green-600 font-bold" id="summary-savings">-$110.00</span>
+            <div class="flex justify-between text-sm pb-3 border-b border-gray-200">
+              <span class="text-green-600 font-bold">Savings:</span>
+              <span class="text-green-600 font-bold" id="summary-savings">-$50.00</span>
             </div>
           </div>
 
           <!-- Total -->
-          <div class="pt-4 border-t-2 border-gray-300 mb-6">
+          <div class="pt-3 border-t-2 border-gray-300 mb-5">
             <div class="flex justify-between items-center mb-3">
-              <span class="font-heading text-xl font-bold text-gray-900 uppercase">Total Due Today:</span>
-              <span class="font-heading text-4xl font-bold text-[#fec400]" id="summary-total">$40.00</span>
+              <span class="font-heading text-lg font-bold text-gray-900 uppercase">Total:</span>
+              <span class="font-heading text-3xl font-bold text-[#fec400]" id="summary-total">$100.00</span>
             </div>
-            <p class="text-xs text-center text-gray-500 bg-green-50 py-2 px-3 rounded-lg border border-green-200">
-              <strong class="text-green-700">No hidden fees.</strong> No recurring charges. One-time payment.
+            <p class="text-xs text-center text-gray-600 bg-green-50 py-2 px-3 rounded-lg border border-green-200">
+              <strong class="text-green-700">No hidden fees.</strong> One-time payment.
             </p>
           </div>
 
           <!-- Trust Badges -->
-          <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
-            <div class="flex items-center gap-3 text-sm text-gray-700">
-              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-2 text-xs text-gray-700">
+              <div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-green-600"></i>
               </div>
               <span>30-Day Money Back Guarantee</span>
             </div>
-            <div class="flex items-center gap-3 text-sm text-gray-700">
-              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="shield" class="w-4 h-4 text-blue-600"></i>
+            <div class="flex items-center gap-2 text-xs text-gray-700">
+              <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="shield" class="w-3.5 h-3.5 text-blue-600"></i>
               </div>
-              <span>256-bit SSL Secure Payment</span>
+              <span>SSL Secure Payment</span>
             </div>
-            <div class="flex items-center gap-3 text-sm text-gray-700">
-              <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="calendar" class="w-4 h-4 text-[#fec400]"></i>
-              </div>
-              <span>Valid for 30 Days After Purchase</span>
-            </div>
-          </div>
-
-          <!-- Support -->
-          <div class="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl text-center border border-gray-200">
-            <p class="text-sm text-gray-600 mb-2 font-medium">Questions? We're here to help!</p>
-            <a href="tel:+12817244422" class="text-[#fec400] hover:underline font-bold text-base block mb-1">(281) 724-4422</a>
-            <p class="text-xs text-gray-500">Monday - Friday: 6am - 8pm</p>
           </div>
         </div>
       </div>
@@ -583,7 +501,7 @@
       lucide.createIcons();
     }
 
-    selectPackage('intro-5-classes', 40, '5 Kickboxing Classes', 150);
+    selectPackage('intro-5-classes', 100, '5 Classes + FREE GLOVES', 150);
   </script>
 
 </body>
