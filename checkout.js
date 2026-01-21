@@ -1,6 +1,10 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+const TEST_MODE = new URLSearchParams(window.location.search).has('test') ||
+                  window.location.hostname === 'localhost' ||
+                  import.meta.env.VITE_TEST_MODE === 'true';
+
 let currentStep = 1;
 let selectedPackage = null;
 let prospectId = null;
@@ -50,6 +54,17 @@ function showStep(step) {
   currentStep = step;
   updateStepIndicators(step);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+if (TEST_MODE) {
+  const testBanner = document.createElement('div');
+  testBanner.className = 'fixed top-0 left-0 right-0 bg-yellow-500 text-black text-center py-2 px-4 font-semibold text-sm z-[100] flex items-center justify-center gap-2';
+  testBanner.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+    TEST MODE - No real charges will be made
+  `;
+  document.body.prepend(testBanner);
+  document.querySelector('nav').style.marginTop = '40px';
 }
 
 async function goToStep2() {
@@ -318,6 +333,16 @@ async function processPayment() {
   submitSpinner.classList.remove('hidden');
 
   try {
+    if (TEST_MODE) {
+      console.log('🧪 TEST MODE: Simulating payment without charging card');
+      const pkg = packages.find(p => p.clubready_package_id === selectedPackage);
+
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      window.location.href = `thank-you-page.html?test=true&transactionId=TEST-${Date.now()}&packageName=${encodeURIComponent(pkg.name)}&amount=${pkg.price}`;
+      return;
+    }
+
     if (!prospectId || !clubreadyUserId) {
       await searchOrCreateProspect();
     }
