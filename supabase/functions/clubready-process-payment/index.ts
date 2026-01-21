@@ -123,7 +123,6 @@ Deno.serve(async (req: Request) => {
 
     const searchParams = new URLSearchParams({
       ApiKey: clubreadyApiKey,
-      ChainId: clubreadyChainId,
     });
 
     const response = await fetch(`${clubreadyApiUrl}/sales/packages?${searchParams}`, {

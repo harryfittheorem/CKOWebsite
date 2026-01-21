@@ -49,7 +49,6 @@ Deno.serve(async (req: Request) => {
 
     const searchParams = new URLSearchParams({
       ApiKey: clubreadyApiKey,
-      ChainId: clubreadyChainId,
       storeId: clubreadyStoreId,
       email: "test@example.com"
     });
