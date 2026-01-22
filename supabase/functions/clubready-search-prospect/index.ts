@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { logApiCall, sanitizeRequestBody } from "../_shared/logger.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,8 +16,14 @@ Deno.serve(async (req: Request) => {
     });
   }
 
+  const startTime = Date.now();
+  let apiUrl = "";
+  let requestBody: any = {};
+  let httpStatus = 500;
+
   try {
-    const { email, phone } = await req.json();
+    requestBody = await req.json();
+    const { email, phone } = requestBody;
 
     if (!email && !phone) {
       return new Response(
@@ -42,6 +49,18 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
 
     if (configError || !config) {
+      const duration = Date.now() - startTime;
+      await logApiCall(supabase, {
+        endpoint: "/users/find",
+        step: "search_prospect",
+        api_url: "N/A",
+        request_body: sanitizeRequestBody(requestBody),
+        http_status: 500,
+        error_message: "ClubReady configuration not found",
+        error_details: configError,
+        duration_ms: duration,
+      });
+
       return new Response(
         JSON.stringify({ error: "ClubReady configuration not found" }),
         {
@@ -59,8 +78,6 @@ Deno.serve(async (req: Request) => {
     const clubreadyStoreId = config.store_id;
     const clubreadyApiUrl = config.api_url;
 
-    const startTime = Date.now();
-
     const searchParams = new URLSearchParams({
       ApiKey: clubreadyApiKey,
       StoreId: clubreadyStoreId,
@@ -74,16 +91,18 @@ Deno.serve(async (req: Request) => {
       searchParams.append("Phone", phone);
     }
 
-    const response = await fetch(
-      `${clubreadyApiUrl}/users/find?${searchParams}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    apiUrl = `${clubreadyApiUrl}/users/find?${searchParams}`;
 
+    const requestHeaders: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: requestHeaders,
+    });
+
+    httpStatus = response.status;
     const duration = Date.now() - startTime;
     const responseText = await response.text();
 
@@ -94,12 +113,18 @@ Deno.serve(async (req: Request) => {
       responseData = { raw: responseText };
     }
 
-    await supabase.from("payment_logs").insert({
+    await logApiCall(supabase, {
       endpoint: "/users/find",
-      request_data: { email, phone, storeId: clubreadyStoreId, chainId: clubreadyChainId },
+      step: "search_prospect",
+      api_url: apiUrl,
+      request_headers: { "Content-Type": "application/json" },
+      request_body: sanitizeRequestBody({ email, phone, storeId: clubreadyStoreId, chainId: clubreadyChainId }),
       response_data: responseData,
-      status_code: response.status,
+      http_status: httpStatus,
+      error_message: !response.ok ? (responseData.Message || responseData.message || "Failed to search user") : undefined,
+      error_details: !response.ok ? responseData : undefined,
       duration_ms: duration,
+      clubready_request_id: response.headers.get("X-Request-Id") || undefined,
     });
 
     if (!response.ok) {
@@ -141,6 +166,22 @@ Deno.serve(async (req: Request) => {
       }
     );
   } catch (error) {
+    const duration = Date.now() - startTime;
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    await logApiCall(supabase, {
+      endpoint: "/users/find",
+      step: "search_prospect",
+      api_url: apiUrl || "N/A",
+      request_body: sanitizeRequestBody(requestBody),
+      http_status: httpStatus,
+      error_message: error.message,
+      error_details: { error: error.toString(), stack: error.stack },
+      duration_ms: duration,
+    });
+
     return new Response(
       JSON.stringify({ error: error.message }),
       {

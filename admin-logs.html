@@ -121,32 +121,67 @@
       container.innerHTML = logs.map(log => `
         <div class="bg-black border border-white/10 rounded p-4">
           <div class="flex items-start justify-between mb-2">
-            <div>
-              <div class="font-semibold text-white">${log.action || 'Payment'}</div>
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-1">
+                <div class="font-semibold text-white">${log.endpoint || log.action || 'Payment'}</div>
+                ${log.step ? `<span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">${log.step}</span>` : ''}
+                ${log.http_status || log.status_code ? `
+                  <span class="px-2 py-0.5 ${
+                    (log.http_status || log.status_code) >= 200 && (log.http_status || log.status_code) < 300
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-red-500/20 text-red-400'
+                  } text-xs rounded font-mono">
+                    ${log.http_status || log.status_code}
+                  </span>
+                ` : ''}
+              </div>
               <div class="text-xs text-gray-500">${new Date(log.created_at).toLocaleString()}</div>
+              ${log.api_url ? `<div class="text-xs text-gray-400 mt-1 font-mono">${log.api_url}</div>` : ''}
+              ${log.clubready_request_id ? `<div class="text-xs text-purple-400 mt-1">Request ID: ${log.clubready_request_id}</div>` : ''}
+              ${log.duration_ms ? `<div class="text-xs text-gray-500 mt-1">Duration: ${log.duration_ms}ms</div>` : ''}
             </div>
             <div class="px-3 py-1 rounded text-xs font-semibold ${
-              log.success ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+              log.success || ((log.http_status || log.status_code) >= 200 && (log.http_status || log.status_code) < 300)
+                ? 'bg-green-500/20 text-green-400'
+                : 'bg-red-500/20 text-red-400'
             }">
-              ${log.success ? 'Success' : 'Failed'}
+              ${log.success || ((log.http_status || log.status_code) >= 200 && (log.http_status || log.status_code) < 300) ? 'Success' : 'Failed'}
             </div>
           </div>
-          ${log.request_data ? `
+          ${log.request_headers ? `
             <div class="mt-3 text-xs">
-              <div class="text-gray-400 mb-1">Request:</div>
-              <pre class="bg-white/5 p-2 rounded overflow-x-auto text-gray-300">${JSON.stringify(log.request_data, null, 2)}</pre>
+              <details class="cursor-pointer">
+                <summary class="text-gray-400 mb-1 hover:text-white">Request Headers</summary>
+                <pre class="bg-white/5 p-2 rounded overflow-x-auto text-gray-300 mt-1">${JSON.stringify(log.request_headers, null, 2)}</pre>
+              </details>
+            </div>
+          ` : ''}
+          ${log.request_body || log.request_data ? `
+            <div class="mt-3 text-xs">
+              <details class="cursor-pointer">
+                <summary class="text-gray-400 mb-1 hover:text-white">Request Body</summary>
+                <pre class="bg-white/5 p-2 rounded overflow-x-auto text-gray-300 mt-1">${JSON.stringify(log.request_body || log.request_data, null, 2)}</pre>
+              </details>
             </div>
           ` : ''}
           ${log.response_data ? `
             <div class="mt-3 text-xs">
-              <div class="text-gray-400 mb-1">Response:</div>
-              <pre class="bg-white/5 p-2 rounded overflow-x-auto text-gray-300">${JSON.stringify(log.response_data, null, 2)}</pre>
+              <details class="cursor-pointer">
+                <summary class="text-gray-400 mb-1 hover:text-white">Response</summary>
+                <pre class="bg-white/5 p-2 rounded overflow-x-auto text-gray-300 mt-1">${JSON.stringify(log.response_data, null, 2)}</pre>
+              </details>
+            </div>
+          ` : ''}
+          ${log.error_details ? `
+            <div class="mt-3 text-xs">
+              <div class="text-red-400 font-semibold mb-1">Error Details:</div>
+              <pre class="bg-red-500/10 p-2 rounded overflow-x-auto text-red-300">${JSON.stringify(log.error_details, null, 2)}</pre>
             </div>
           ` : ''}
           ${log.error_message ? `
             <div class="mt-3 text-xs text-red-400">
-              <div class="font-semibold mb-1">Error:</div>
-              <div>${log.error_message}</div>
+              <div class="font-semibold mb-1">Error Message:</div>
+              <div class="bg-red-500/10 p-2 rounded">${log.error_message}</div>
             </div>
           ` : ''}
         </div>

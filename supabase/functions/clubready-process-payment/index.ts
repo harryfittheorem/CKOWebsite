@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { logApiCall, sanitizeRequestBody } from "../_shared/logger.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,7 +16,14 @@ Deno.serve(async (req: Request) => {
     });
   }
 
+  const startTime = Date.now();
+  let apiUrl = "";
+  let requestBody: any = {};
+  let httpStatus = 500;
+  let transactionId: string | undefined;
+
   try {
+    requestBody = await req.json();
     const {
       prospectId,
       clubreadyUserId,
@@ -26,7 +34,7 @@ Deno.serve(async (req: Request) => {
       cardCvv,
       cardholderName,
       billingZip,
-    } = await req.json();
+    } = requestBody;
 
     if (!clubreadyUserId || !packageId || !cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
       return new Response(
@@ -52,6 +60,18 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
 
     if (configError || !config) {
+      const duration = Date.now() - startTime;
+      await logApiCall(supabase, {
+        endpoint: "/sales/member/*/payment/makepayment",
+        step: "process_payment",
+        api_url: "N/A",
+        request_body: sanitizeRequestBody(requestBody),
+        http_status: 500,
+        error_message: "ClubReady configuration not found",
+        error_details: configError,
+        duration_ms: duration,
+      });
+
       return new Response(
         JSON.stringify({ error: "ClubReady configuration not found" }),
         {
@@ -105,7 +125,7 @@ Deno.serve(async (req: Request) => {
       throw txError;
     }
 
-    const startTime = Date.now();
+    transactionId = transaction.id;
 
     const formData = new URLSearchParams({
       ApiKey: clubreadyApiKey,
@@ -125,17 +145,19 @@ Deno.serve(async (req: Request) => {
       formData.append("NameOnCard", cardholderName);
     }
 
-    const response = await fetch(
-      `${clubreadyApiUrl}/sales/member/${clubreadyUserId}/payment/makepayment`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
-      }
-    );
+    apiUrl = `${clubreadyApiUrl}/sales/member/${clubreadyUserId}/payment/makepayment`;
 
+    const requestHeaders: Record<string, string> = {
+      "Content-Type": "application/x-www-form-urlencoded",
+    };
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: requestHeaders,
+      body: formData.toString(),
+    });
+
+    httpStatus = response.status;
     const duration = Date.now() - startTime;
     const responseText = await response.text();
 
@@ -158,13 +180,19 @@ Deno.serve(async (req: Request) => {
       postalCode: billingZip || "",
     };
 
-    await supabase.from("payment_logs").insert({
-      transaction_id: transaction.id,
+    await logApiCall(supabase, {
       endpoint: `/sales/member/${clubreadyUserId}/payment/makepayment`,
-      request_data: sanitizedRequest,
+      step: "process_payment",
+      api_url: apiUrl,
+      request_headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      request_body: sanitizedRequest,
       response_data: responseData,
-      status_code: response.status,
+      http_status: httpStatus,
+      error_message: !response.ok ? (responseData.Message || responseData.message || "Payment processing failed") : undefined,
+      error_details: !response.ok ? responseData : undefined,
       duration_ms: duration,
+      clubready_request_id: response.headers.get("X-Request-Id") || undefined,
+      transaction_id: transactionId,
     });
 
     if (!response.ok) {
@@ -211,6 +239,23 @@ Deno.serve(async (req: Request) => {
       }
     );
   } catch (error) {
+    const duration = Date.now() - startTime;
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    await logApiCall(supabase, {
+      endpoint: "/sales/member/*/payment/makepayment",
+      step: "process_payment",
+      api_url: apiUrl || "N/A",
+      request_body: sanitizeRequestBody(requestBody),
+      http_status: httpStatus,
+      error_message: error.message,
+      error_details: { error: error.toString(), stack: error.stack },
+      duration_ms: duration,
+      transaction_id: transactionId,
+    });
+
     return new Response(
       JSON.stringify({ error: error.message }),
       {

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClubReady API Diagnostic Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #ef4444;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .test-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-box {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .success {
+            color: #22c55e;
+        }
+
+        .error {
+            color: #ef4444;
+        }
+
+        .warning {
+            color: #f59e0b;
+        }
+
+        .info {
+            color: #3b82f6;
+        }
+
+        .config-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .config-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .config-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .config-value {
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.active {
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .status-indicator.inactive {
+            background: #64748b;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #ef4444;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ClubReady API Diagnostic Tool</h1>
+        <p class="subtitle">Test and debug your ClubReady API integration</p>
+
+        <div class="section">
+            <h2>Configuration Status</h2>
+            <div class="config-status" id="configStatus">
+                <div class="config-item">
+                    <div class="config-label">API URL</div>
+                    <div class="config-value" id="apiUrl">Loading...</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-label">API Key</div>
+                    <div class="config-value" id="apiKey">Loading...</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-label">Chain ID</div>
+                    <div class="config-value" id="chainId">Loading...</div>
+                </div>
+                <div class="config-item">
+                    <div class="config-label">Store ID</div>
+                    <div class="config-value" id="storeId">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Test Sample Data</h2>
+            <div class="form-group">
+                <label>Test Email</label>
+                <input type="email" id="testEmail" value="test@example.com" placeholder="Enter test email">
+            </div>
+            <div class="form-group">
+                <label>Test First Name</label>
+                <input type="text" id="testFirstName" value="John" placeholder="Enter test first name">
+            </div>
+            <div class="form-group">
+                <label>Test Last Name</label>
+                <input type="text" id="testLastName" value="Doe" placeholder="Enter test last name">
+            </div>
+            <div class="form-group">
+                <label>Test Phone</label>
+                <input type="tel" id="testPhone" value="5551234567" placeholder="Enter test phone">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>API Endpoint Tests</h2>
+            <div class="test-grid">
+                <button class="test-button" onclick="testConnection()">
+                    Test Connection
+                </button>
+                <button class="test-button" onclick="testSearchProspect()">
+                    Test Search Prospect
+                </button>
+                <button class="test-button" onclick="testCreateProspect()">
+                    Test Create Prospect
+                </button>
+                <button class="test-button" onclick="testGetPackages()">
+                    Test Get Packages
+                </button>
+            </div>
+            <div id="testResults"></div>
+        </div>
+
+        <div class="section">
+            <h2>Recent Payment Logs</h2>
+            <button class="test-button" onclick="loadRecentLogs()">Load Recent Logs</button>
+            <div id="logsResults"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+        async function loadConfig() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/clubready-test-connection`, {
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('apiUrl').innerHTML = `<span class="status-indicator active"></span>${data.config?.apiUrl || 'Not set'}`;
+                    document.getElementById('apiKey').innerHTML = `<span class="status-indicator ${data.config?.apiKey ? 'active' : 'inactive'}"></span>${data.config?.apiKey ? '••••••••' : 'Not set'}`;
+                    document.getElementById('chainId').innerHTML = `<span class="status-indicator ${data.config?.chainId ? 'active' : 'inactive'}"></span>${data.config?.chainId || 'Not set'}`;
+                    document.getElementById('storeId').innerHTML = `<span class="status-indicator ${data.config?.storeId ? 'active' : 'inactive'}"></span>${data.config?.storeId || 'Not set'}`;
+                } else {
+                    showError('Failed to load configuration');
+                }
+            } catch (error) {
+                showError('Error loading configuration: ' + error.message);
+            }
+        }
+
+        window.testConnection = async function() {
+            showLoading('Testing connection...');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/clubready-test-connection`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                showResult('Connection Test', data, response.ok);
+            } catch (error) {
+                showResult('Connection Test', { error: error.message }, false);
+            }
+        };
+
+        window.testSearchProspect = async function() {
+            const email = document.getElementById('testEmail').value;
+            showLoading('Searching for prospect...');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/clubready-search-prospect`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+                showResult('Search Prospect Test', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                }, response.ok);
+            } catch (error) {
+                showResult('Search Prospect Test', { error: error.message }, false);
+            }
+        };
+
+        window.testCreateProspect = async function() {
+            const email = document.getElementById('testEmail').value;
+            const firstName = document.getElementById('testFirstName').value;
+            const lastName = document.getElementById('testLastName').value;
+            const phone = document.getElementById('testPhone').value;
+
+            showLoading('Creating prospect...');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/clubready-create-prospect`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        firstName,
+                        lastName,
+                        phone,
+                        storeId: null
+                    })
+                });
+
+                const data = await response.json();
+                showResult('Create Prospect Test', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                }, response.ok);
+            } catch (error) {
+                showResult('Create Prospect Test', { error: error.message }, false);
+            }
+        };
+
+        window.testGetPackages = async function() {
+            showLoading('Getting packages...');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/clubready-get-packages`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        storeId: null
+                    })
+                });
+
+                const data = await response.json();
+                showResult('Get Packages Test', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                }, response.ok);
+            } catch (error) {
+                showResult('Get Packages Test', { error: error.message }, false);
+            }
+        };
+
+        window.loadRecentLogs = async function() {
+            showLoading('Loading recent logs...', 'logsResults');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/clubready_payment_logs?select=*&order=created_at.desc&limit=10`, {
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                showResult('Recent Payment Logs', data, response.ok, 'logsResults');
+            } catch (error) {
+                showResult('Recent Payment Logs', { error: error.message }, false, 'logsResults');
+            }
+        };
+
+        function showLoading(message, target = 'testResults') {
+            document.getElementById(target).innerHTML = `
+                <div class="result-box">
+                    <div class="loading"></div> ${message}
+                </div>
+            `;
+        }
+
+        function showResult(title, data, success, target = 'testResults') {
+            const className = success ? 'success' : 'error';
+            const icon = success ? '✓' : '✗';
+            document.getElementById(target).innerHTML = `
+                <div class="result-box ${className}">
+                    <strong>${icon} ${title}</strong>
+                    ${JSON.stringify(data, null, 2)}
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('configStatus').innerHTML = `
+                <div class="error">${message}</div>
+            `;
+        }
+
+        loadConfig();
+    </script>
+</body>
+</html>
