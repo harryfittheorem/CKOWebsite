@@ -75,8 +75,12 @@
       color: black;
     }
   </style>
+  <link rel="stylesheet" href="accessibility.css">
 </head>
 <body class="antialiased text-white bg-black">
+  <!-- Skip Navigation Link for Accessibility -->
+  <a href="#main-content" class="skip-to-main">Skip to main content</a>
+
   <!-- Top Bar -->
   <div class="hidden md:flex text-xs uppercase font-semibold text-gray-400 tracking-[0.15em] bg-[#0a0a0a] z-50 border-white/5 border-b py-2 px-8 relative items-center justify-between">
     <button class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/5" aria-label="Open search">
@@ -118,16 +122,17 @@
   </nav>
 
   <!-- Main Content -->
-  <main class="flex flex-col md:flex-row gap-0 flex-1 overflow-hidden min-h-screen">
+  <main id="main-content" class="flex flex-col md:flex-row gap-0 flex-1 overflow-hidden min-h-screen">
     <!-- Left Sidebar - Search and Location List -->
-    <div class="w-full md:w-96 bg-black border-r border-white/10 p-6 overflow-y-auto flex flex-col">
+    <aside class="w-full md:w-96 bg-black border-r border-white/10 p-6 overflow-y-auto flex flex-col" aria-label="Location search">
       <div class="mb-8">
         <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-accent">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
           FIND YOUR STUDIO
         </h2>
-        
+
         <form id="searchForm" class="space-y-3">
+          <label for="searchInput" class="sr-only">Enter city, state, or zip code</label>
           <input
             type="text"
             id="searchInput"
@@ -138,6 +143,7 @@
             <button
               type="submit"
               class="flex-1 bg-accent text-black font-bold py-3 hover:bg-yellow-500 transition"
+              aria-label="Search for locations"
             >
               GO
             </button>
@@ -145,6 +151,7 @@
               type="button"
               id="clearBtn"
               class="flex-1 bg-gray-700 text-white font-bold py-3 hover:bg-gray-600 transition"
+              aria-label="Clear search"
             >
               CLEAR
             </button>
@@ -153,19 +160,19 @@
       </div>
 
       <!-- Location List -->
-      <div id="locationsList" class="space-y-4 flex-1 overflow-y-auto">
+      <div id="locationsList" class="space-y-4 flex-1 overflow-y-auto" role="region" aria-label="Studio locations" aria-live="polite">
         <!-- Locations will be populated here by JavaScript -->
       </div>
-    </div>
+    </aside>
 
     <!-- Right Side - Map -->
-    <div class="flex-1 relative bg-gray-300">
+    <div class="flex-1 relative bg-gray-300" role="region" aria-label="Map view">
       <!-- Map Style Buttons -->
-      <div class="absolute top-4 right-4 z-10 flex gap-2">
-        <button class="map-style-btn active" data-style="default">Map</button>
-        <button class="map-style-btn" data-style="satellite">Satellite</button>
+      <div class="absolute top-4 right-4 z-10 flex gap-2" role="group" aria-label="Map style selection">
+        <button class="map-style-btn active" data-style="default" aria-label="Switch to map view" aria-pressed="true">Map</button>
+        <button class="map-style-btn" data-style="satellite" aria-label="Switch to satellite view" aria-pressed="false">Satellite</button>
       </div>
-      <div id="map"></div>
+      <div id="map" role="application" aria-label="Interactive map of CKO Kickboxing locations"></div>
     </div>
   </main>
 

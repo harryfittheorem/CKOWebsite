@@ -1,0 +1,295 @@
+/* ==========================================
+   CKO Kickboxing - Accessibility Styles
+   WCAG 2.1 AA Compliant
+   ========================================== */
+
+/* Skip Navigation Link */
+.skip-to-main {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #fec400;
+  color: #000;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 9999;
+  border-radius: 0 0 4px 0;
+  transition: top 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.skip-to-main:focus {
+  top: 0;
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+/* Focus Indicators - High Visibility */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus,
+summary:focus {
+  outline: 3px solid #fec400 !important;
+  outline-offset: 2px !important;
+}
+
+/* Dark background focus (for light elements on dark backgrounds) */
+.dark-bg a:focus,
+.dark-bg button:focus,
+.bg-black a:focus,
+.bg-black button:focus,
+nav a:focus,
+nav button:focus {
+  outline: 3px solid #fec400 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.9);
+}
+
+/* Light background focus (for dark elements on light backgrounds) */
+.light-bg a:focus,
+.light-bg button:focus,
+.bg-white a:focus,
+.bg-white button:focus,
+.bg-gray-50 a:focus,
+.bg-gray-50 button:focus {
+  outline: 3px solid #000 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+/* Remove default focus for mouse users only (keep for keyboard) */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid #fec400 !important;
+  outline-offset: 2px !important;
+}
+
+/* Screen Reader Only Text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip links for keyboard navigation */
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  a:focus,
+  button:focus,
+  input:focus {
+    outline-width: 4px !important;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Enhanced Clickable Area for Small Touch Targets */
+.btn-enhanced-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Color Contrast Fixes */
+.text-accent-safe {
+  color: #e5b000; /* Darker yellow for better contrast */
+}
+
+.bg-accent-safe {
+  background-color: #e5b000;
+}
+
+/* Visible Focus for Interactive Elements */
+.interactive-element {
+  cursor: pointer;
+}
+
+.interactive-element:focus {
+  outline: 3px solid #fec400;
+  outline-offset: 2px;
+}
+
+/* Improve link distinction */
+a:not(.btn):not(.button) {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+
+a:not(.btn):not(.button):hover,
+a:not(.btn):not(.button):focus {
+  text-decoration-color: currentColor;
+}
+
+/* Button Focus States */
+button:focus,
+.button:focus,
+[role="button"]:focus {
+  outline: 3px solid #fec400 !important;
+  outline-offset: 2px !important;
+}
+
+/* Form Field Focus */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid #fec400 !important;
+  outline-offset: 2px !important;
+  border-color: #fec400 !important;
+}
+
+/* Mobile Menu Accessibility */
+[aria-expanded="true"] + * {
+  display: block;
+}
+
+[aria-expanded="false"] + * {
+  display: none;
+}
+
+/* Error States */
+.error-field {
+  border-color: #dc2626 !important;
+  outline-color: #dc2626 !important;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Success States */
+.success-field {
+  border-color: #16a34a !important;
+}
+
+/* Loading State Accessibility */
+[aria-busy="true"] {
+  cursor: wait;
+}
+
+/* Hidden Content */
+[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+/* Dialog/Modal Focus Trap */
+.dialog-open {
+  overflow: hidden;
+}
+
+/* Keyboard-only Focus */
+.keyboard-focus:focus-visible {
+  outline: 3px solid #fec400 !important;
+  outline-offset: 2px !important;
+}
+
+/* High Contrast Text */
+.contrast-text {
+  color: #000;
+  background: #fec400;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Skip to Content Target */
+#main-content {
+  scroll-margin-top: 100px;
+}
+
+/* Announcement Region */
+[role="alert"],
+[role="status"] {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 8px 0;
+  font-weight: 500;
+}
+
+[role="alert"] {
+  background: #fee;
+  border: 2px solid #dc2626;
+  color: #7f1d1d;
+}
+
+[role="status"] {
+  background: #eff6ff;
+  border: 2px solid #2563eb;
+  color: #1e3a8a;
+}
+
+/* Navigation Focus Order */
+nav a {
+  position: relative;
+}
+
+/* Improve Icon Button Accessibility */
+button[aria-label] {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Card Link Accessibility */
+.card-link::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* Print Styles for Accessibility */
+@media print {
+  .skip-to-main,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}
