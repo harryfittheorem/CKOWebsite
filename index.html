@@ -164,7 +164,10 @@ caret-color: white !important;
 
             <!-- Step 2: Lead Capture Form (Initially Hidden) -->
             <div id="step-2-lead" class="hidden">
-              <div id="location-match-message" class="text-[#fec400] text-sm font-medium mb-6 text-center"></div>
+              <div id="location-match-message" class="text-[#fec400] text-sm font-medium mb-4 text-center"></div>
+              <div id="ip-detection-note" class="hidden text-gray-400 text-xs text-center mb-6">
+                Detected from your location · Not right? <button type="button" id="override-zip-btn" class="text-[#fec400] hover:underline">← Search by ZIP</button>
+              </div>
 
               <form id="lead-form" class="space-y-4">
                 <div>
@@ -732,6 +735,7 @@ caret-color: white !important;
       const RADIUS_MILES = 20;
 
       window.CKO_MATCHED_LOCATION = null;
+      let detectedByIP = false;
 
       // Haversine distance calculation
       function getMilesBetween(lat1, lng1, lat2, lng2) {
@@ -770,12 +774,12 @@ caret-color: white !important;
       }
 
       // Transition between steps
-      function showStep2() {
+      function showStep2(skipAnimation = false) {
         const step1 = document.getElementById('step-1-zip');
         const step2 = document.getElementById('step-2-lead');
 
-        step1.style.opacity = '0';
-        setTimeout(() => {
+        if (skipAnimation) {
+          // For IP detection - just show step 2 immediately
           step1.classList.add('hidden');
           step2.classList.remove('hidden');
           step2.style.opacity = '0';
@@ -785,7 +789,21 @@ caret-color: white !important;
             step2.style.opacity = '1';
             step2.style.transform = 'translateY(0)';
           }, 50);
-        }, 300);
+        } else {
+          // For ZIP search - animate out step 1 first
+          step1.style.opacity = '0';
+          setTimeout(() => {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            step2.style.opacity = '0';
+            step2.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+              step2.style.transition = 'opacity 300ms ease-out, transform 300ms ease-out';
+              step2.style.opacity = '1';
+              step2.style.transform = 'translateY(0)';
+            }, 50);
+          }, 300);
+        }
       }
 
       function resetToStep1() {
@@ -800,8 +818,74 @@ caret-color: white !important;
           document.getElementById('zip-input').value = '';
           document.getElementById('lead-form').reset();
           window.CKO_MATCHED_LOCATION = null;
+          detectedByIP = false;
+          document.getElementById('ip-detection-note').classList.add('hidden');
         }, 300);
       }
+
+      // IP-based location detection (runs on page load)
+      async function detectLocationFromIP() {
+        try {
+          const res = await fetch('https://ipapi.co/json/');
+          if (!res.ok) return null;
+
+          const data = await res.json();
+          if (!data.latitude || !data.longitude) return null;
+
+          // Query Supabase for active locations
+          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,phone,lat,lng`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          });
+
+          if (!locationsRes.ok) return null;
+
+          const locations = await locationsRes.json();
+
+          // Calculate distances and find nearest location
+          const locationsWithDistance = locations.map(loc => ({
+            ...loc,
+            miles: getMilesBetween(data.latitude, data.longitude, parseFloat(loc.lat), parseFloat(loc.lng))
+          }));
+
+          const nearest = locationsWithDistance
+            .filter(loc => loc.miles <= RADIUS_MILES)
+            .sort((a, b) => a.miles - b.miles)[0];
+
+          return nearest ?? null;
+
+        } catch (e) {
+          // Fail silently - never break the page
+          return null;
+        }
+      }
+
+      // Run IP detection on page load
+      (async function initHeroForm() {
+        const ipLocation = await detectLocationFromIP();
+
+        if (ipLocation) {
+          // IP detection found a location - skip Step 1
+          detectedByIP = true;
+          window.CKO_MATCHED_LOCATION = {
+            name: ipLocation.name,
+            slug: ipLocation.slug,
+            miles: ipLocation.miles.toFixed(1),
+            detectedByIP: true
+          };
+
+          document.getElementById('location-match-message').innerHTML =
+            `📍 CKO ${ipLocation.name} is ${ipLocation.miles.toFixed(1)} miles away — First Class Is Free`;
+
+          document.getElementById('ip-detection-note').classList.remove('hidden');
+
+          // Skip Step 1 and jump to Step 2
+          showStep2(true);
+        }
+        // If ipLocation is null, do nothing - Step 1 will show normally
+      })();
 
       // Step 1: ZIP Code Submission
       document.getElementById('zip-form').addEventListener('submit', async (e) => {
@@ -866,18 +950,22 @@ caret-color: white !important;
             window.CKO_MATCHED_LOCATION = {
               name: nearest.name,
               slug: nearest.slug,
-              miles: nearest.miles.toFixed(1)
+              miles: nearest.miles.toFixed(1),
+              detectedByIP: false
             };
             document.getElementById('location-match-message').innerHTML =
               `📍 CKO ${nearest.name} is ${nearest.miles.toFixed(1)} miles away — First Class Is Free`;
+            document.getElementById('ip-detection-note').classList.add('hidden');
           } else {
             window.CKO_MATCHED_LOCATION = {
               name: "Coming Soon",
               slug: "waitlist",
-              miles: null
+              miles: null,
+              detectedByIP: false
             };
             document.getElementById('location-match-message').innerHTML =
               "We're expanding! Leave your info and we'll notify you when CKO opens near you.";
+            document.getElementById('ip-detection-note').classList.add('hidden');
           }
 
           // Transition to Step 2
@@ -897,8 +985,9 @@ caret-color: white !important;
         e.target.value = formatted;
       });
 
-      // Reset button
+      // Reset buttons
       document.getElementById('reset-zip-btn').addEventListener('click', resetToStep1);
+      document.getElementById('override-zip-btn').addEventListener('click', resetToStep1);
 
       // Step 2: Lead Form Submission
       document.getElementById('lead-form').addEventListener('submit', async (e) => {
@@ -951,7 +1040,7 @@ caret-color: white !important;
             location_slug: window.CKO_MATCHED_LOCATION.slug,
             location_name: window.CKO_MATCHED_LOCATION.name,
             miles_from_visitor: window.CKO_MATCHED_LOCATION.miles ? parseFloat(window.CKO_MATCHED_LOCATION.miles) : null,
-            source: 'homepage-hero',
+            source: window.CKO_MATCHED_LOCATION.detectedByIP ? 'homepage-hero-ip' : 'homepage-hero-zip',
             created_at: new Date().toISOString()
           };
 
