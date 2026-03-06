@@ -142,20 +142,90 @@ caret-color: white !important;
           <span class="block text-white font-medium text-xl md:text-2xl mb-3 tracking-wide">Finally, a workout you'll look forward to.</span> Burn up to 1,200 calories and relieve stress in a supportive, non-intimidating environment. <span class="text-white font-medium underline decoration-accent decoration-2 underline-offset-4">Your first class is completely free.</span>
         </p>
         <div class="reveal-on-scroll delay-200 is-visible pointer-events-auto w-full max-w-lg mr-auto ml-auto">
-          <label class="uppercase text-accent block text-xs font-semibold tracking-[0.2em] mb-3">Find Your Studio &amp; Book Your Free Class</label>
-          <form action="find-your-location.html" method="GET" class="w-full relative">
-            <div class="flex group relative items-center mb-4">
-              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-accent">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="map-pin" class="lucide lucide-map-pin w-5 h-5" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              </div>
-              <label for="zip-input" class="sr-only">Enter your zip code or city</label>
-              <input type="text" name="zip" placeholder="Enter Zip Code or City" class="placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-colors text-sm font-medium text-white bg-white/10 w-full h-14 border-white/20 border rounded-sm pt-2 pr-6 pb-2 pl-12 backdrop-blur-md" required="" id="zip-input">
+          <div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-sm p-6 md:p-8">
+
+            <!-- Step 1: ZIP Code Input -->
+            <div id="step-1-zip" class="transition-all duration-300">
+              <label class="uppercase text-accent block text-xs font-semibold tracking-[0.2em] mb-3">Find Your Studio &amp; Book Your Free Class</label>
+              <form id="zip-form" class="w-full relative">
+                <div class="flex group relative items-center mb-4">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-accent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </div>
+                  <label for="zip-input" class="sr-only">Enter your zip code</label>
+                  <input type="text" name="zip" placeholder="Enter ZIP Code" class="placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-colors text-sm font-medium text-white bg-white/10 w-full h-14 border-white/20 border rounded-sm pt-2 pr-6 pb-2 pl-12" required="" id="zip-input" maxlength="5" inputmode="numeric">
+                </div>
+                <div id="zip-error" class="hidden text-red-400 text-sm mb-3"></div>
+                <button type="submit" id="zip-submit-btn" class="w-full bg-[#fec400] hover:bg-[#e5b000] text-black font-bold uppercase tracking-widest h-14 rounded-sm transition-all">
+                  <span>Find Your Location</span>
+                </button>
+              </form>
             </div>
-            <button type="submit" class="flex hover:border-[#fec400] hover:text-[#fec400] transition-all group text-gray-400 bg-transparent w-full h-12 border-white/10 border rounded-sm items-center justify-center">
-              <span class="uppercase text-xs font-semibold tracking-[0.2em]">Find your location </span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-            </button>
-          </form>
+
+            <!-- Step 2: Lead Capture Form (Initially Hidden) -->
+            <div id="step-2-lead" class="hidden">
+              <div id="location-match-message" class="text-[#fec400] text-sm font-medium mb-6 text-center"></div>
+
+              <form id="lead-form" class="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    id="lead-name"
+                    name="name"
+                    placeholder="Full Name"
+                    required
+                    class="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-all"
+                  />
+                  <div id="name-error" class="hidden text-red-400 text-xs mt-1"></div>
+                </div>
+
+                <div>
+                  <input
+                    type="tel"
+                    id="lead-phone"
+                    name="phone"
+                    placeholder="Phone Number"
+                    required
+                    class="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-all"
+                  />
+                  <div id="phone-error" class="hidden text-red-400 text-xs mt-1"></div>
+                </div>
+
+                <div>
+                  <input
+                    type="email"
+                    id="lead-email"
+                    name="email"
+                    placeholder="Email Address"
+                    required
+                    class="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-all"
+                  />
+                  <div id="email-error" class="hidden text-red-400 text-xs mt-1"></div>
+                </div>
+
+                <div id="lead-submit-error" class="hidden text-red-400 text-sm text-center"></div>
+
+                <button
+                  type="submit"
+                  id="lead-submit-btn"
+                  class="w-full h-14 bg-[#fec400] hover:bg-[#e5b000] text-black font-bold uppercase tracking-widest rounded-sm transition-all"
+                >
+                  Claim My Free Class →
+                </button>
+
+                <p class="text-gray-400 text-xs text-center">No credit card. No commitment. Cancel anytime.</p>
+
+                <button
+                  type="button"
+                  id="reset-zip-btn"
+                  class="w-full text-gray-400 hover:text-[#fec400] text-xs transition-colors"
+                >
+                  ← Search a different ZIP
+                </button>
+              </form>
+            </div>
+
+          </div>
         </div>
         <div class="mt-8 flex flex-col md:flex-row items-center justify-center gap-3 text-sm text-gray-400 reveal-on-scroll delay-300 is-visible pointer-events-auto">
           <div class="flex text-accent gap-1" aria-label="5 star rating">
@@ -655,6 +725,261 @@ caret-color: white !important;
     <script>
       // Initialize Lucide Icons
       lucide.createIcons();
+
+      // ===== 2-Step Hero Lead Capture Form =====
+      const SUPABASE_URL = 'https://agbmljovmexflolbgljn.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYm1sam92bWV4ZmxvbGJnbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTg3ODAsImV4cCI6MjA4MzM3NDc4MH0.dBQxzYtka4nD0eJQFH0Izj-jbQBX4kEoMS0vZrSOtRA';
+      const RADIUS_MILES = 20;
+
+      window.CKO_MATCHED_LOCATION = null;
+
+      // Haversine distance calculation
+      function getMilesBetween(lat1, lng1, lat2, lng2) {
+        const R = 3958.8; // Earth radius in miles
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) ** 2 +
+                  Math.cos(lat1 * Math.PI/180) *
+                  Math.cos(lat2 * Math.PI/180) *
+                  Math.sin(dLng/2) ** 2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      }
+
+      // Phone number live formatting
+      function formatPhoneInput(input) {
+        const digits = input.replace(/\D/g, '');
+        if (digits.length <= 3) return digits;
+        if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+        return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+      }
+
+      // Email validation
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      // Show/hide error messages
+      function showError(elementId, message) {
+        const el = document.getElementById(elementId);
+        el.textContent = message;
+        el.classList.remove('hidden');
+      }
+
+      function hideError(elementId) {
+        document.getElementById(elementId).classList.add('hidden');
+      }
+
+      // Transition between steps
+      function showStep2() {
+        const step1 = document.getElementById('step-1-zip');
+        const step2 = document.getElementById('step-2-lead');
+
+        step1.style.opacity = '0';
+        setTimeout(() => {
+          step1.classList.add('hidden');
+          step2.classList.remove('hidden');
+          step2.style.opacity = '0';
+          step2.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            step2.style.transition = 'opacity 300ms ease-out, transform 300ms ease-out';
+            step2.style.opacity = '1';
+            step2.style.transform = 'translateY(0)';
+          }, 50);
+        }, 300);
+      }
+
+      function resetToStep1() {
+        const step1 = document.getElementById('step-1-zip');
+        const step2 = document.getElementById('step-2-lead');
+
+        step2.style.opacity = '0';
+        setTimeout(() => {
+          step2.classList.add('hidden');
+          step1.classList.remove('hidden');
+          step1.style.opacity = '1';
+          document.getElementById('zip-input').value = '';
+          document.getElementById('lead-form').reset();
+          window.CKO_MATCHED_LOCATION = null;
+        }, 300);
+      }
+
+      // Step 1: ZIP Code Submission
+      document.getElementById('zip-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const zipInput = document.getElementById('zip-input');
+        const zip = zipInput.value.trim();
+        const submitBtn = document.getElementById('zip-submit-btn');
+
+        hideError('zip-error');
+
+        // Validate 5-digit ZIP
+        if (!/^\d{5}$/.test(zip)) {
+          showError('zip-error', 'Please enter a valid 5-digit ZIP code.');
+          return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Searching...</span>';
+
+        try {
+          // Convert ZIP to coordinates
+          const zipRes = await fetch(`https://api.zippopotam.us/us/${zip}`);
+          if (!zipRes.ok) {
+            showError('zip-error', "We couldn't find that ZIP code. Please try again.");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Find Your Location</span>';
+            return;
+          }
+
+          const zipData = await zipRes.json();
+          const visitorLat = parseFloat(zipData.places[0].latitude);
+          const visitorLng = parseFloat(zipData.places[0].longitude);
+
+          // Query active locations from Supabase
+          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,phone,lat,lng`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          });
+
+          if (!locationsRes.ok) {
+            throw new Error('Failed to fetch locations');
+          }
+
+          const locations = await locationsRes.json();
+
+          // Calculate distances and find nearest location
+          const locationsWithDistance = locations.map(loc => ({
+            ...loc,
+            miles: getMilesBetween(visitorLat, visitorLng, parseFloat(loc.lat), parseFloat(loc.lng))
+          }));
+
+          const nearest = locationsWithDistance
+            .filter(loc => loc.miles <= RADIUS_MILES)
+            .sort((a, b) => a.miles - b.miles)[0];
+
+          // Set matched location
+          if (nearest) {
+            window.CKO_MATCHED_LOCATION = {
+              name: nearest.name,
+              slug: nearest.slug,
+              miles: nearest.miles.toFixed(1)
+            };
+            document.getElementById('location-match-message').innerHTML =
+              `📍 CKO ${nearest.name} is ${nearest.miles.toFixed(1)} miles away — First Class Is Free`;
+          } else {
+            window.CKO_MATCHED_LOCATION = {
+              name: "Coming Soon",
+              slug: "waitlist",
+              miles: null
+            };
+            document.getElementById('location-match-message').innerHTML =
+              "We're expanding! Leave your info and we'll notify you when CKO opens near you.";
+          }
+
+          // Transition to Step 2
+          showStep2();
+
+        } catch (error) {
+          console.error('Error:', error);
+          showError('zip-error', 'Something went wrong. Please try again.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Find Your Location</span>';
+        }
+      });
+
+      // Phone number formatting on input
+      document.getElementById('lead-phone').addEventListener('input', (e) => {
+        const formatted = formatPhoneInput(e.target.value);
+        e.target.value = formatted;
+      });
+
+      // Reset button
+      document.getElementById('reset-zip-btn').addEventListener('click', resetToStep1);
+
+      // Step 2: Lead Form Submission
+      document.getElementById('lead-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('lead-name');
+        const phoneInput = document.getElementById('lead-phone');
+        const emailInput = document.getElementById('lead-email');
+        const submitBtn = document.getElementById('lead-submit-btn');
+
+        // Hide all errors
+        hideError('name-error');
+        hideError('phone-error');
+        hideError('email-error');
+        hideError('lead-submit-error');
+
+        let hasError = false;
+
+        // Validate name
+        if (!nameInput.value.trim()) {
+          showError('name-error', 'Please enter your name');
+          hasError = true;
+        }
+
+        // Validate phone
+        const phoneDigits = phoneInput.value.replace(/\D/g, '');
+        if (phoneDigits.length !== 10) {
+          showError('phone-error', 'Please enter a valid 10-digit phone number');
+          hasError = true;
+        }
+
+        // Validate email
+        if (!isValidEmail(emailInput.value.trim())) {
+          showError('email-error', 'Please enter a valid email address');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'One sec...';
+
+        try {
+          // Submit to Supabase leads table
+          const leadData = {
+            name: nameInput.value.trim(),
+            phone: phoneInput.value,
+            email: emailInput.value.trim().toLowerCase(),
+            location_slug: window.CKO_MATCHED_LOCATION.slug,
+            location_name: window.CKO_MATCHED_LOCATION.name,
+            miles_from_visitor: window.CKO_MATCHED_LOCATION.miles ? parseFloat(window.CKO_MATCHED_LOCATION.miles) : null,
+            source: 'homepage-hero',
+            created_at: new Date().toISOString()
+          };
+
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(leadData)
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to submit lead');
+          }
+
+          // Redirect to thank you page
+          window.location.href = `thank-you-page.html?location=${window.CKO_MATCHED_LOCATION.slug}`;
+
+        } catch (error) {
+          console.error('Error submitting lead:', error);
+          showError('lead-submit-error', 'Something went wrong. Please try again or call us directly.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Claim My Free Class →';
+        }
+      });
       // Mobile Menu Logic
       const mobileMenuBtn = document.getElementById("mobile-menu-btn");
       const mobileMenu = document.getElementById("mobile-menu");
