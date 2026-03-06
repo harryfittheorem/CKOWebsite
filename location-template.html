@@ -121,31 +121,78 @@
       <div class="mb-6">
         <span class="text-accent text-sm font-semibold uppercase tracking-[0.3em]">CKO Kickboxing</span>
       </div>
-      <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[0.95] uppercase tracking-tight mb-6">
-        [Location Name]
+      <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[1.05] uppercase tracking-tight mb-6">
+        Burn 1,200 Calories. Punch Out Your Stress. First Class Free.
       </h1>
-      <p class="text-gray-300 text-lg md:text-2xl font-light leading-relaxed mb-4 max-w-3xl mx-auto">
-        123 Main Street, City, State 12345
+      <p class="text-gray-300 text-lg md:text-2xl font-light leading-relaxed mb-10 max-w-3xl mx-auto">
+        Real heavy bags. Real instructors. No fighting, no experience needed. All levels welcome.
       </p>
-      <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-10">
-        <a href="tel:+15551234567" class="flex items-center gap-2 text-white hover:text-accent transition-colors">
-          <i data-lucide="phone" class="w-4 h-4"></i>
-          <span class="font-medium">(555) 123-4567</span>
-        </a>
-        <span class="hidden md:block text-white/30">|</span>
-        <a href="mailto:location@ckokickboxing.com" class="flex items-center gap-2 text-white hover:text-accent transition-colors">
-          <i data-lucide="mail" class="w-4 h-4"></i>
-          <span class="font-medium">location@ckokickboxing.com</span>
-        </a>
-      </div>
-      <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-        <a href="#book" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-4 px-10 text-sm rounded-sm transition-all inline-flex items-center gap-2">
-          Book Free Class
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </a>
-        <a href="#schedule" class="bg-transparent border-2 border-white hover:border-accent hover:text-accent text-white font-semibold uppercase tracking-[0.2em] py-4 px-10 text-sm rounded-sm transition-all">
-          View Schedule
-        </a>
+
+      <!-- Hero Lead Capture Form -->
+      <div class="max-w-md mx-auto">
+        <div id="hero-form-container" class="bg-black/60 backdrop-blur-sm border border-accent rounded-lg p-6 md:p-8">
+          <div class="text-center mb-6">
+            <p class="text-accent font-bold text-lg uppercase tracking-wider mb-1">This Week Only</p>
+            <p class="text-white text-2xl font-semibold">First Class Free</p>
+          </div>
+
+          <form id="hero-lead-form" class="space-y-4">
+            <div>
+              <input
+                type="text"
+                id="hero-name"
+                name="name"
+                placeholder="Full Name"
+                required
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+              />
+            </div>
+
+            <div>
+              <input
+                type="tel"
+                id="hero-phone"
+                name="phone"
+                placeholder="Phone Number"
+                required
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+              />
+            </div>
+
+            <div>
+              <input
+                type="email"
+                id="hero-email"
+                name="email"
+                placeholder="Email Address"
+                required
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded text-white placeholder-gray-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+              />
+            </div>
+
+            <div id="hero-error-message" class="hidden text-red-400 text-sm text-center"></div>
+
+            <button
+              type="submit"
+              id="hero-submit-btn"
+              class="w-full bg-accent hover:bg-[#e5b000] text-black font-bold uppercase tracking-[0.2em] py-4 px-6 text-sm rounded transition-all"
+            >
+              Claim My Free Class →
+            </button>
+
+            <p class="text-gray-400 text-xs text-center">No credit card. No commitment.</p>
+          </form>
+
+          <div id="hero-success-message" class="hidden text-center">
+            <div class="mb-4">
+              <svg class="w-16 h-16 text-accent mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-white text-2xl font-bold mb-2">Thanks!</h3>
+            <p class="text-gray-300 text-lg">We'll text you shortly to book your free class.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -153,15 +200,20 @@
   <!-- Location Info Bar -->
   <section class="bg-accent py-4">
     <div class="max-w-[1600px] mx-auto px-6">
-      <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-black">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 text-black text-center md:text-left">
         <div class="flex items-center gap-2">
-          <i data-lucide="clock" class="w-5 h-5"></i>
-          <span class="font-semibold uppercase tracking-wider text-sm">Mon-Fri: 5AM-9PM | Sat-Sun: 7AM-6PM</span>
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <a href="tel:+15551234567" class="font-semibold uppercase tracking-wider text-sm hover:underline">(555) 123-4567</a>
         </div>
         <div class="hidden md:block w-px h-6 bg-black/20"></div>
         <div class="flex items-center gap-2">
           <i data-lucide="map-pin" class="w-5 h-5"></i>
-          <span class="font-semibold uppercase tracking-wider text-sm">Free Parking Available</span>
+          <span class="font-semibold uppercase tracking-wider text-sm">123 Main St, City, State</span>
+        </div>
+        <div class="hidden md:block w-px h-6 bg-black/20"></div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+          <span class="font-semibold uppercase tracking-wider text-sm">Mon-Fri: 5AM-9PM | Sat-Sun: 7AM-6PM</span>
         </div>
       </div>
     </div>
@@ -817,6 +869,60 @@
         }
       });
     });
+
+    const heroForm = document.getElementById('hero-lead-form');
+    const heroFormContainer = document.getElementById('hero-form-container');
+    const heroSuccessMessage = document.getElementById('hero-success-message');
+    const heroErrorMessage = document.getElementById('hero-error-message');
+    const heroSubmitBtn = document.getElementById('hero-submit-btn');
+
+    if (heroForm) {
+      heroForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        heroErrorMessage.classList.add('hidden');
+        heroSubmitBtn.disabled = true;
+        heroSubmitBtn.textContent = 'Submitting...';
+
+        const pageTitle = document.querySelector('h1').textContent;
+        const locationName = pageTitle.includes('League City') ? 'League City' : 'Template Location';
+
+        const formData = {
+          name: document.getElementById('hero-name').value,
+          phone: document.getElementById('hero-phone').value,
+          email: document.getElementById('hero-email').value,
+          location: locationName
+        };
+
+        try {
+          const response = await fetch('https://agbmljovmexflolbgljn.supabase.co/functions/v1/submit-hero-lead', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYm1sam92bWV4ZmxvbGJnbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTg3ODAsImV4cCI6MjA4MzM3NDc4MH0.dBQxzYtka4nD0eJQFH0Izj-jbQBX4kEoMS0vZrSOtRA'
+            },
+            body: JSON.stringify(formData)
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            heroForm.classList.add('hidden');
+            heroSuccessMessage.classList.remove('hidden');
+          } else {
+            heroErrorMessage.textContent = result.error || 'Something went wrong. Please try again.';
+            heroErrorMessage.classList.remove('hidden');
+            heroSubmitBtn.disabled = false;
+            heroSubmitBtn.textContent = 'Claim My Free Class →';
+          }
+        } catch (error) {
+          heroErrorMessage.textContent = 'Network error. Please check your connection and try again.';
+          heroErrorMessage.classList.remove('hidden');
+          heroSubmitBtn.disabled = false;
+          heroSubmitBtn.textContent = 'Claim My Free Class →';
+        }
+      });
+    }
   </script>
 </body>
 </html>
