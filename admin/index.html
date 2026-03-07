@@ -122,10 +122,31 @@
           throw new Error(data.error_description || 'Authentication failed');
         }
 
+        // Fetch user profile to determine role
+        const profileRes = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${data.user.id}&select=role,location_slug`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${data.access_token}`
+          }
+        });
+
+        const profiles = await profileRes.json();
+        const profile = profiles[0];
+
+        if (!profile) {
+          throw new Error('No user profile found. Please contact an administrator.');
+        }
+
         sessionStorage.setItem('cko_admin_token', data.access_token);
         sessionStorage.setItem('cko_admin_refresh', data.refresh_token);
+        sessionStorage.setItem('cko_user_role', profile.role);
+        sessionStorage.setItem('cko_location_slug', profile.location_slug || '');
 
-        window.location.href = 'dashboard.html';
+        if (profile.role === 'admin') {
+          window.location.href = 'dashboard.html';
+        } else {
+          window.location.href = '../franchisee/dashboard.html';
+        }
 
       } catch (error) {
         console.error('Login error:', error);
