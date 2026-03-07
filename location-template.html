@@ -426,6 +426,25 @@
       </div>
     </section>
 
+    <!-- Join Now CTA -->
+    <section id="join-now-section" class="py-24 bg-[#0a0a0a] hidden">
+      <div class="max-w-[1200px] mx-auto px-6 text-center">
+        <div class="reveal-on-scroll">
+          <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Ready to Start?</div>
+          <h2 class="font-heading text-4xl md:text-5xl font-semibold uppercase text-white tracking-tight mb-6">
+            Join <span class="text-accent">Now</span>
+          </h2>
+          <p class="text-gray-400 text-lg font-light max-w-2xl mx-auto mb-10">
+            Choose from our flexible membership options designed to fit your goals
+          </p>
+          <a id="join-now-btn" href="#" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.15em] py-5 px-12 text-sm rounded-sm transition-all inline-flex items-center gap-3 shadow-lg shadow-accent/20">
+            View Memberships
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Pricing -->
     <section id="pricing" class="py-24 bg-black">
       <div class="max-w-[1200px] mx-auto px-6">
@@ -833,6 +852,7 @@
       initScrollAnimations();
       loadScheduleFromDatabase();
       loadLocationMedia();
+      checkForPackages();
     }
 
     async function loadLocationMedia() {
@@ -1131,6 +1151,34 @@
       `;
 
       document.getElementById('schedule-day-tabs').innerHTML = '';
+    }
+
+    async function checkForPackages() {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/packages?location_slug=eq.${slug}&is_active=eq.true&select=count`, {
+          method: 'HEAD',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'count=exact'
+          }
+        });
+
+        if (response.ok) {
+          const countHeader = response.headers.get('content-range');
+          if (countHeader) {
+            const count = parseInt(countHeader.split('/')[1]);
+            if (count > 0) {
+              const joinSection = document.getElementById('join-now-section');
+              const joinBtn = document.getElementById('join-now-btn');
+              joinSection.classList.remove('hidden');
+              joinBtn.href = `checkout-page.html?slug=${slug}`;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error checking for packages:', error);
+      }
     }
 
     // Initialize on page load

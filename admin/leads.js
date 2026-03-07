@@ -122,6 +122,7 @@ async function fetchLeads() {
       allLeads = await response.json();
       filteredLeads = [...allLeads];
       currentPage = 0;
+      populateSourceFilter();
       renderLeadsTable();
       updatePagination();
     } else {
@@ -131,6 +132,20 @@ async function fetchLeads() {
     console.error('Error fetching leads:', error);
     showError('Error loading leads');
   }
+}
+
+function populateSourceFilter() {
+  const sourceSelect = document.getElementById('filter-source');
+  const uniqueSources = [...new Set(allLeads.map(lead => lead.source).filter(Boolean))].sort();
+
+  sourceSelect.innerHTML = '<option value="">All Sources</option>';
+
+  uniqueSources.forEach(source => {
+    const option = document.createElement('option');
+    option.value = source;
+    option.textContent = source;
+    sourceSelect.appendChild(option);
+  });
 }
 
 function applyFilters() {

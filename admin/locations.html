@@ -152,6 +152,9 @@
       <button id="media-tab-btn" class="flex-1 px-6 py-4 text-gray-400 font-medium hover:text-white transition-colors">
         Media
       </button>
+      <button id="packages-tab-btn" class="flex-1 px-6 py-4 text-gray-400 font-medium hover:text-white transition-colors">
+        Packages
+      </button>
     </div>
 
     <div id="details-tab" class="p-6 space-y-4">
@@ -236,6 +239,17 @@
       <div>
         <label class="block text-gray-300 text-sm font-medium mb-2">ClubReady Site ID</label>
         <input type="text" id="input-clubready-site-id" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+      </div>
+
+      <div>
+        <label class="block text-gray-300 text-sm font-medium mb-2">ClubReady API Key</label>
+        <input type="password" id="input-clubready-api-key" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent" placeholder="Location-level ClubReady API key">
+        <p class="text-gray-500 text-xs mt-1">Location-level ClubReady API key</p>
+      </div>
+
+      <div>
+        <label class="block text-gray-300 text-sm font-medium mb-2">ClubReady Chain ID</label>
+        <input type="text" id="input-clubready-chain-id" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
       </div>
 
       <div class="grid grid-cols-2 gap-4">
@@ -371,6 +385,59 @@
 
           <button type="submit" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-all">
             Add Media
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="packages-tab" class="p-6 space-y-4 hidden">
+      <div class="space-y-2" id="packages-list">
+        <div class="text-center text-gray-500 py-8">
+          <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Loading packages...
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-4 mt-6">
+        <h4 class="text-white font-semibold mb-4">Add Package</h4>
+        <form id="add-package-form" class="space-y-3">
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">Name</label>
+            <input type="text" id="package-name" required placeholder="3-Month Intro Package" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">Description (optional)</label>
+            <textarea id="package-description" rows="2" placeholder="Package description" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Price</label>
+              <input type="number" id="package-price" required step="0.01" placeholder="99.00" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            </div>
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Duration (months)</label>
+              <input type="number" id="package-duration" required placeholder="3" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">ClubReady Package ID</label>
+              <input type="text" id="package-clubready-id" required placeholder="12345" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            </div>
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Display Order</label>
+              <input type="number" id="package-display-order" value="0" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-all">
+            Add Package
           </button>
         </form>
       </div>

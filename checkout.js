@@ -355,7 +355,7 @@ async function processPayment() {
 
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      window.location.href = `thank-you-page.html?test=true&transactionId=TEST-${Date.now()}&packageName=${encodeURIComponent(pkg.name)}&amount=${pkg.price}`;
+      window.location.href = `thank-you-page.html?test=true&transactionId=TEST-${Date.now()}&packageName=${encodeURIComponent(pkg.name)}&amount=${pkg.price}&location=${locationSlug || ''}`;
       return;
     }
 
@@ -389,7 +389,7 @@ async function processPayment() {
       throw new Error(paymentData.error || 'Payment processing failed');
     }
 
-    window.location.href = `thank-you-page.html?transactionId=${paymentData.transactionId}&packageName=${encodeURIComponent(paymentData.packageName)}&amount=${paymentData.amount}`;
+    window.location.href = `thank-you-page.html?transactionId=${paymentData.transactionId}&packageName=${encodeURIComponent(paymentData.packageName)}&amount=${paymentData.amount}&location=${locationSlug || ''}`;
   } catch (error) {
     console.error('Payment error:', error);
     showError(error.message || 'Payment processing failed. Please try again.');

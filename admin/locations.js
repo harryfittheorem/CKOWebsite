@@ -28,9 +28,11 @@ const closeBtn = document.getElementById('close-panel-btn');
 const detailsTabBtn = document.getElementById('details-tab-btn');
 const scheduleTabBtn = document.getElementById('schedule-tab-btn');
 const mediaTabBtn = document.getElementById('media-tab-btn');
+const packagesTabBtn = document.getElementById('packages-tab-btn');
 const detailsTab = document.getElementById('details-tab');
 const scheduleTab = document.getElementById('schedule-tab');
 const mediaTab = document.getElementById('media-tab');
+const packagesTab = document.getElementById('packages-tab');
 
 function openPanel() {
   overlay.classList.add('open');
@@ -56,9 +58,12 @@ detailsTabBtn.addEventListener('click', () => {
   scheduleTabBtn.classList.add('text-gray-400');
   mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
   mediaTabBtn.classList.add('text-gray-400');
+  packagesTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  packagesTabBtn.classList.add('text-gray-400');
   detailsTab.classList.remove('hidden');
   scheduleTab.classList.add('hidden');
   mediaTab.classList.add('hidden');
+  packagesTab.classList.add('hidden');
 });
 
 scheduleTabBtn.addEventListener('click', () => {
@@ -68,9 +73,12 @@ scheduleTabBtn.addEventListener('click', () => {
   detailsTabBtn.classList.add('text-gray-400');
   mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
   mediaTabBtn.classList.add('text-gray-400');
+  packagesTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  packagesTabBtn.classList.add('text-gray-400');
   scheduleTab.classList.remove('hidden');
   detailsTab.classList.add('hidden');
   mediaTab.classList.add('hidden');
+  packagesTab.classList.add('hidden');
 
   if (currentLocation) {
     loadSchedule(currentLocation.slug);
@@ -84,12 +92,34 @@ mediaTabBtn.addEventListener('click', () => {
   detailsTabBtn.classList.add('text-gray-400');
   scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
   scheduleTabBtn.classList.add('text-gray-400');
+  packagesTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  packagesTabBtn.classList.add('text-gray-400');
   mediaTab.classList.remove('hidden');
   detailsTab.classList.add('hidden');
   scheduleTab.classList.add('hidden');
+  packagesTab.classList.add('hidden');
 
   if (currentLocation) {
     loadMedia(currentLocation.slug);
+  }
+});
+
+packagesTabBtn.addEventListener('click', () => {
+  packagesTabBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  packagesTabBtn.classList.remove('text-gray-400');
+  detailsTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  detailsTabBtn.classList.add('text-gray-400');
+  scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  scheduleTabBtn.classList.add('text-gray-400');
+  mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  mediaTabBtn.classList.add('text-gray-400');
+  packagesTab.classList.remove('hidden');
+  detailsTab.classList.add('hidden');
+  scheduleTab.classList.add('hidden');
+  mediaTab.classList.add('hidden');
+
+  if (currentLocation) {
+    loadPackages(currentLocation.slug);
   }
 });
 
@@ -225,6 +255,8 @@ window.editLocation = async function(locationId) {
     document.getElementById('input-ghl-location-id').value = currentLocation.ghl_location_id || '';
     document.getElementById('input-ghl-api-key').value = currentLocation.ghl_api_key || '';
     document.getElementById('input-clubready-site-id').value = currentLocation.clubready_site_id || '';
+    document.getElementById('input-clubready-api-key').value = currentLocation.clubready_api_key || '';
+    document.getElementById('input-clubready-chain-id').value = currentLocation.clubready_chain_id || '';
     document.getElementById('input-lat').value = currentLocation.lat || '';
     document.getElementById('input-lng').value = currentLocation.lng || '';
 
@@ -262,6 +294,8 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('input-ghl-location-id').value = '';
   document.getElementById('input-ghl-api-key').value = '';
   document.getElementById('input-clubready-site-id').value = '';
+  document.getElementById('input-clubready-api-key').value = '';
+  document.getElementById('input-clubready-chain-id').value = '';
   document.getElementById('input-lat').value = '';
   document.getElementById('input-lng').value = '';
 
@@ -304,6 +338,8 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     ghl_location_id: document.getElementById('input-ghl-location-id').value.trim(),
     ghl_api_key: document.getElementById('input-ghl-api-key').value.trim() || null,
     clubready_site_id: document.getElementById('input-clubready-site-id').value.trim(),
+    clubready_api_key: document.getElementById('input-clubready-api-key').value.trim() || null,
+    clubready_chain_id: document.getElementById('input-clubready-chain-id').value.trim() || null,
     lat,
     lng,
     is_active: isActive
@@ -614,6 +650,134 @@ document.getElementById('add-media-form').addEventListener('submit', async (e) =
   } catch (error) {
     console.error('Error adding media:', error);
     alert(`Failed to add media: ${error.message}`);
+  }
+});
+
+async function loadPackages(locationSlug) {
+  const packagesList = document.getElementById('packages-list');
+  packagesList.innerHTML = `
+    <div class="text-center text-gray-500 py-8">
+      <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Loading packages...
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/packages?location_slug=eq.${locationSlug}&select=*&order=display_order.asc`, {
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch packages');
+
+    const packages = await response.json();
+
+    if (packages.length === 0) {
+      packagesList.innerHTML = `
+        <div class="text-center text-gray-500 py-8">
+          No packages found for this location. Add one below.
+        </div>
+      `;
+      return;
+    }
+
+    packagesList.innerHTML = packages.map(pkg => `
+      <div class="bg-gray-800 rounded-lg p-4">
+        <div class="flex justify-between items-start">
+          <div class="flex-1 space-y-2">
+            <div class="flex items-center gap-3">
+              <h4 class="text-white font-semibold">${pkg.name}</h4>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${pkg.is_active ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}">
+                ${pkg.is_active ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            ${pkg.description ? `<p class="text-gray-400 text-sm">${pkg.description}</p>` : ''}
+            <div class="flex items-center gap-4 text-sm text-gray-300">
+              <span class="font-semibold text-accent">$${parseFloat(pkg.price).toFixed(2)}</span>
+              <span>${pkg.duration_months} month${pkg.duration_months !== 1 ? 's' : ''}</span>
+              <span class="text-gray-500">CR ID: ${pkg.clubready_package_id}</span>
+              <span class="text-gray-500">Order: ${pkg.display_order}</span>
+            </div>
+          </div>
+          <button onclick="togglePackageStatus('${pkg.id}', ${!pkg.is_active})" class="text-gray-400 hover:text-accent transition-colors ml-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${pkg.is_active ? 'M6 18L18 6M6 6l12 12' : 'M5 13l4 4L19 7'}"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading packages:', error);
+    packagesList.innerHTML = `
+      <div class="text-center text-red-400 py-8">
+        Error loading packages. Please try again.
+      </div>
+    `;
+  }
+}
+
+window.togglePackageStatus = async function(packageId, newStatus) {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/packages?id=eq.${packageId}`, {
+      method: 'PATCH',
+      headers: {
+        ...headers,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ is_active: newStatus })
+    });
+
+    if (!response.ok) throw new Error('Failed to update package status');
+
+    showToast(`Package ${newStatus ? 'activated' : 'deactivated'} successfully!`);
+    loadPackages(currentLocation.slug);
+  } catch (error) {
+    console.error('Error updating package:', error);
+    alert('Failed to update package status');
+  }
+};
+
+document.getElementById('add-package-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!currentLocation) {
+    alert('Please save the location first before adding packages');
+    return;
+  }
+
+  const packageData = {
+    location_slug: currentLocation.slug,
+    name: document.getElementById('package-name').value.trim(),
+    description: document.getElementById('package-description').value.trim() || null,
+    price: parseFloat(document.getElementById('package-price').value),
+    duration_months: parseInt(document.getElementById('package-duration').value),
+    clubready_package_id: document.getElementById('package-clubready-id').value.trim(),
+    display_order: parseInt(document.getElementById('package-display-order').value) || 0,
+    is_active: true
+  };
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/packages`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(packageData)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to add package');
+    }
+
+    showToast('Package added successfully!');
+    document.getElementById('add-package-form').reset();
+    document.getElementById('package-display-order').value = '0';
+    loadPackages(currentLocation.slug);
+  } catch (error) {
+    console.error('Error adding package:', error);
+    alert(`Failed to add package: ${error.message}`);
   }
 });
 
