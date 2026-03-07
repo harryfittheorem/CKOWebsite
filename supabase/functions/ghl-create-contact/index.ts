@@ -51,7 +51,6 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const ghlApiKey = Deno.env.get("GHL_API_KEY");
 
     if (!supabaseUrl || !supabaseServiceKey) {
       console.error("Missing Supabase credentials");
@@ -83,7 +82,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: location, error: locationError } = await supabase
       .from("locations")
-      .select("ghl_location_id")
+      .select("ghl_location_id, ghl_api_key")
       .eq("slug", leadData.location_slug)
       .maybeSingle();
 
@@ -118,6 +117,8 @@ Deno.serve(async (req: Request) => {
 
     const digitsOnly = leadData.phone.replace(/\D/g, "");
     const formattedPhone = digitsOnly.length === 10 ? `+1${digitsOnly}` : `+${digitsOnly}`;
+
+    const ghlApiKey = location.ghl_api_key || Deno.env.get("GHL_API_KEY");
 
     if (!ghlApiKey) {
       console.warn("GHL_API_KEY not configured - skipping GHL push");
