@@ -16,6 +16,14 @@ interface LeadData {
   source: string;
 }
 
+interface SupabaseWebhookPayload {
+  type: string;
+  table: string;
+  schema: string;
+  record: LeadData;
+  old_record: null;
+}
+
 interface GHLContactRequest {
   firstName: string;
   lastName?: string;
@@ -58,7 +66,19 @@ Deno.serve(async (req: Request) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const leadData: LeadData = await req.json();
+    const body: SupabaseWebhookPayload = await req.json();
+
+    if (body.type !== 'INSERT' || !body.record) {
+      return new Response(
+        JSON.stringify({ message: "Not an INSERT event" }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const leadData: LeadData = body.record;
     console.log("Processing lead:", leadData.id, leadData.name, leadData.location_slug);
 
     const { data: location, error: locationError } = await supabase
