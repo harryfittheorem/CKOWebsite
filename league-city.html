@@ -978,6 +978,9 @@
       });
     });
 
+    const SUPABASE_URL = 'https://agbmljovmexflolbgljn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYm1sam92bWV4ZmxvbGJnbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTg3ODAsImV4cCI6MjA4MzM3NDc4MH0.dBQxzYtka4nD0eJQFH0Izj-jbQBX4kEoMS0vZrSOtRA';
+
     const heroForm = document.getElementById('hero-lead-form');
     const heroFormContainer = document.getElementById('hero-form-container');
     const heroSuccessMessage = document.getElementById('hero-success-message');
@@ -992,30 +995,34 @@
         heroSubmitBtn.disabled = true;
         heroSubmitBtn.textContent = 'Submitting...';
 
-        const formData = {
-          name: document.getElementById('hero-name').value,
+        const leadData = {
+          name: document.getElementById('hero-name').value.trim(),
           phone: document.getElementById('hero-phone').value,
-          email: document.getElementById('hero-email').value,
-          location: 'League City'
+          email: document.getElementById('hero-email').value.trim().toLowerCase(),
+          location_slug: 'league-city',
+          location_name: 'CKO League City',
+          miles_from_visitor: null,
+          source: 'location-hero-league-city',
+          created_at: new Date().toISOString()
         };
 
         try {
-          const response = await fetch('https://agbmljovmexflolbgljn.supabase.co/functions/v1/submit-hero-lead', {
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYm1sam92bWV4ZmxvbGJnbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTg3ODAsImV4cCI6MjA4MzM3NDc4MH0.dBQxzYtka4nD0eJQFH0Izj-jbQBX4kEoMS0vZrSOtRA'
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(leadData)
           });
 
-          const result = await response.json();
-
-          if (response.ok && result.success) {
+          if (response.ok) {
             heroForm.classList.add('hidden');
             heroSuccessMessage.classList.remove('hidden');
           } else {
-            heroErrorMessage.textContent = result.error || 'Something went wrong. Please try again.';
+            heroErrorMessage.textContent = 'Something went wrong. Please try again.';
             heroErrorMessage.classList.remove('hidden');
             heroSubmitBtn.disabled = false;
             heroSubmitBtn.textContent = 'Claim My Free Class →';

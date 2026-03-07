@@ -905,7 +905,7 @@
           location_slug: window.CKO_LOCATION.slug,
           location_name: window.CKO_LOCATION.name,
           miles_from_visitor: null,
-          source: 'location-hero',
+          source: `location-hero-${window.CKO_LOCATION.slug}`,
           created_at: new Date().toISOString()
         };
 
