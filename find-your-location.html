@@ -161,7 +161,10 @@
 
       <!-- Location List -->
       <div id="locationsList" class="space-y-4 flex-1 overflow-y-auto" role="region" aria-label="Studio locations" aria-live="polite">
-        <!-- Locations will be populated here by JavaScript -->
+        <div class="flex flex-col items-center justify-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mb-4"></div>
+          <p class="text-gray-400">Loading locations...</p>
+        </div>
       </div>
     </aside>
 
@@ -216,65 +219,44 @@
   </footer>
 
   <script>
-    // All 47 CKO Locations with coordinates
-    const CKO_LOCATIONS = [
-      { name: "CKO Foothill Ranch", address: "26781 Rancho Pkwy", city: "Lake Forest", state: "CA", zip: "92630", phone: "949.614.5143", lat: 33.5487, lng: -117.6915 },
-      { name: "CKO Miramar", address: "7094 Miramar Rd #116", city: "San Diego", state: "CA", zip: "92121", phone: "858.695.8427", lat: 32.9204, lng: -117.2396 },
-      { name: "CKO Simi Valley", address: "2955 Cochran St Unit A1", city: "Simi Valley", state: "CA", zip: "93065", phone: "805.210.5880", lat: 34.2694, lng: -118.7815 },
-      { name: "CKO South Bay", address: "4439 Redondo Beach Blvd", city: "Lawndale", state: "CA", zip: "90260", phone: "424.256.8224", lat: 33.9821, lng: -118.3523 },
-      { name: "CKO Brickell (Miami)", address: "151 SW 7th St", city: "Miami", state: "FL", zip: "33130", phone: "786.228.7690", lat: 25.7580, lng: -80.1933 },
-      { name: "CKO Doral", address: "3887 N.W 107TH AVE, SUITE 106", city: "Miami", state: "FL", zip: "33178", phone: "(305)456-3963", lat: 25.8213, lng: -80.3650 },
-      { name: "CKO Hollywood", address: "2000 Harrison St. Suite 6", city: "Hollywood", state: "FL", zip: "33020", phone: "954.362.4459", lat: 26.0112, lng: -80.1495 },
-      { name: "CKO Kendall", address: "12777 SW 88th Street", city: "Miami", state: "FL", zip: "33186", phone: "305.954.0008", lat: 25.6988, lng: -80.3850 },
-      { name: "CKO River Landing", address: "1420 NW North River Drive Suite 330", city: "Miami", state: "FL", zip: "33125", phone: "786.254.7185", lat: 25.7653, lng: -80.2717 },
-      { name: "CKO GR Downtown", address: "820 Monroe Ave NW #150", city: "Grand Rapids", state: "MI", zip: "49503", phone: "616.920.0335", lat: 42.9632, lng: -85.6789 },
-      { name: "CKO Las Vegas", address: "5375 S Fort Apache Rd, #106", city: "Las Vegas", state: "NV", zip: "89148", phone: "702.970.9287", lat: 36.0726, lng: -115.2845 },
-      { name: "CKO Londonderry", address: "4 Orchard View Drive", city: "Londonderry", state: "NH", zip: "03053", phone: "603.965.3067", lat: 42.8674, lng: -71.4272 },
-      { name: "CKO Allendale", address: "47 W Allendale Ave", city: "Allendale", state: "NJ", zip: "07401", phone: "201.236.1000", lat: 40.9789, lng: -74.1234 },
-      { name: "CKO Bayonne", address: "744 Broadway", city: "Bayonne", state: "NJ", zip: "07002", phone: "201.535.5112", lat: 40.6689, lng: -74.1156 },
-      { name: "CKO Cedar Grove", address: "416 Pompton Ave", city: "Cedar Grove", state: "NJ", zip: "07009", phone: "973.507.9106", lat: 40.8234, lng: -74.2156 },
-      { name: "CKO Chatham", address: "650 Shunpike Rd", city: "Chatham Township", state: "NJ", zip: "07928", phone: "973.966.0066", lat: 40.7945, lng: -74.3567 },
-      { name: "CKO Cherry Hill", address: "1558 Kings Hwy N", city: "Cherry Hill", state: "NJ", zip: "08034", phone: "856.535.1888", lat: 39.9234, lng: -74.9856 },
-      { name: "CKO Clark", address: "301 Central Ave", city: "Clark", state: "NJ", zip: "07066", phone: "732.707.1256", lat: 40.6156, lng: -74.3045 },
-      { name: "CKO Emerson", address: "500 Kinderkamack Rd", city: "Emerson", state: "NJ", zip: "07630", phone: "201.525.8354", lat: 40.9512, lng: -74.0234 },
-      { name: "CKO Freehold", address: "536 Park Ave", city: "Freehold", state: "NJ", zip: "07728", phone: "732.333.0891", lat: 40.2567, lng: -74.2789 },
-      { name: "CKO Hamilton", address: "621 US-130", city: "Hamilton Township", state: "NJ", zip: "08691", phone: "609.838.2872", lat: 40.2234, lng: -74.6789 },
-      { name: "CKO Harrison", address: "1100 Frank E Rodger Blvd S, Unit C", city: "Harrison", state: "NJ", zip: "07029", phone: "973.554.3000", lat: 40.7567, lng: -74.1567 },
-      { name: "CKO Hoboken", address: "900 Madison St. Suite 2", city: "Hoboken", state: "NJ", zip: "07030", phone: "201.963.7774", lat: 40.7356, lng: -74.0314 },
-      { name: "CKO Jersey City", address: "150 Bay St. Building - Provost Street Side", city: "Jersey City", state: "NJ", zip: "07302", phone: "201.360.3072", lat: 40.7178, lng: -74.0431 },
-      { name: "CKO Roselle", address: "711 E 1ST AVE.", city: "Roselle", state: "NJ", zip: "07203", phone: "(908)620-6117", lat: 40.6456, lng: -74.2567 },
-      { name: "CKO Lodi", address: "449 Main St", city: "Lodi", state: "NJ", zip: "07644", phone: "973.777.7761", lat: 40.8756, lng: -74.0934 },
-      { name: "CKO Maplewood", address: "1933 Springfield Ave", city: "Maplewood", state: "NJ", zip: "07040", phone: "973.981.0599", lat: 40.7345, lng: -74.2678 },
-      { name: "CKO Middletown", address: "1700 NJ-35", city: "Middletown", state: "NJ", zip: "07748", phone: "732.671.4256", lat: 40.3956, lng: -74.0789 },
-      { name: "CKO North Brunswick", address: "2182 US-130", city: "North Brunswick Township", state: "NJ", zip: "08902", phone: "732.334.7738", lat: 40.4234, lng: -74.4567 },
-      { name: "CKO Oceanport", address: "700 Oceanport Avenue", city: "Oceanport", state: "NJ", zip: "07757", phone: "732.996.7186", lat: 40.3234, lng: -74.0045 },
-      { name: "CKO Roxbury", address: "180 Howard Blvd Suite 12", city: "Mount Arlington", state: "NJ", zip: "07856", phone: "862.803.1294", lat: 40.8234, lng: -74.5678 },
-      { name: "CKO Toms River", address: "1770 Hooper Ave", city: "Toms River", state: "NJ", zip: "08753", phone: "732-732-2054", lat: 39.7934, lng: -74.1956 },
-      { name: "CKO Wallkill", address: "342 Main Street", city: "Ogdensburg", state: "NJ", zip: "07349", phone: "973.513.3779", lat: 40.9123, lng: -74.3456 },
-      { name: "CKO West New York", address: "4914 John Fitzgerald Kennedy Blvd", city: "West New York", state: "NJ", zip: "07093", phone: "201.546.1010", lat: 40.7856, lng: -74.0123 },
-      { name: "CKO Woodbridge", address: "1009 St Georges Ave", city: "Colonia", state: "NJ", zip: "07067", phone: "732.931.2055", lat: 40.5678, lng: -74.2456 },
-      { name: "CKO Clinton Hill", address: "525 Myrtle Ave", city: "Brooklyn", state: "NY", zip: "11205", phone: "718.306.9433", lat: 40.6856, lng: -73.9567 },
-      { name: "CKO Croton", address: "48 Maple Street", city: "Croton on Hudson", state: "NY", zip: "10520", phone: "914.930.1919", lat: 41.1856, lng: -73.8934 },
-      { name: "CKO Franklin Square", address: "893 Hempstead Turnpike", city: "Franklin Square", state: "NY", zip: "11010", phone: "516.884.8757", lat: 40.7156, lng: -73.6234 },
-      { name: "CKO Great Kills", address: "4255 Amboy Rd", city: "Staten Island", state: "NY", zip: "10308", phone: "718.984.5425", lat: 40.5456, lng: -74.2234 },
-      { name: "CKO Park Slope", address: "333 Schermerhorn Street", city: "Brooklyn", state: "NY", zip: "11217", phone: "718.858.8500", lat: 40.6634, lng: -73.9856 },
-      { name: "CKO Sheepshead Bay", address: "2615 E 17th St", city: "Brooklyn", state: "NY", zip: "11235", phone: "347.587.5715", lat: 40.5756, lng: -73.9456 },
-      { name: "CKO Throggs Neck", address: "815 Hutchinson Parkway", city: "Bronx", state: "NY", zip: "10465", phone: "718.513.6868", lat: 40.8456, lng: -73.8234 },
-      { name: "CKO Tottenville", address: "236 Richmond Valley Rd", city: "Staten Island", state: "NY", zip: "10309", phone: "718.984.5269", lat: 40.5234, lng: -74.2567 },
-      { name: "CKO Warwick", address: "48 Ronald Reagan Blvd", city: "Warwick", state: "NY", zip: "10990", phone: "845.605.2690", lat: 41.3156, lng: -74.1234 },
-      { name: "CKO South Philly", address: "2053 W Oregon Ave", city: "Philadelphia", state: "PA", zip: "19145", phone: "267.519.8625", lat: 39.9234, lng: -75.2156 },
-      { name: "CKO Yardley", address: "1617 Big Oak Rd", city: "Yardley", state: "PA", zip: "19067", phone: "215.321.3355", lat: 40.2156, lng: -74.8234 },
-      { name: "CKO Myrtle Beach", address: "568 George Bishop Parkway", city: "Myrtle Beach", state: "SC", zip: "29579", phone: "843.796.3274", lat: 33.6956, lng: -78.8934 },
-      { name: "CKO League City", address: "830 W Main Street", city: "League City", state: "TX", zip: "77573", phone: "281.724.4422", lat: 29.4934, lng: -95.1156 },
-      { name: "CKO San Antonio", address: "17700 US Hwy 281, Suite 500", city: "San Antonio", state: "TX", zip: "78232", phone: "210.402.1285", lat: 29.5234, lng: -98.4567 }
-    ];
+    const SUPABASE_URL = 'https://agbmljovmexflolbgljn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYm1sam92bWV4ZmxvbGJnbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTg3ODAsImV4cCI6MjA4MzM3NDc4MH0.dBQxzYtka4nD0eJQFH0Izj-jbQBX4kEoMS0vZrSOtRA';
 
+    let CKO_LOCATIONS = [];
     let map;
     let markers = [];
     let userLocation = null;
     let currentMapStyle = 'default';
     let searchMarker = null;
     let geocoder;
+
+    async function fetchLocations() {
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,zip,phone,lat,lng`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch locations');
+        }
+
+        const data = await response.json();
+        CKO_LOCATIONS = data;
+
+        addMarkers(CKO_LOCATIONS);
+        displayLocations(CKO_LOCATIONS);
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+        const list = document.getElementById('locationsList');
+        list.innerHTML = '<div class="text-center py-8"><p class="text-gray-400">Unable to load locations. Please try again.</p></div>';
+      }
+    }
 
     // Initialize map
     function initMap() {
@@ -302,9 +284,7 @@
         );
       }
 
-      // Add all markers
-      addMarkers(CKO_LOCATIONS);
-      displayLocations(CKO_LOCATIONS);
+      fetchLocations();
     }
 
     // Add markers to map with boxing glove icons
@@ -388,7 +368,7 @@
       }
 
       locations.forEach(location => {
-        const distance = userLocation 
+        const distance = userLocation
           ? calculateDistance(userLocation.lat, userLocation.lng, location.lat, location.lng)
           : 0;
 
@@ -401,7 +381,7 @@
           <p class="text-xs text-accent mb-3">${Math.round(distance)} MILES AWAY</p>
           <a href="tel:${location.phone}" class="text-accent font-bold hover:text-yellow-500 transition block mb-3">${location.phone}</a>
           <a href="form-submit-page.html?location=${encodeURIComponent(location.name)}&studio=${encodeURIComponent(location.city)}" class="w-full bg-accent text-black font-bold py-2 hover:bg-yellow-500 transition block text-center mb-2">BOOK CLASS →</a>
-          <a href="${location.name === 'CKO League City' ? 'league-city.html' : '#'}" class="w-full bg-gray-700 text-white font-bold py-2 hover:bg-gray-600 transition block text-center ${location.name !== 'CKO League City' ? 'opacity-50 cursor-not-allowed' : ''}">VIEW LOCATION</a>
+          <a href="location-template.html?slug=${location.slug}" class="w-full bg-gray-700 text-white font-bold py-2 hover:bg-gray-600 transition block text-center">VIEW LOCATION</a>
         `;
         list.appendChild(card);
       });
