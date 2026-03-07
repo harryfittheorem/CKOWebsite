@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CKO Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-heading {
+      font-family: 'Oswald', sans-serif;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#fec400',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-md px-6">
+    <div class="mb-8 text-center">
+      <h1 class="font-heading text-5xl font-bold text-white mb-2">CKO</h1>
+      <p class="text-gray-400 text-lg">Admin Login</p>
+    </div>
+
+    <div class="bg-gray-900 rounded-lg p-8 shadow-2xl">
+      <form id="login-form" class="space-y-6">
+        <div>
+          <label for="email" class="block text-gray-300 text-sm font-medium mb-2">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            required
+            class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-accent transition-colors"
+            placeholder="admin@cko.com"
+          >
+        </div>
+
+        <div>
+          <label for="password" class="block text-gray-300 text-sm font-medium mb-2">Password</label>
+          <input
+            type="password"
+            id="password"
+            required
+            class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-accent transition-colors"
+            placeholder="••••••••"
+          >
+        </div>
+
+        <div id="error-message" class="hidden text-red-500 text-sm bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+          Invalid email or password.
+        </div>
+
+        <button
+          type="submit"
+          id="submit-btn"
+          class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
+        >
+          <span id="submit-text">Sign In</span>
+          <svg id="loading-spinner" class="hidden animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <p class="text-center text-gray-500 text-sm mt-6">
+      CKO Kickboxing Admin Portal
+    </p>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://agbmljovmexflolbgljn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnYm1sam92bWV4ZmxvbGJnbGpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTg3ODAsImV4cCI6MjA4MzM3NDc4MH0.dBQxzYtka4nD0eJQFH0Izj-jbQBX4kEoMS0vZrSOtRA';
+
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const errorMessage = document.getElementById('error-message');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      errorMessage.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitText.textContent = 'Signing in...';
+      loadingSpinner.classList.remove('hidden');
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY
+          },
+          body: JSON.stringify({
+            email: emailInput.value.trim().toLowerCase(),
+            password: passwordInput.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error_description || 'Authentication failed');
+        }
+
+        sessionStorage.setItem('cko_admin_token', data.access_token);
+        sessionStorage.setItem('cko_admin_refresh', data.refresh_token);
+
+        window.location.href = 'dashboard.html';
+
+      } catch (error) {
+        console.error('Login error:', error);
+        errorMessage.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitText.textContent = 'Sign In';
+        loadingSpinner.classList.add('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>
