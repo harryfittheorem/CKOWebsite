@@ -35,10 +35,12 @@ const detailsTabBtn = document.getElementById('details-tab-btn');
 const scheduleTabBtn = document.getElementById('schedule-tab-btn');
 const mediaTabBtn = document.getElementById('media-tab-btn');
 const packagesTabBtn = document.getElementById('packages-tab-btn');
+const usersTabBtn = document.getElementById('users-tab-btn');
 const detailsTab = document.getElementById('details-tab');
 const scheduleTab = document.getElementById('schedule-tab');
 const mediaTab = document.getElementById('media-tab');
 const packagesTab = document.getElementById('packages-tab');
+const usersTab = document.getElementById('users-tab');
 
 function openPanel() {
   overlay.classList.add('open');
@@ -57,75 +59,48 @@ function closePanel() {
 overlay.addEventListener('click', closePanel);
 closeBtn.addEventListener('click', closePanel);
 
+function switchTab(activeBtn, activeTab) {
+  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, usersTabBtn].forEach(btn => {
+    btn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+    btn.classList.add('text-gray-400');
+  });
+  [detailsTab, scheduleTab, mediaTab, packagesTab, usersTab].forEach(tab => {
+    tab.classList.add('hidden');
+  });
+  activeBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  activeBtn.classList.remove('text-gray-400');
+  activeTab.classList.remove('hidden');
+}
+
 detailsTabBtn.addEventListener('click', () => {
-  detailsTabBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  detailsTabBtn.classList.remove('text-gray-400');
-  scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  scheduleTabBtn.classList.add('text-gray-400');
-  mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  mediaTabBtn.classList.add('text-gray-400');
-  packagesTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  packagesTabBtn.classList.add('text-gray-400');
-  detailsTab.classList.remove('hidden');
-  scheduleTab.classList.add('hidden');
-  mediaTab.classList.add('hidden');
-  packagesTab.classList.add('hidden');
+  switchTab(detailsTabBtn, detailsTab);
 });
 
 scheduleTabBtn.addEventListener('click', () => {
-  scheduleTabBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  scheduleTabBtn.classList.remove('text-gray-400');
-  detailsTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  detailsTabBtn.classList.add('text-gray-400');
-  mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  mediaTabBtn.classList.add('text-gray-400');
-  packagesTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  packagesTabBtn.classList.add('text-gray-400');
-  scheduleTab.classList.remove('hidden');
-  detailsTab.classList.add('hidden');
-  mediaTab.classList.add('hidden');
-  packagesTab.classList.add('hidden');
-
+  switchTab(scheduleTabBtn, scheduleTab);
   if (currentLocation) {
     loadSchedule(currentLocation.slug);
   }
 });
 
 mediaTabBtn.addEventListener('click', () => {
-  mediaTabBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  mediaTabBtn.classList.remove('text-gray-400');
-  detailsTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  detailsTabBtn.classList.add('text-gray-400');
-  scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  scheduleTabBtn.classList.add('text-gray-400');
-  packagesTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  packagesTabBtn.classList.add('text-gray-400');
-  mediaTab.classList.remove('hidden');
-  detailsTab.classList.add('hidden');
-  scheduleTab.classList.add('hidden');
-  packagesTab.classList.add('hidden');
-
+  switchTab(mediaTabBtn, mediaTab);
   if (currentLocation) {
     loadMedia(currentLocation.slug);
   }
 });
 
 packagesTabBtn.addEventListener('click', () => {
-  packagesTabBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  packagesTabBtn.classList.remove('text-gray-400');
-  detailsTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  detailsTabBtn.classList.add('text-gray-400');
-  scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  scheduleTabBtn.classList.add('text-gray-400');
-  mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  mediaTabBtn.classList.add('text-gray-400');
-  packagesTab.classList.remove('hidden');
-  detailsTab.classList.add('hidden');
-  scheduleTab.classList.add('hidden');
-  mediaTab.classList.add('hidden');
-
+  switchTab(packagesTabBtn, packagesTab);
   if (currentLocation) {
     loadPackages(currentLocation.slug);
+  }
+});
+
+usersTabBtn.addEventListener('click', () => {
+  switchTab(usersTabBtn, usersTab);
+  if (currentLocation) {
+    loadUsers(currentLocation.slug);
   }
 });
 
@@ -806,6 +781,185 @@ document.getElementById('add-package-form').addEventListener('submit', async (e)
   } catch (error) {
     console.error('Error adding package:', error);
     alert(`Failed to add package: ${error.message}`);
+  }
+});
+
+async function loadUsers(locationSlug) {
+  const usersList = document.getElementById('users-list');
+  usersList.innerHTML = `
+    <div class="text-center text-gray-500 py-8">
+      <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Loading users...
+    </div>
+  `;
+
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/user_locations?location_slug=eq.${locationSlug}&select=user_id,created_at,user_profiles!inner(role)`,
+      { headers }
+    );
+
+    if (!response.ok) throw new Error('Failed to fetch users');
+
+    const userLocations = await response.json();
+
+    if (userLocations.length === 0) {
+      usersList.innerHTML = `
+        <div class="text-center text-gray-500 py-8">
+          No users have access to this location yet.
+        </div>
+      `;
+      return;
+    }
+
+    const userIds = userLocations.map(ul => ul.user_id);
+    const usersResponse = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
+      headers: {
+        ...headers,
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    let authUsers = [];
+    if (usersResponse.ok) {
+      const usersData = await usersResponse.json();
+      authUsers = usersData.users || [];
+    }
+
+    const totalLocationsMap = {};
+    const totalLocationsResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/user_locations?select=user_id`,
+      { headers }
+    );
+
+    if (totalLocationsResponse.ok) {
+      const allUserLocations = await totalLocationsResponse.json();
+      allUserLocations.forEach(ul => {
+        totalLocationsMap[ul.user_id] = (totalLocationsMap[ul.user_id] || 0) + 1;
+      });
+    }
+
+    usersList.innerHTML = userLocations.map(userLoc => {
+      const authUser = authUsers.find(u => u.id === userLoc.user_id);
+      const email = authUser ? authUser.email : 'Unknown';
+      const role = userLoc.user_profiles?.role || 'franchisee';
+      const createdAt = new Date(userLoc.created_at).toLocaleDateString();
+      const totalLocations = totalLocationsMap[userLoc.user_id] || 1;
+
+      return `
+        <div class="bg-gray-800 rounded-lg p-4 flex justify-between items-start">
+          <div class="flex-1 space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-white font-medium">${email}</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${role === 'admin' ? 'bg-accent/10 text-accent' : 'bg-blue-500/10 text-blue-400'}">
+                ${role}
+              </span>
+            </div>
+            <div class="flex items-center gap-4 text-sm text-gray-400">
+              <span>Added: ${createdAt}</span>
+              <span>${totalLocations} location${totalLocations !== 1 ? 's' : ''}</span>
+            </div>
+          </div>
+          <button onclick="revokeUserAccess('${userLoc.user_id}', '${locationSlug}', ${totalLocations})" class="text-red-400 hover:text-red-300 transition-colors ml-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading users:', error);
+    usersList.innerHTML = `
+      <div class="text-center text-red-400 py-8">
+        Error loading users. Please try again.
+      </div>
+    `;
+  }
+}
+
+window.revokeUserAccess = async function(userId, locationSlug, totalLocations) {
+  const message = totalLocations === 1
+    ? 'This is the user\'s only location. Revoking access will delete their account. Continue?'
+    : 'Are you sure you want to revoke this user\'s access to this location?';
+
+  if (!confirm(message)) return;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/manage-franchisee-user`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({
+        action: 'revoke',
+        user_id: userId,
+        location_slug: locationSlug
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Failed to revoke access');
+    }
+
+    showToast(totalLocations === 1 ? 'User account deleted successfully!' : 'Access revoked successfully!');
+    loadUsers(locationSlug);
+  } catch (error) {
+    console.error('Error revoking access:', error);
+    alert(`Failed to revoke access: ${error.message}`);
+  }
+};
+
+document.getElementById('invite-user-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!currentLocation) {
+    alert('Please save the location first before inviting users');
+    return;
+  }
+
+  const email = document.getElementById('user-email').value.trim();
+
+  if (!email) {
+    alert('Please enter an email address');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/manage-franchisee-user`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({
+        action: 'invite',
+        email: email,
+        location_slug: currentLocation.slug
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Failed to invite user');
+    }
+
+    showToast('User invited successfully!');
+    document.getElementById('invite-user-form').reset();
+    loadUsers(currentLocation.slug);
+  } catch (error) {
+    console.error('Error inviting user:', error);
+    alert(`Failed to invite user: ${error.message}`);
   }
 });
 
