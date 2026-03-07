@@ -993,7 +993,7 @@
           });
 
           if (response.ok) {
-            window.location.href = `thank-you-page.html?location=${window.CKO_LOCATION.slug}`;
+            window.location.href = `thank-you-page.html?location=${window.CKO_LOCATION.slug}&name=${encodeURIComponent(formData.name)}`;
           } else {
             throw new Error('Failed to submit form');
           }

@@ -1060,7 +1060,7 @@ caret-color: white !important;
           }
 
           // Redirect to thank you page
-          window.location.href = `thank-you-page.html?location=${window.CKO_MATCHED_LOCATION.slug}`;
+          window.location.href = `thank-you-page.html?location=${window.CKO_MATCHED_LOCATION.slug}&name=${encodeURIComponent(nameInput.value.trim())}`;
 
         } catch (error) {
           console.error('Error submitting lead:', error);

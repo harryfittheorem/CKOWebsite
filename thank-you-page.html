@@ -624,11 +624,17 @@ font-family: "DM Sans", sans-serif !important;
         const actionsContainer = document.querySelector('.reveal-on-scroll.delay-200');
 
         if (headline) {
-          const nameText = userName ? `${userName}! ` : '! ';
-          headline.innerHTML = `
-            You're all set, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">${nameText}</span><br>
-            Welcome to CKO ${location.name}
-          `;
+          if (userName) {
+            headline.innerHTML = `
+              You're all set, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">${userName}!</span><br>
+              Welcome to CKO ${location.name}
+            `;
+          } else {
+            headline.innerHTML = `
+              You're all set!<br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">Welcome to CKO ${location.name}</span>
+            `;
+          }
         }
 
         if (subhead && location.phone) {
