@@ -65,6 +65,33 @@
     .page-content.loaded {
       opacity: 1;
     }
+    .about-gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 240px 240px;
+      gap: 8px;
+    }
+    .about-gallery-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .about-gallery-grid img:nth-child(n+5) {
+      display: none;
+    }
+    .program-card-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+    .program-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
   </style>
 </head>
 <body class="antialiased text-white bg-black">
@@ -307,10 +334,8 @@
             </a>
           </div>
           <div class="reveal-on-scroll">
-            <div class="grid grid-cols-2 gap-4">
-              <img src="https://i.ibb.co/GQv9NHQZ/l.webp" alt="Gym facility" class="w-full h-64 object-cover rounded-sm">
-              <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Training session" class="w-full h-64 object-cover rounded-sm">
-              <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Group class" class="w-full h-64 object-cover rounded-sm col-span-2">
+            <div id="about-gallery" class="about-gallery-grid">
+              <!-- Gallery images will be loaded dynamically from location_media -->
             </div>
           </div>
         </div>
@@ -332,8 +357,8 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
-            <div class="h-48 overflow-hidden">
-              <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Kickboxing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="program-card-image">
+              <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Kickboxing" class="group-hover:scale-110 transition-transform duration-500">
             </div>
             <div class="p-8">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Kickboxing</h3>
@@ -351,8 +376,8 @@
           </div>
 
           <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
-            <div class="h-48 overflow-hidden">
-              <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Group Fitness" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="program-card-image">
+              <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Group Fitness" class="group-hover:scale-110 transition-transform duration-500">
             </div>
             <div class="p-8">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Group Fitness</h3>
@@ -370,8 +395,8 @@
           </div>
 
           <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
-            <div class="h-48 overflow-hidden">
-              <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" alt="Private Training" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="program-card-image">
+              <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" alt="Private Training" class="group-hover:scale-110 transition-transform duration-500">
             </div>
             <div class="p-8">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Private Training</h3>
@@ -902,6 +927,22 @@
           const videoId = heroVideoItem.url;
           iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&enablejsapi=1`;
         }
+      }
+
+      // Load gallery images
+      const galleryItems = mediaItems.filter(m => m.media_type === 'gallery').slice(0, 4);
+      const galleryContainer = document.getElementById('about-gallery');
+
+      if (galleryContainer && galleryItems.length > 0) {
+        galleryContainer.innerHTML = '';
+
+        galleryItems.forEach((item, index) => {
+          const img = document.createElement('img');
+          img.src = item.url;
+          img.alt = item.alt_text || `CKO ${window.CKO_LOCATION?.name || 'Kickboxing'} - Gallery ${index + 1}`;
+          img.loading = 'lazy';
+          galleryContainer.appendChild(img);
+        });
       }
     }
 
