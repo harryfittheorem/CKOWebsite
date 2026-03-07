@@ -289,6 +289,32 @@ caret-color: white !important;
           }
         }
 
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .location-card {
+          background: rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 1.5rem;
+          border-radius: 0.25rem;
+          opacity: 0;
+          animation: fadeUp 0.5s ease-out forwards;
+          backdrop-filter: blur(10px);
+        }
+
+        .location-card:hover {
+          border-color: rgba(254, 196, 0, 0.3);
+          transition: border-color 0.3s ease;
+        }
+
         nav {
           animation: navGlow 4s ease-in-out infinite, pulse-border 3s ease-in-out infinite;
         }
@@ -736,9 +762,12 @@ caret-color: white !important;
       // ===== 2-Step Hero Lead Capture Form =====
       const SUPABASE_URL = 'https://nfxpqhsnakrrjnfqlkgy.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5meHBxaHNuYWtycmpuZnFsa2d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NTQ1MDAsImV4cCI6MjA4ODQzMDUwMH0.j1ZuiqGObosV37GH5W9rzWowrBgea5FLwL84EPLpaZc';
-      const RADIUS_MILES = 20;
+      const RADIUS_MILES = 25;
+      const MAX_RADIUS_MILES = 50;
+      const MAX_LOCATIONS_TO_SHOW = 3;
 
       window.CKO_MATCHED_LOCATION = null;
+      window.CKO_MATCHED_LOCATIONS = [];
       let detectedByIP = false;
 
       // Show gym bar and update CTAs after location match
@@ -774,6 +803,49 @@ caret-color: white !important;
                   Math.cos(lat2 * Math.PI/180) *
                   Math.sin(dLng/2) ** 2;
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      }
+
+      // Render location cards
+      function renderLocationCards(locations) {
+        const container = document.getElementById('location-match-message');
+
+        const cardsHTML = locations.map((loc, index) => {
+          const address = loc.address || '';
+          const cityState = [loc.city, loc.state].filter(Boolean).join(', ');
+          const fullAddress = [address, cityState].filter(Boolean).join(', ');
+          const hours = loc.hours || 'Call for hours';
+          const distance = loc.miles.toFixed(1);
+
+          return `
+            <div class="location-card" style="animation-delay: ${index * 100}ms">
+              <div class="flex justify-between items-start mb-3">
+                <div>
+                  <h3 class="text-white font-bold text-lg">${loc.name}</h3>
+                  <p class="text-[#fec400] text-sm font-medium">${distance} miles away</p>
+                </div>
+              </div>
+              <div class="space-y-2 mb-4">
+                <p class="text-gray-300 text-sm">${fullAddress}</p>
+                <p class="text-gray-400 text-xs">${hours}</p>
+              </div>
+              <a
+                href="location-template.html?slug=${loc.slug}"
+                class="block w-full py-3 px-4 bg-[#fec400] hover:bg-[#e5b000] text-black font-bold text-sm uppercase tracking-wider text-center rounded-sm transition-all"
+              >
+                Claim My Free Class →
+              </a>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `
+          <div class="text-white/70 text-sm mb-4 text-center">
+            ${locations.length > 1 ? 'Your nearest CKO locations:' : 'Your nearest CKO location:'}
+          </div>
+          <div class="location-cards-container space-y-4">
+            ${cardsHTML}
+          </div>
+        `;
       }
 
       // Phone number live formatting
@@ -845,6 +917,7 @@ caret-color: white !important;
           document.getElementById('zip-input').value = '';
           document.getElementById('lead-form').reset();
           window.CKO_MATCHED_LOCATION = null;
+          window.CKO_MATCHED_LOCATIONS = [];
           detectedByIP = false;
           document.getElementById('ip-detection-note').classList.add('hidden');
         }, 300);
@@ -860,7 +933,7 @@ caret-color: white !important;
           if (!data.latitude || !data.longitude) return null;
 
           // Query Supabase for active locations
-          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,phone,lat,lng`, {
+          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,hours,phone,lat,lng`, {
             headers: {
               'apikey': SUPABASE_ANON_KEY,
               'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -871,17 +944,28 @@ caret-color: white !important;
 
           const locations = await locationsRes.json();
 
-          // Calculate distances and find nearest location
+          // Calculate distances and find nearest locations
           const locationsWithDistance = locations.map(loc => ({
             ...loc,
             miles: getMilesBetween(data.latitude, data.longitude, parseFloat(loc.lat), parseFloat(loc.lng))
-          }));
+          })).sort((a, b) => a.miles - b.miles);
 
-          const nearest = locationsWithDistance
-            .filter(loc => loc.miles <= RADIUS_MILES)
-            .sort((a, b) => a.miles - b.miles)[0];
+          // Check if any locations within max radius
+          const anyWithinMaxRadius = locationsWithDistance.some(loc => loc.miles <= MAX_RADIUS_MILES);
+          if (!anyWithinMaxRadius) {
+            return null;
+          }
 
-          return nearest ?? null;
+          // Get locations within primary radius
+          const withinPrimaryRadius = locationsWithDistance.filter(loc => loc.miles <= RADIUS_MILES);
+
+          // If we have 3+ within primary radius, return top 3
+          if (withinPrimaryRadius.length >= MAX_LOCATIONS_TO_SHOW) {
+            return withinPrimaryRadius.slice(0, MAX_LOCATIONS_TO_SHOW);
+          }
+
+          // If we have fewer than 3 within primary radius, pad with next closest
+          return locationsWithDistance.slice(0, MAX_LOCATIONS_TO_SHOW);
 
         } catch (e) {
           // Fail silently - never break the page
@@ -891,20 +975,20 @@ caret-color: white !important;
 
       // Run IP detection on page load
       (async function initHeroForm() {
-        const ipLocation = await detectLocationFromIP();
+        const ipLocations = await detectLocationFromIP();
 
-        if (ipLocation) {
-          // IP detection found a location - skip Step 1
+        if (ipLocations && ipLocations.length > 0) {
+          // IP detection found locations - skip Step 1
           detectedByIP = true;
+          window.CKO_MATCHED_LOCATIONS = ipLocations;
           window.CKO_MATCHED_LOCATION = {
-            name: ipLocation.name,
-            slug: ipLocation.slug,
-            miles: ipLocation.miles.toFixed(1),
+            name: ipLocations[0].name,
+            slug: ipLocations[0].slug,
+            miles: ipLocations[0].miles.toFixed(1),
             detectedByIP: true
           };
 
-          document.getElementById('location-match-message').innerHTML =
-            `📍 CKO ${ipLocation.name} is ${ipLocation.miles.toFixed(1)} miles away — First Class Is Free`;
+          renderLocationCards(ipLocations);
 
           document.getElementById('ip-detection-note').classList.remove('hidden');
 
@@ -914,7 +998,7 @@ caret-color: white !important;
           // Skip Step 1 and jump to Step 2
           showStep2(true);
         }
-        // If ipLocation is null, do nothing - Step 1 will show normally
+        // If ipLocations is null, do nothing - Step 1 will show normally
       })();
 
       // Step 1: ZIP Code Submission
@@ -952,7 +1036,7 @@ caret-color: white !important;
           const visitorLng = parseFloat(zipData.places[0].longitude);
 
           // Query active locations from Supabase
-          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,phone,lat,lng`, {
+          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,hours,phone,lat,lng`, {
             headers: {
               'apikey': SUPABASE_ANON_KEY,
               'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -965,36 +1049,45 @@ caret-color: white !important;
 
           const locations = await locationsRes.json();
 
-          // Calculate distances and find nearest location
+          // Calculate distances and find nearest locations
           const locationsWithDistance = locations.map(loc => ({
             ...loc,
             miles: getMilesBetween(visitorLat, visitorLng, parseFloat(loc.lat), parseFloat(loc.lng))
-          }));
+          })).sort((a, b) => a.miles - b.miles);
 
-          const nearest = locationsWithDistance
-            .filter(loc => loc.miles <= RADIUS_MILES)
-            .sort((a, b) => a.miles - b.miles)[0];
+          // Check if any locations within max radius
+          const anyWithinMaxRadius = locationsWithDistance.some(loc => loc.miles <= MAX_RADIUS_MILES);
 
-          // Set matched location
-          if (nearest) {
-            window.CKO_MATCHED_LOCATION = {
-              name: nearest.name,
-              slug: nearest.slug,
-              miles: nearest.miles.toFixed(1),
-              detectedByIP: false
-            };
-            document.getElementById('location-match-message').innerHTML =
-              `📍 CKO ${nearest.name} is ${nearest.miles.toFixed(1)} miles away — First Class Is Free`;
-            document.getElementById('ip-detection-note').classList.add('hidden');
-          } else {
+          // Set matched locations
+          if (!anyWithinMaxRadius) {
             window.CKO_MATCHED_LOCATION = {
               name: "Coming Soon",
               slug: "waitlist",
               miles: null,
               detectedByIP: false
             };
+            window.CKO_MATCHED_LOCATIONS = [];
             document.getElementById('location-match-message').innerHTML =
               "We're expanding! Leave your info and we'll notify you when CKO opens near you.";
+            document.getElementById('ip-detection-note').classList.add('hidden');
+          } else {
+            // Get locations within primary radius
+            const withinPrimaryRadius = locationsWithDistance.filter(loc => loc.miles <= RADIUS_MILES);
+
+            // If we have 3+ within primary radius, take top 3; otherwise pad with next closest
+            const matchedLocations = withinPrimaryRadius.length >= MAX_LOCATIONS_TO_SHOW
+              ? withinPrimaryRadius.slice(0, MAX_LOCATIONS_TO_SHOW)
+              : locationsWithDistance.slice(0, MAX_LOCATIONS_TO_SHOW);
+
+            window.CKO_MATCHED_LOCATIONS = matchedLocations;
+            window.CKO_MATCHED_LOCATION = {
+              name: matchedLocations[0].name,
+              slug: matchedLocations[0].slug,
+              miles: matchedLocations[0].miles.toFixed(1),
+              detectedByIP: false
+            };
+
+            renderLocationCards(matchedLocations);
             document.getElementById('ip-detection-note').classList.add('hidden');
           }
 
