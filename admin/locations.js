@@ -317,25 +317,31 @@ document.getElementById('import-location-reviews-btn').addEventListener('click',
       Importing...
     `;
 
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/google-import-reviews`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        location_slug: currentLocation.slug,
-        overwrite: false
-      })
-    });
+    const result = await fetch(
+      `${SUPABASE_URL}/functions/v1/google-import-reviews`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({
+          location_slug: currentLocation.slug,
+          overwrite: false
+        })
+      }
+    );
 
-    const result = await response.json();
+    const data = await result.json();
 
-    if (result.success) {
-      if (result.imported > 0) {
-        showToast(`Successfully imported ${result.imported} Google reviews!`);
+    if (data.success) {
+      if (data.imported > 0) {
+        showToast(`Successfully imported ${data.imported} Google reviews!`);
       } else {
-        showToast(result.message || 'No reviews found. Will use corporate defaults.', 'warning');
+        showToast(data.message || 'No reviews found. Will use corporate defaults.', 'warning');
       }
     } else {
-      throw new Error(result.error || 'Import failed');
+      throw new Error(data.error || 'Import failed');
     }
   } catch (error) {
     console.error('Error importing reviews:', error);
@@ -1048,28 +1054,34 @@ document.getElementById('bulk-import-reviews-btn').addEventListener('click', asy
       logEntry.className = 'text-gray-300';
 
       try {
-        const importResponse = await fetch(`${SUPABASE_URL}/functions/v1/google-import-reviews`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({
-            location_slug: location.slug,
-            overwrite
-          })
-        });
+        const result = await fetch(
+          `${SUPABASE_URL}/functions/v1/google-import-reviews`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({
+              location_slug: location.slug,
+              overwrite: overwriteCheckbox.checked
+            })
+          }
+        );
 
-        const result = await importResponse.json();
+        const data = await result.json();
 
-        if (result.success) {
-          if (result.imported > 0) {
-            logEntry.innerHTML = `<span class="text-green-400">✓</span> ${location.name} — ${result.imported} reviews imported`;
-            totalImported += result.imported;
+        if (data.success) {
+          if (data.imported > 0) {
+            logEntry.innerHTML = `<span class="text-green-400">✓</span> ${location.name} — ${data.imported} reviews imported`;
+            totalImported += data.imported;
             successCount++;
           } else {
-            logEntry.innerHTML = `<span class="text-yellow-400">⚠</span> ${location.name} — ${result.message || 'No reviews found (will use corporate defaults)'}`;
+            logEntry.innerHTML = `<span class="text-yellow-400">⚠</span> ${location.name} — ${data.message || 'No reviews found (will use corporate defaults)'}`;
             noneFoundCount++;
           }
         } else {
-          logEntry.innerHTML = `<span class="text-red-400">✗</span> ${location.name} — ${result.error || 'Failed'}`;
+          logEntry.innerHTML = `<span class="text-red-400">✗</span> ${location.name} — ${data.error || 'Failed'}`;
           errorCount++;
         }
       } catch (error) {
