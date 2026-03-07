@@ -163,12 +163,67 @@ caret-color: white !important;
 
               <!-- Search Results Section -->
               <div id="search-results-section" class="hidden mt-6">
-                <div class="text-center mb-4">
+                <div id="back-to-search-container" class="hidden text-center mb-4">
                   <button type="button" id="back-to-search-btn" class="text-gray-400 hover:text-[#fec400] text-sm transition-colors">
                     ← Search a different zip
                   </button>
                 </div>
                 <div id="search-results-container"></div>
+
+                <!-- Inline Lead Form for Single Result -->
+                <div id="inline-lead-form-section" class="hidden">
+                  <div id="inline-location-info" class="text-[#fec400] text-base font-medium mb-4 text-center"></div>
+
+                  <form id="inline-lead-form" class="space-y-4">
+                    <div>
+                      <input
+                        type="text"
+                        id="inline-lead-name"
+                        name="name"
+                        placeholder="Full Name"
+                        required
+                        class="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-all"
+                      />
+                      <div id="inline-name-error" class="hidden text-red-400 text-xs mt-1"></div>
+                    </div>
+
+                    <div>
+                      <input
+                        type="tel"
+                        id="inline-lead-phone"
+                        name="phone"
+                        placeholder="Phone Number"
+                        required
+                        class="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-all"
+                      />
+                      <div id="inline-phone-error" class="hidden text-red-400 text-xs mt-1"></div>
+                    </div>
+
+                    <div>
+                      <input
+                        type="email"
+                        id="inline-lead-email"
+                        name="email"
+                        placeholder="Email Address"
+                        required
+                        class="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#fec400] transition-all"
+                      />
+                      <div id="inline-email-error" class="hidden text-red-400 text-xs mt-1"></div>
+                    </div>
+
+                    <div id="inline-lead-submit-error" class="hidden text-red-400 text-sm text-center"></div>
+
+                    <button
+                      type="submit"
+                      id="inline-lead-submit-btn"
+                      class="w-full h-14 bg-[#fec400] hover:bg-[#e5b000] text-black font-bold uppercase tracking-widest rounded-sm transition-all"
+                    >
+                      Claim My Free Class →
+                    </button>
+
+                    <p class="text-gray-400 text-xs text-center">No credit card. No commitment. Cancel anytime.</p>
+                  </form>
+                </div>
               </div>
             </div>
 
@@ -821,8 +876,6 @@ caret-color: white !important;
 
         const cardsHTML = locations.map((loc, index) => {
           const address = loc.address || '';
-          const cityState = [loc.city, loc.state].filter(Boolean).join(', ');
-          const fullAddress = [address, cityState].filter(Boolean).join(', ');
           const hours = loc.hours || 'Call for hours';
           const distance = loc.miles.toFixed(1);
 
@@ -835,7 +888,7 @@ caret-color: white !important;
                 </div>
               </div>
               <div class="space-y-2 mb-4">
-                <p class="text-gray-300 text-sm">${fullAddress}</p>
+                <p class="text-gray-300 text-sm">${address}</p>
                 <p class="text-gray-400 text-xs">${hours}</p>
               </div>
               <a
@@ -858,8 +911,37 @@ caret-color: white !important;
         `;
       }
 
-      // Show search results
+      // Show inline lead form for single result
+      function showInlineLeadForm(location) {
+        const inlineFormSection = document.getElementById('inline-lead-form-section');
+        const locationInfo = document.getElementById('inline-location-info');
+        const searchResultsContainer = document.getElementById('search-results-container');
+        const backToSearchContainer = document.getElementById('back-to-search-container');
+
+        // Hide cards and back button
+        searchResultsContainer.innerHTML = '';
+        backToSearchContainer.classList.add('hidden');
+
+        // Set location info
+        locationInfo.textContent = `CKO ${location.name} — ${location.miles.toFixed(1)} miles away`;
+
+        // Store location for form submission
+        window.CKO_INLINE_SELECTED_LOCATION = location;
+
+        // Show form
+        inlineFormSection.classList.remove('hidden');
+        document.getElementById('search-results-section').classList.remove('hidden');
+      }
+
+      // Show search results (multi-result)
       function showSearchResults() {
+        const backToSearchContainer = document.getElementById('back-to-search-container');
+        const inlineFormSection = document.getElementById('inline-lead-form-section');
+
+        // Show back button, hide inline form
+        backToSearchContainer.classList.remove('hidden');
+        inlineFormSection.classList.add('hidden');
+
         document.getElementById('search-results-section').classList.remove('hidden');
       }
 
@@ -867,6 +949,8 @@ caret-color: white !important;
       function hideSearchResults() {
         document.getElementById('search-results-section').classList.add('hidden');
         document.getElementById('search-results-container').innerHTML = '';
+        document.getElementById('inline-lead-form-section').classList.add('hidden');
+        document.getElementById('back-to-search-container').classList.add('hidden');
       }
 
       // Phone number live formatting
@@ -1151,8 +1235,15 @@ caret-color: white !important;
               detectedByIP: false
             };
 
-            renderLocationCards(matchedLocations);
-            showSearchResults();
+            // Check result count
+            if (matchedLocations.length === 1) {
+              // Single result: show inline lead form
+              showInlineLeadForm(matchedLocations[0]);
+            } else {
+              // Multiple results: show cards
+              renderLocationCards(matchedLocations);
+              showSearchResults();
+            }
           }
 
           // Re-enable button
@@ -1173,6 +1264,11 @@ caret-color: white !important;
         e.target.value = formatted;
       });
 
+      document.getElementById('inline-lead-phone').addEventListener('input', (e) => {
+        const formatted = formatPhoneInput(e.target.value);
+        e.target.value = formatted;
+      });
+
       // Back to search button
       document.getElementById('back-to-search-btn').addEventListener('click', () => {
         hideSearchResults();
@@ -1183,6 +1279,89 @@ caret-color: white !important;
       // Reset buttons
       document.getElementById('reset-zip-btn').addEventListener('click', resetToStep1);
       document.getElementById('override-zip-btn').addEventListener('click', resetToStep1);
+
+      // Inline Lead Form Submission (for single result)
+      document.getElementById('inline-lead-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('inline-lead-name');
+        const phoneInput = document.getElementById('inline-lead-phone');
+        const emailInput = document.getElementById('inline-lead-email');
+        const submitBtn = document.getElementById('inline-lead-submit-btn');
+
+        // Hide all errors
+        hideError('inline-name-error');
+        hideError('inline-phone-error');
+        hideError('inline-email-error');
+        hideError('inline-lead-submit-error');
+
+        let hasError = false;
+
+        // Validate name
+        if (!nameInput.value.trim()) {
+          showError('inline-name-error', 'Please enter your name');
+          hasError = true;
+        }
+
+        // Validate phone
+        const phoneDigits = phoneInput.value.replace(/\D/g, '');
+        if (phoneDigits.length !== 10) {
+          showError('inline-phone-error', 'Please enter a valid 10-digit phone number');
+          hasError = true;
+        }
+
+        // Validate email
+        if (!isValidEmail(emailInput.value.trim())) {
+          showError('inline-email-error', 'Please enter a valid email address');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'One sec...';
+
+        try {
+          const selectedLocation = window.CKO_INLINE_SELECTED_LOCATION;
+
+          // Submit to Supabase leads table
+          const leadData = {
+            name: nameInput.value.trim(),
+            phone: phoneInput.value,
+            email: emailInput.value.trim().toLowerCase(),
+            location_slug: selectedLocation.slug,
+            location_name: selectedLocation.name,
+            miles_from_visitor: selectedLocation.miles ? parseFloat(selectedLocation.miles) : null,
+            source: 'homepage-hero-zip',
+            created_at: new Date().toISOString()
+          };
+
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(leadData)
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to submit lead');
+          }
+
+          // Redirect to thank you page
+          window.location.href = `thank-you-page.html?location=${selectedLocation.slug}&name=${encodeURIComponent(nameInput.value.trim())}`;
+
+        } catch (error) {
+          console.error('Error submitting lead:', error);
+          showError('inline-lead-submit-error', 'Something went wrong. Please try again or call us directly.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Claim My Free Class →';
+        }
+      });
 
       // Step 2: Lead Form Submission
       document.getElementById('lead-form').addEventListener('submit', async (e) => {
