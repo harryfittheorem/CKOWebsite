@@ -356,13 +356,13 @@
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
+          <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll flex flex-col">
             <div class="program-card-image">
               <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Kickboxing" class="group-hover:scale-110 transition-transform duration-500">
             </div>
-            <div class="p-8">
+            <div class="p-8 flex flex-col flex-1">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Kickboxing</h3>
-              <p class="text-gray-400 text-base leading-relaxed mb-6 font-light">
+              <p class="text-gray-400 text-base leading-relaxed mb-6 font-light flex-grow">
                 Our signature 45-minute HIIT class. Burn up to 1,200 calories while learning real kickboxing techniques.
               </p>
               <div class="flex items-center justify-between mb-6">
@@ -375,13 +375,13 @@
             </div>
           </div>
 
-          <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
+          <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll flex flex-col">
             <div class="program-card-image">
               <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Group Fitness" class="group-hover:scale-110 transition-transform duration-500">
             </div>
-            <div class="p-8">
+            <div class="p-8 flex flex-col flex-1">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Group Fitness</h3>
-              <p class="text-gray-400 text-base leading-relaxed mb-6 font-light">
+              <p class="text-gray-400 text-base leading-relaxed mb-6 font-light flex-grow">
                 High-intensity circuit training combining strength, cardio, and core work. No bags required.
               </p>
               <div class="flex items-center justify-between mb-6">
@@ -394,13 +394,13 @@
             </div>
           </div>
 
-          <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll">
+          <div class="group bg-[#0a0a0a] border border-white/10 hover:border-accent/50 transition-all duration-300 reveal-on-scroll flex flex-col">
             <div class="program-card-image">
               <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" alt="Private Training" class="group-hover:scale-110 transition-transform duration-500">
             </div>
-            <div class="p-8">
+            <div class="p-8 flex flex-col flex-1">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Private Training</h3>
-              <p class="text-gray-400 text-base leading-relaxed mb-6 font-light">
+              <p class="text-gray-400 text-base leading-relaxed mb-6 font-light flex-grow">
                 One-on-one coaching tailored to your specific goals and fitness level. Maximum results, personalized attention.
               </p>
               <div class="flex items-center justify-between mb-6">
@@ -935,8 +935,7 @@
       const galleryWrapper = document.getElementById('about-gallery-wrapper');
       const aboutGrid = galleryWrapper?.closest('.grid');
 
-      if (galleryContainer && galleryItems.length > 0) {
-        // Has images — populate grid normally
+      if (galleryItems.length > 0) {
         galleryContainer.innerHTML = '';
         galleryItems.forEach((item, index) => {
           const img = document.createElement('img');
@@ -947,12 +946,15 @@
         });
         galleryWrapper.style.display = 'block';
       } else {
-        // No images — hide the gallery column and go full-width
-        if (galleryWrapper) galleryWrapper.style.display = 'none';
-        if (aboutGrid) {
-          aboutGrid.classList.remove('lg:grid-cols-2');
-          aboutGrid.classList.add('lg:grid-cols-1', 'max-w-3xl', 'mx-auto');
-        }
+        // No gallery images — show brand fallback image, keep two-column layout
+        galleryContainer.innerHTML = '';
+        const fallbackImg = document.createElement('img');
+        fallbackImg.src = 'https://www.ckokickboxing.com/wp-content/themes/franchise/assets/images/banner/2021/cko_new_banner_22.jpg';
+        fallbackImg.alt = 'CKO Kickboxing';
+        fallbackImg.style.cssText = 'width:100%;height:480px;object-fit:cover;object-position:center;display:block;';
+        galleryContainer.style.display = 'block';
+        galleryContainer.appendChild(fallbackImg);
+        galleryWrapper.style.display = 'block';
       }
     }
 
