@@ -244,6 +244,89 @@
             </div>
           </form>
         </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mt-6">
+          <h3 class="text-white font-semibold text-lg mb-6">Page Sections</h3>
+          <p class="text-gray-400 text-sm mb-6">Control which sections appear on your location page</p>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Class Schedule</p>
+                <p class="text-gray-400 text-sm">Show weekly class schedule on your location page</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-schedule" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Memberships</p>
+                <p class="text-gray-400 text-sm">Show membership packages and pricing</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-memberships" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Programs</p>
+                <p class="text-gray-400 text-sm">Show available fitness programs</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-programs" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Testimonials</p>
+                <p class="text-gray-400 text-sm">Show member testimonials and reviews</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-testimonials" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Google Map</p>
+                <p class="text-gray-400 text-sm">Show interactive map with location</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-map" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Contact Form</p>
+                <p class="text-gray-400 text-sm">Show contact information and details</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-contact-form" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between py-3">
+              <div>
+                <p class="text-white font-medium">Gallery</p>
+                <p class="text-gray-400 text-sm">Show photo gallery</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-gallery" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -303,6 +386,14 @@
         document.getElementById('input-clubready-site-id').value = location.clubready_site_id || '';
         document.getElementById('input-clubready-chain-id').value = location.clubready_chain_id || '';
 
+        document.getElementById('toggle-show-schedule').checked = location.show_schedule !== false;
+        document.getElementById('toggle-show-memberships').checked = location.show_memberships !== false;
+        document.getElementById('toggle-show-programs').checked = location.show_programs !== false;
+        document.getElementById('toggle-show-testimonials').checked = location.show_testimonials !== false;
+        document.getElementById('toggle-show-map').checked = location.show_map !== false;
+        document.getElementById('toggle-show-contact-form').checked = location.show_contact_form !== false;
+        document.getElementById('toggle-show-gallery').checked = location.show_gallery !== false;
+
       } catch (error) {
         console.error('Error loading location:', error);
         alert('Failed to load location data');
@@ -341,6 +432,13 @@
             ghl_calendar_url: document.getElementById('input-ghl-calendar-url').value.trim(),
             instagram_url: document.getElementById('input-instagram-url').value.trim() || null,
             facebook_url: document.getElementById('input-facebook-url').value.trim() || null,
+            show_schedule: document.getElementById('toggle-show-schedule').checked,
+            show_memberships: document.getElementById('toggle-show-memberships').checked,
+            show_programs: document.getElementById('toggle-show-programs').checked,
+            show_testimonials: document.getElementById('toggle-show-testimonials').checked,
+            show_map: document.getElementById('toggle-show-map').checked,
+            show_contact_form: document.getElementById('toggle-show-contact-form').checked,
+            show_gallery: document.getElementById('toggle-show-gallery').checked,
           })
         });
 

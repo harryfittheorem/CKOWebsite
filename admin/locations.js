@@ -260,6 +260,14 @@ window.editLocation = async function(locationId) {
     document.getElementById('input-lat').value = currentLocation.lat || '';
     document.getElementById('input-lng').value = currentLocation.lng || '';
 
+    document.getElementById('toggle-show-schedule').checked = currentLocation.show_schedule !== false;
+    document.getElementById('toggle-show-memberships').checked = currentLocation.show_memberships !== false;
+    document.getElementById('toggle-show-programs').checked = currentLocation.show_programs !== false;
+    document.getElementById('toggle-show-testimonials').checked = currentLocation.show_testimonials !== false;
+    document.getElementById('toggle-show-map').checked = currentLocation.show_map !== false;
+    document.getElementById('toggle-show-contact-form').checked = currentLocation.show_contact_form !== false;
+    document.getElementById('toggle-show-gallery').checked = currentLocation.show_gallery !== false;
+
     updateToggleUI();
     openPanel();
 
@@ -300,6 +308,14 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('input-facebook-url').value = '';
   document.getElementById('input-lat').value = '';
   document.getElementById('input-lng').value = '';
+
+  document.getElementById('toggle-show-schedule').checked = true;
+  document.getElementById('toggle-show-memberships').checked = true;
+  document.getElementById('toggle-show-programs').checked = true;
+  document.getElementById('toggle-show-testimonials').checked = true;
+  document.getElementById('toggle-show-map').checked = true;
+  document.getElementById('toggle-show-contact-form').checked = true;
+  document.getElementById('toggle-show-gallery').checked = true;
 
   updateToggleUI();
   openPanel();
@@ -347,7 +363,14 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     facebook_url: document.getElementById('input-facebook-url').value.trim() || null,
     lat,
     lng,
-    is_active: isActive
+    is_active: isActive,
+    show_schedule: document.getElementById('toggle-show-schedule').checked,
+    show_memberships: document.getElementById('toggle-show-memberships').checked,
+    show_programs: document.getElementById('toggle-show-programs').checked,
+    show_testimonials: document.getElementById('toggle-show-testimonials').checked,
+    show_map: document.getElementById('toggle-show-map').checked,
+    show_contact_form: document.getElementById('toggle-show-contact-form').checked,
+    show_gallery: document.getElementById('toggle-show-gallery').checked
   };
 
   try {

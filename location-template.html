@@ -121,9 +121,9 @@
         </a>
         <div class="hidden lg:flex items-center gap-12 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <a href="#about" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">About</a>
-          <a href="#schedule" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Schedule</a>
-          <a href="#programs" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Programs</a>
-          <a href="#memberships" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Memberships</a>
+          <a href="#schedule" id="nav-schedule" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Schedule</a>
+          <a href="#programs" id="nav-programs" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Programs</a>
+          <a href="#memberships" id="nav-memberships" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Memberships</a>
         </div>
         <a href="#book" class="hidden md:flex bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.15em] py-3 px-6 text-xs rounded-sm transition-all">
           Book Free Class
@@ -138,9 +138,9 @@
       <div id="mobile-menu" class="hidden lg:hidden bg-black text-white absolute w-full top-20 left-0 px-6 pb-8 border-b border-white/10 shadow-2xl">
         <div class="flex flex-col space-y-6 pt-8 text-2xl font-heading font-semibold uppercase tracking-widest text-center">
           <a href="#about" class="block hover:text-accent transition-colors">About</a>
-          <a href="#schedule" class="block hover:text-accent transition-colors">Schedule</a>
-          <a href="#programs" class="block hover:text-accent transition-colors">Programs</a>
-          <a href="#memberships" class="block hover:text-accent transition-colors">Memberships</a>
+          <a href="#schedule" id="mobile-nav-schedule" class="block hover:text-accent transition-colors">Schedule</a>
+          <a href="#programs" id="mobile-nav-programs" class="block hover:text-accent transition-colors">Programs</a>
+          <a href="#memberships" id="mobile-nav-memberships" class="block hover:text-accent transition-colors">Memberships</a>
           <a href="#book" class="mt-4 w-full bg-accent text-black font-semibold py-4 uppercase tracking-widest block">Book Free Class</a>
         </div>
       </div>
@@ -318,7 +318,7 @@
     </section>
 
     <!-- Programs -->
-    <section id="programs" class="py-24 bg-black">
+    <section id="programs" class="py-24 bg-black hidden">
       <div class="max-w-[1400px] mx-auto px-6">
         <div class="text-center mb-16 reveal-on-scroll">
           <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Our Programs</div>
@@ -392,7 +392,7 @@
     </section>
 
     <!-- Schedule -->
-    <section id="schedule" class="py-24 bg-[#0a0a0a]">
+    <section id="schedule" class="py-24 bg-[#0a0a0a] hidden">
       <div class="max-w-[1400px] mx-auto px-6">
         <div class="text-center mb-16 reveal-on-scroll">
           <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Class Schedule</div>
@@ -448,7 +448,7 @@
     </section>
 
     <!-- Memberships CTA -->
-    <section id="memberships" class="py-24 bg-black">
+    <section id="memberships" class="py-24 bg-black hidden">
       <div class="max-w-[800px] mx-auto px-6 text-center">
         <div class="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">Ready to Transform?</div>
         <h2 class="font-heading text-4xl md:text-5xl font-semibold uppercase text-white tracking-tight mb-6">
@@ -465,7 +465,7 @@
     </section>
 
     <!-- Map & Contact -->
-    <section id="contact" class="py-24 bg-[#0a0a0a]">
+    <section id="contact" class="py-24 bg-[#0a0a0a] hidden">
       <div class="max-w-[1400px] mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-16">
           <div class="reveal-on-scroll">
@@ -575,9 +575,9 @@
             <div class="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold mb-4">Quick Links</div>
             <ul class="space-y-3 text-base text-gray-400 font-light">
               <li><a href="#about" class="hover:text-accent transition-colors">About</a></li>
-              <li><a href="#schedule" class="hover:text-accent transition-colors">Schedule</a></li>
-              <li><a href="#programs" class="hover:text-accent transition-colors">Programs</a></li>
-              <li><a href="#memberships" class="hover:text-accent transition-colors">Pricing</a></li>
+              <li><a href="#schedule" id="footer-nav-schedule" class="hover:text-accent transition-colors">Schedule</a></li>
+              <li><a href="#programs" id="footer-nav-programs" class="hover:text-accent transition-colors">Programs</a></li>
+              <li><a href="#memberships" id="footer-nav-memberships" class="hover:text-accent transition-colors">Pricing</a></li>
             </ul>
           </div>
 
@@ -761,6 +761,46 @@
 
       // Membership CTA button
       document.getElementById('membership-cta-btn').href = `checkout-page.html?slug=${location.slug}`;
+
+      // Section visibility toggles
+      if (location.show_schedule !== false) {
+        document.getElementById('schedule').classList.remove('hidden');
+      }
+
+      if (location.show_memberships !== false) {
+        document.getElementById('memberships').classList.remove('hidden');
+      }
+
+      if (location.show_programs !== false) {
+        document.getElementById('programs').classList.remove('hidden');
+      }
+
+      if (location.show_testimonials !== false) {
+        document.getElementById('testimonials').classList.remove('hidden');
+      }
+
+      if (location.show_contact_form !== false || location.show_map !== false) {
+        document.getElementById('contact').classList.remove('hidden');
+      }
+
+      // Hide nav links for hidden sections
+      if (location.show_schedule === false) {
+        document.getElementById('nav-schedule').classList.add('hidden');
+        document.getElementById('mobile-nav-schedule').classList.add('hidden');
+        document.getElementById('footer-nav-schedule').classList.add('hidden');
+      }
+
+      if (location.show_memberships === false) {
+        document.getElementById('nav-memberships').classList.add('hidden');
+        document.getElementById('mobile-nav-memberships').classList.add('hidden');
+        document.getElementById('footer-nav-memberships').classList.add('hidden');
+      }
+
+      if (location.show_programs === false) {
+        document.getElementById('nav-programs').classList.add('hidden');
+        document.getElementById('mobile-nav-programs').classList.add('hidden');
+        document.getElementById('footer-nav-programs').classList.add('hidden');
+      }
     }
 
     function hideLoading() {
