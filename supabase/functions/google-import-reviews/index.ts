@@ -148,7 +148,10 @@ Deno.serve(async (req: Request) => {
 
     const { error: insertError } = await supabase
       .from("testimonials")
-      .insert(testimonialsToInsert);
+      .upsert(testimonialsToInsert, {
+        onConflict: 'location_slug,member_name',
+        ignoreDuplicates: true
+      });
 
     if (insertError) {
       throw insertError;
