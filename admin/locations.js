@@ -249,6 +249,8 @@ window.editLocation = async function(locationId) {
     document.getElementById('input-clubready-site-id').value = currentLocation.clubready_site_id || '';
     document.getElementById('input-clubready-api-key').value = currentLocation.clubready_api_key || '';
     document.getElementById('input-clubready-chain-id').value = currentLocation.clubready_chain_id || '';
+    document.getElementById('input-instagram-url').value = currentLocation.instagram_url || '';
+    document.getElementById('input-facebook-url').value = currentLocation.facebook_url || '';
     document.getElementById('input-lat').value = currentLocation.lat || '';
     document.getElementById('input-lng').value = currentLocation.lng || '';
 
@@ -288,6 +290,8 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('input-clubready-site-id').value = '';
   document.getElementById('input-clubready-api-key').value = '';
   document.getElementById('input-clubready-chain-id').value = '';
+  document.getElementById('input-instagram-url').value = '';
+  document.getElementById('input-facebook-url').value = '';
   document.getElementById('input-lat').value = '';
   document.getElementById('input-lng').value = '';
 
@@ -333,6 +337,8 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     clubready_site_id: document.getElementById('input-clubready-site-id').value.trim(),
     clubready_api_key: document.getElementById('input-clubready-api-key').value.trim() || null,
     clubready_chain_id: document.getElementById('input-clubready-chain-id').value.trim() || null,
+    instagram_url: document.getElementById('input-instagram-url').value.trim() || null,
+    facebook_url: document.getElementById('input-facebook-url').value.trim() || null,
     lat,
     lng,
     is_active: isActive
