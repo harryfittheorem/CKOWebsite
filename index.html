@@ -103,7 +103,7 @@ caret-color: white !important;
           <a href="about-page.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">About</a>
           <a href="kickboxing.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Kickboxing</a>
           <a href="group-fitness.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Group Fitness</a>
-          <a href="find-your-location.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Memberships</a>
+          <a href="find-your-location.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-white tracking-[0.1em] font-heading">Find A Location</a>
           <a href="intro-offer.html" class="uppercase hover:text-accent transition-colors text-sm font-semibold text-accent tracking-[0.1em] font-heading">Intro Offer</a>
         </div>
         <div class="hidden md:flex items-center shrink-0"></div>
@@ -118,7 +118,7 @@ caret-color: white !important;
           <a href="about-page.html" class="block hover:text-accent transition-colors">About</a>
           <a href="kickboxing.html" class="block hover:text-accent transition-colors">Kickboxing</a>
           <a href="group-fitness.html" class="block hover:text-accent transition-colors">Group Fitness</a>
-          <a href="find-your-location.html" class="block hover:text-accent transition-colors">Memberships</a>
+          <a href="find-your-location.html" class="block hover:text-accent transition-colors">Find A Location</a>
           <a href="intro-offer.html" class="mt-4 w-full bg-accent text-black font-semibold py-4 uppercase tracking-widest block"> Intro Offer </a>
         </div>
       </div>
@@ -345,6 +345,10 @@ caret-color: white !important;
         }
       </style>
     </section>
+
+    <!-- Your Gym Bar -->
+    <div id="your-gym-bar" class="hidden"></div>
+
     <!-- Signature Programs Grid -->
     <section class="bg-black relative z-20 -mt-10 md:-mt-20 pb-20 px-4 md:px-8">
       <div class="max-w-[1600px] mx-auto">
@@ -579,7 +583,7 @@ caret-color: white !important;
               </div>
               <div class="flex flex-col md:flex-row items-end md:items-center gap-4">
                 <a href="find-your-location.html" class="text-xs font-semibold uppercase tracking-[0.1em] text-gray-500 hover:text-black underline decoration-2 decoration-transparent hover:decoration-accent underline-offset-4 transition-all" onclick="redirectToHeroZip()">Read More Success Stories</a>
-                <a href="find-your-location.html" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.1em] py-3 px-6 text-xs rounded-sm transition-all hover:shadow-lg" onclick="redirectToHeroZip()">Book Your Free Class</a>
+                <a href="find-your-location.html" class="cta-find-location bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.1em] py-3 px-6 text-xs rounded-sm transition-all hover:shadow-lg">Book Your Free Class</a>
               </div>
             </div>
             <div class="flex gap-2 mt-8" aria-label="Testimonial pagination">
@@ -638,7 +642,7 @@ caret-color: white !important;
           </details>
         </div>
         <div class="text-center mt-12 reveal-on-scroll">
-          <a href="find-your-location.html" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-4 px-10 text-xs rounded-sm transition-all inline-flex items-center gap-2 group" onclick="redirectToHeroZip()"> Book Now <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          <a href="find-your-location.html" class="cta-find-location bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-4 px-10 text-xs rounded-sm transition-all inline-flex items-center gap-2 group"> Book Now <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
           </a>
         </div>
       </div>
@@ -664,7 +668,7 @@ caret-color: white !important;
                 <a href="find-your-location.html" class="hover:text-accent transition-colors" onclick="redirectToHeroZip()">Book a Class</a>
               </li>
               <li>
-                <a href="find-your-location.html" class="hover:text-accent transition-colors" onclick="redirectToHeroZip()">Memberships</a>
+                <a href="find-your-location.html" class="hover:text-accent transition-colors">Find A Location</a>
               </li>
             </ul>
           </div>
@@ -675,13 +679,13 @@ caret-color: white !important;
                 <span class="text-accent">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="phone" class="lucide lucide-phone w-4 h-4" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
                 </span>
-                <a href="find-your-location.html" class="hover:text-accent transition-colors" onclick="redirectToHeroZip()">(555) 123-4567</a>
+                <a href="find-your-location.html" class="hover:text-accent transition-colors">Find Your Location</a>
               </li>
               <li class="flex items-center gap-3">
                 <span class="text-accent">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail w-4 h-4" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
                 </span>
-                <a href="find-your-location.html" class="hover:text-accent transition-colors" onclick="redirectToHeroZip()">hello@ckokickboxing.com</a>
+                <a href="mailto:info@ckokickboxing.com" class="hover:text-accent transition-colors">info@ckokickboxing.com</a>
               </li>
               <li class="flex items-center gap-3">
                 <span class="text-accent">
@@ -694,13 +698,13 @@ caret-color: white !important;
           <div>
             <div class="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold mb-4">Follow</div>
             <div class="flex items-center gap-3">
-              <a href="find-your-location.html" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Instagram" onclick="redirectToHeroZip()">
+              <a href="https://www.instagram.com/ckokickboxing" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="instagram" class="lucide lucide-instagram w-5 h-5 text-gray-200" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
               </a>
-              <a href="find-your-location.html" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Facebook" onclick="redirectToHeroZip()">
+              <a href="https://www.facebook.com/ckokickboxing" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Facebook">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="facebook" class="lucide lucide-facebook w-5 h-5 text-gray-200" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
               </a>
-              <a href="find-your-location.html" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="YouTube" onclick="redirectToHeroZip()">
+              <a href="https://www.youtube.com/@ckokickboxing" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 transition-all flex items-center justify-center" aria-label="YouTube">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="youtube" class="lucide lucide-youtube w-5 h-5 text-gray-200" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
               </a>
             </div>
@@ -736,6 +740,29 @@ caret-color: white !important;
 
       window.CKO_MATCHED_LOCATION = null;
       let detectedByIP = false;
+
+      // Show gym bar and update CTAs after location match
+      function updatePostMatchUI() {
+        if (!window.CKO_MATCHED_LOCATION || window.CKO_MATCHED_LOCATION.slug === 'waitlist') return;
+
+        const gymBar = document.getElementById('your-gym-bar');
+        const { slug, name } = window.CKO_MATCHED_LOCATION;
+
+        // Show gym bar
+        gymBar.innerHTML = `
+          <div class="bg-accent/10 border-b border-accent/20 py-3 px-4 text-center">
+            <span class="text-white/70 text-sm">Your nearest CKO: </span>
+            <a href="location-template.html?slug=${slug}" class="text-accent font-semibold text-sm hover:underline">${name} →</a>
+          </div>
+        `;
+        gymBar.classList.remove('hidden');
+
+        // Update all CTA buttons to link to location page
+        const ctaButtons = document.querySelectorAll('.cta-find-location');
+        ctaButtons.forEach(btn => {
+          btn.href = `location-template.html?slug=${slug}`;
+        });
+      }
 
       // Haversine distance calculation
       function getMilesBetween(lat1, lng1, lat2, lng2) {
@@ -881,6 +908,9 @@ caret-color: white !important;
 
           document.getElementById('ip-detection-note').classList.remove('hidden');
 
+          // Update UI with matched location
+          updatePostMatchUI();
+
           // Skip Step 1 and jump to Step 2
           showStep2(true);
         }
@@ -967,6 +997,9 @@ caret-color: white !important;
               "We're expanding! Leave your info and we'll notify you when CKO opens near you.";
             document.getElementById('ip-detection-note').classList.add('hidden');
           }
+
+          // Update UI with matched location
+          updatePostMatchUI();
 
           // Transition to Step 2
           showStep2();

@@ -645,12 +645,23 @@ font-family: "DM Sans", sans-serif !important;
           `;
         }
 
-        if (actionsContainer && location.ghl_calendar_url) {
-          actionsContainer.innerHTML = `
-            <a href="${location.ghl_calendar_url}" target="_blank" rel="noopener noreferrer" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-5 px-12 text-sm rounded-sm transition-all inline-flex items-center gap-2 justify-center">
-              Book Your First Class Now →
-            </a>
-          `;
+        if (actionsContainer) {
+          if (location.ghl_calendar_url) {
+            actionsContainer.innerHTML = `
+              <a href="${location.ghl_calendar_url}" target="_blank" rel="noopener noreferrer" class="bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-[0.2em] py-5 px-12 text-sm rounded-sm transition-all inline-flex items-center gap-2 justify-center">
+                Book Your First Class Now →
+              </a>
+              <a href="location-template.html?slug=${locationSlug}" class="text-white/60 hover:text-accent text-sm uppercase tracking-widest transition-colors underline underline-offset-4 block mt-4">
+                Explore Your CKO ${location.name} →
+              </a>
+            `;
+          } else {
+            actionsContainer.innerHTML = `
+              <a href="location-template.html?slug=${locationSlug}" class="text-white/60 hover:text-accent text-sm uppercase tracking-widest transition-colors underline underline-offset-4">
+                Explore Your CKO ${location.name} →
+              </a>
+            `;
+          }
         }
       }
 
