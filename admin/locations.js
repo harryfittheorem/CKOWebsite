@@ -298,6 +298,54 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   detailsTabBtn.click();
 });
 
+document.getElementById('import-location-reviews-btn').addEventListener('click', async () => {
+  if (!currentLocation) {
+    alert('Please save the location first');
+    return;
+  }
+
+  const btn = document.getElementById('import-location-reviews-btn');
+  const originalHTML = btn.innerHTML;
+
+  try {
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Importing...
+    `;
+
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/google-import-reviews`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        location_slug: currentLocation.slug,
+        overwrite: false
+      })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      if (result.imported > 0) {
+        showToast(`Successfully imported ${result.imported} Google reviews!`);
+      } else {
+        showToast(result.message || 'No reviews found. Will use corporate defaults.', 'warning');
+      }
+    } else {
+      throw new Error(result.error || 'Import failed');
+    }
+  } catch (error) {
+    console.error('Error importing reviews:', error);
+    alert(`Failed to import reviews: ${error.message}`);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
 document.getElementById('save-location-btn').addEventListener('click', async () => {
   const name = document.getElementById('input-name').value.trim();
   const slug = document.getElementById('input-slug').value.trim();
@@ -960,6 +1008,104 @@ document.getElementById('invite-user-form').addEventListener('submit', async (e)
   } catch (error) {
     console.error('Error inviting user:', error);
     alert(`Failed to invite user: ${error.message}`);
+  }
+});
+
+document.getElementById('bulk-import-reviews-btn').addEventListener('click', async () => {
+  const overwriteCheckbox = document.getElementById('overwrite-reviews-checkbox');
+  const overwrite = overwriteCheckbox.checked;
+  const importLogContainer = document.getElementById('import-log-container');
+  const importLog = document.getElementById('import-log');
+  const bulkImportBtn = document.getElementById('bulk-import-reviews-btn');
+
+  try {
+    bulkImportBtn.disabled = true;
+    bulkImportBtn.innerHTML = `
+      <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Importing...
+    `;
+
+    importLogContainer.classList.remove('hidden');
+    importLog.innerHTML = '<div class="text-gray-400">Starting import...</div>';
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=slug,name,city,state`, {
+      headers
+    });
+
+    const locations = await response.json();
+    let totalImported = 0;
+    let successCount = 0;
+    let noneFoundCount = 0;
+    let errorCount = 0;
+
+    for (const location of locations) {
+      await new Promise(r => setTimeout(r, 500));
+
+      const logEntry = document.createElement('div');
+      logEntry.className = 'text-gray-300';
+
+      try {
+        const importResponse = await fetch(`${SUPABASE_URL}/functions/v1/google-import-reviews`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            location_slug: location.slug,
+            overwrite
+          })
+        });
+
+        const result = await importResponse.json();
+
+        if (result.success) {
+          if (result.imported > 0) {
+            logEntry.innerHTML = `<span class="text-green-400">✓</span> ${location.name} — ${result.imported} reviews imported`;
+            totalImported += result.imported;
+            successCount++;
+          } else {
+            logEntry.innerHTML = `<span class="text-yellow-400">⚠</span> ${location.name} — ${result.message || 'No reviews found (will use corporate defaults)'}`;
+            noneFoundCount++;
+          }
+        } else {
+          logEntry.innerHTML = `<span class="text-red-400">✗</span> ${location.name} — ${result.error || 'Failed'}`;
+          errorCount++;
+        }
+      } catch (error) {
+        logEntry.innerHTML = `<span class="text-red-400">✗</span> ${location.name} — ${error.message}`;
+        errorCount++;
+      }
+
+      importLog.appendChild(logEntry);
+      importLog.parentElement.scrollTop = importLog.parentElement.scrollHeight;
+    }
+
+    const summaryEntry = document.createElement('div');
+    summaryEntry.className = 'text-white font-semibold mt-4 pt-4 border-t border-gray-700';
+    summaryEntry.innerHTML = `Import complete — ${totalImported} reviews imported across ${successCount} locations (${noneFoundCount} with no reviews, ${errorCount} errors)`;
+    importLog.appendChild(summaryEntry);
+
+    bulkImportBtn.disabled = false;
+    bulkImportBtn.innerHTML = `
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg>
+      Import Google Reviews for All Locations
+    `;
+
+    showToast('Import completed successfully!');
+  } catch (error) {
+    console.error('Error during bulk import:', error);
+    importLog.innerHTML += `<div class="text-red-400 mt-2">✗ Import failed: ${error.message}</div>`;
+
+    bulkImportBtn.disabled = false;
+    bulkImportBtn.innerHTML = `
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg>
+      Import Google Reviews for All Locations
+    `;
   }
 });
 

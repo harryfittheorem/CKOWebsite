@@ -102,6 +102,32 @@
           </button>
         </div>
 
+        <!-- Google Reviews Import Panel -->
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-6">
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Import Google Reviews</h3>
+          <p class="text-gray-400 text-sm mb-4">Automatically import 5-star Google reviews for all locations. This will fetch reviews from Google Places API.</p>
+
+          <div class="flex items-center gap-4 mb-4">
+            <button id="bulk-import-reviews-btn" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-6 py-3 rounded-lg transition-all flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+              </svg>
+              Import Google Reviews for All Locations
+            </button>
+
+            <label class="flex items-center gap-2 text-gray-300 cursor-pointer">
+              <input type="checkbox" id="overwrite-reviews-checkbox" class="w-4 h-4 rounded border-gray-600 bg-gray-800 text-accent focus:ring-accent focus:ring-offset-gray-900">
+              <span class="text-sm">Overwrite existing testimonials</span>
+            </label>
+          </div>
+
+          <div id="import-log-container" class="hidden">
+            <div class="bg-black border border-gray-700 rounded-lg p-4 max-h-[300px] overflow-y-auto">
+              <div id="import-log" class="font-mono text-sm space-y-1"></div>
+            </div>
+          </div>
+        </div>
+
         <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
           <table class="w-full">
             <thead class="bg-gray-800/50 border-b border-gray-800">
@@ -370,7 +396,18 @@
         </div>
       </div>
 
-      <button id="save-location-btn" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-all">
+      <div class="border-t border-gray-700 pt-4 mt-6">
+        <h4 class="text-white font-semibold mb-3">Google Reviews</h4>
+        <button id="import-location-reviews-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+          Import Google Reviews for This Location
+        </button>
+        <p class="text-gray-500 text-xs mt-2">Fetch 5-star Google reviews and add as testimonials</p>
+      </div>
+
+      <button id="save-location-btn" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-all mt-6">
         Save Changes
       </button>
     </div>

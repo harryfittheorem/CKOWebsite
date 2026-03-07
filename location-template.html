@@ -1200,62 +1200,43 @@
     }
 
     async function loadTestimonials() {
-      if (!window.CKO_LOCATION) {
-        console.error('Location not loaded yet');
-        return;
-      }
-
-      if (window.CKO_LOCATION.show_testimonials === false) {
-        return;
-      }
+      if (window.CKO_LOCATION.show_testimonials === false) return;
 
       try {
+        // Stage 1 — location-specific reviews
         const response = await fetch(
           `${SUPABASE_URL}/rest/v1/testimonials?location_slug=eq.${window.CKO_LOCATION.slug}&is_active=eq.true&order=display_order.asc,created_at.desc&select=*`,
-          {
-            headers: {
-              'apikey': SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-            }
-          }
+          { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
         );
+        let testimonials = await response.json();
 
-        if (!response.ok) {
-          console.error('Failed to fetch testimonials');
-          return;
+        // Stage 2 — corporate defaults if none found
+        if (!testimonials || testimonials.length === 0) {
+          const fallbackResponse = await fetch(
+            `${SUPABASE_URL}/rest/v1/testimonials?is_corporate_default=eq.true&is_active=eq.true&order=display_order.asc&limit=3&select=*`,
+            { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+          );
+          testimonials = await fallbackResponse.json();
         }
 
-        const testimonials = await response.json();
-
-        if (testimonials.length === 0) {
-          return;
-        }
+        if (!testimonials || testimonials.length === 0) return;
 
         const testimonialsSection = document.getElementById('testimonials');
         const testimonialsContainer = document.getElementById('testimonials-container');
 
-        testimonialsContainer.innerHTML = testimonials.map(testimonial => {
-          const stars = testimonial.rating ? '★'.repeat(testimonial.rating) + '☆'.repeat(5 - testimonial.rating) : '';
-
-          return `
-            <div class="bg-[#0a0a0a] border border-white/10 rounded-sm p-8 reveal-on-scroll hover:border-accent/30 transition-all">
-              ${testimonial.rating ? `
-                <div class="text-accent text-xl mb-4" aria-label="${testimonial.rating} out of 5 stars">
-                  ${stars}
-                </div>
-              ` : ''}
-              <p class="text-gray-300 text-base mb-6 italic leading-relaxed">
-                "${testimonial.quote}"
-              </p>
-              <div class="border-t border-white/10 pt-4">
-                <p class="text-white font-semibold text-sm">${testimonial.member_name}</p>
-                ${testimonial.member_since ? `<p class="text-gray-500 text-xs mt-1">${testimonial.member_since}</p>` : ''}
-              </div>
+        testimonialsContainer.innerHTML = testimonials.map(t => `
+          <div class="bg-[#0a0a0a] border border-white/10 p-8 reveal-on-scroll">
+            ${t.rating ? `<div class="text-accent text-xl mb-4">${'★'.repeat(t.rating)}</div>` : ''}
+            <p class="text-gray-300 text-base leading-relaxed mb-6 font-light italic">"${t.quote}"</p>
+            <div>
+              <p class="text-white font-semibold text-sm">${t.member_name}</p>
+              ${t.member_since ? `<p class="text-gray-500 text-xs mt-1">${t.member_since}</p>` : ''}
             </div>
-          `;
-        }).join('');
+          </div>
+        `).join('');
 
         testimonialsSection.classList.remove('hidden');
+
       } catch (error) {
         console.error('Error loading testimonials:', error);
       }
