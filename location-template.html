@@ -1221,16 +1221,39 @@
         const container = document.getElementById('testimonials-container');
         if (!section || !container) return;
 
-        container.innerHTML = testimonials.map(t => `
-          <div class="bg-[#111] border border-white/10 p-8 rounded-sm reveal-on-scroll">
-            <div class="text-accent text-xl mb-4">${'★'.repeat(t.rating || 5)}</div>
-            <p class="text-gray-300 text-base leading-relaxed mb-6 font-light italic">"${t.quote}"</p>
-            <div>
-              <p class="text-white font-semibold text-sm">${t.member_name}</p>
-              ${t.member_since ? `<p class="text-gray-500 text-xs mt-1">${t.member_since}</p>` : ''}
-            </div>
-          </div>
-        `).join('');
+        container.innerHTML = '';
+        testimonials.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'bg-[#111] border border-white/10 p-8 rounded-sm reveal-on-scroll';
+
+          const stars = document.createElement('div');
+          stars.className = 'text-accent text-xl mb-4';
+          stars.textContent = '★'.repeat(t.rating || 5);
+
+          const quote = document.createElement('p');
+          quote.className = 'text-gray-300 text-base leading-relaxed mb-6 font-light italic';
+          quote.textContent = '\u201C' + t.quote + '\u201D';
+
+          const nameDiv = document.createElement('div');
+
+          const name = document.createElement('p');
+          name.className = 'text-white font-semibold text-sm';
+          name.textContent = t.member_name;
+
+          nameDiv.appendChild(name);
+
+          if (t.member_since) {
+            const since = document.createElement('p');
+            since.className = 'text-gray-500 text-xs mt-1';
+            since.textContent = t.member_since;
+            nameDiv.appendChild(since);
+          }
+
+          card.appendChild(stars);
+          card.appendChild(quote);
+          card.appendChild(nameDiv);
+          container.appendChild(card);
+        });
 
         section.classList.remove('hidden');
 
