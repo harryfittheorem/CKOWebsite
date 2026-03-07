@@ -630,7 +630,7 @@ caret-color: white !important;
       <div class="max-w-[1400px] mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-16 items-center reveal-on-scroll">
           <div class="relative p-4 border border-gray-200 bg-white shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500">
-            <img id="testimonial-image" src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" class="w-full h-96 object-cover md:grayscale contrast-110 transition-opacity duration-300" alt="CKO Kickboxing class in action">
+            <img id="testimonial-image" src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" class="w-full h-96 object-cover md:grayscale contrast-110 transition-opacity duration-300" alt="Member Sarah M.">
             <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-8 py-3 shadow-lg border border-gray-100">
               <span id="testimonial-name-card" class="font-heading font-semibold text-xl uppercase tracking-widest whitespace-nowrap">Sarah M.</span>
             </div>
@@ -1478,21 +1478,18 @@ caret-color: white !important;
       const testimonials = [{
         name: "Sarah M.",
         age: "Age 42",
-        quote: ""I was intimidated at first, but the instructors made me feel welcome. Now I'm addicted! I've lost 15 pounds and my stress levels are way down."",
-        image: "https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg",
-        alt: "CKO Kickboxing class in action"
+        quote: "“I was intimidated at first, but the instructors made me feel welcome. Now I’m addicted! I’ve lost 15 pounds and my stress levels are way down.”",
+        image: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
       }, {
         name: "Mike T.",
         age: "Age 35",
-        quote: ""The best 45 minutes of my day. I've tried every gym out there, but nothing compares to the energy and community at CKO. It's a total game changer."",
-        image: "https://i.ibb.co/xtDQMgVY/home-section-1.jpg",
-        alt: "CKO member hitting heavy bag"
+        quote: "“The best 45 minutes of my day. I've tried every gym out there, but nothing compares to the energy and community at CKO. It's a total game changer.”",
+        image: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
       }, {
         name: "Jessica R.",
         age: "Age 28",
-        quote: ""I never thought I'd be punching a heavy bag, but here I am! I feel stronger, more confident, and I've made some amazing friends along the way."",
-        image: "https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg",
-        alt: "CKO Kickboxing group class"
+        quote: "“I never thought I'd be punching a heavy bag, but here I am! I feel stronger, more confident, and I've made some amazing friends along the way.”",
+        image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
       }];
       let currentIndex = 0;
       const prevBtn = document.getElementById("prev-testimonial");
@@ -1511,7 +1508,6 @@ caret-color: white !important;
         setTimeout(() => {
           const data = testimonials[index];
           tImage.src = data.image;
-          tImage.alt = data.alt;
           tNameCard.textContent = data.name;
           tQuote.textContent = data.quote;
           tAuthor.textContent = data.name;
