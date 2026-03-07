@@ -670,6 +670,7 @@
         window.CKO_LOCATION = location;
 
         hydratePageContent(location);
+        applyTheme(location);
         hideLoading();
 
       } catch (error) {
@@ -800,6 +801,40 @@
         document.getElementById('nav-programs').classList.add('hidden');
         document.getElementById('mobile-nav-programs').classList.add('hidden');
         document.getElementById('footer-nav-programs').classList.add('hidden');
+      }
+    }
+
+    function applyTheme(location) {
+      if (!location.theme || Object.keys(location.theme).length === 0) {
+        return;
+      }
+
+      const theme = location.theme;
+
+      if (theme.accent_color) {
+        document.documentElement.style.setProperty('--color-accent', theme.accent_color);
+        const style = document.createElement('style');
+        style.textContent = `
+          .text-accent { color: ${theme.accent_color} !important; }
+          .bg-accent { background-color: ${theme.accent_color} !important; }
+          .border-accent { border-color: ${theme.accent_color} !important; }
+        `;
+        document.head.appendChild(style);
+      }
+
+      if (theme.button_style === 'rounded') {
+        document.documentElement.style.setProperty('--radius-btn', '9999px');
+        const allButtons = document.querySelectorAll('a[class*="bg-accent"], button[class*="bg-accent"]');
+        allButtons.forEach(btn => {
+          btn.style.borderRadius = '9999px';
+        });
+      }
+
+      if (theme.hero_overlay_opacity) {
+        const heroOverlay = document.getElementById('hero-overlay');
+        if (heroOverlay) {
+          heroOverlay.style.opacity = theme.hero_overlay_opacity;
+        }
       }
     }
 
@@ -1118,6 +1153,10 @@
         return;
       }
 
+      if (window.CKO_LOCATION.show_testimonials === false) {
+        return;
+      }
+
       try {
         const response = await fetch(
           `${SUPABASE_URL}/rest/v1/testimonials?location_slug=eq.${window.CKO_LOCATION.slug}&is_active=eq.true&order=display_order.asc,created_at.desc&select=*`,
@@ -1158,7 +1197,7 @@
               </p>
               <div class="border-t border-white/10 pt-4">
                 <p class="text-white font-semibold text-sm">${testimonial.member_name}</p>
-                ${testimonial.member_since ? `<p class="text-gray-500 text-xs mt-1">Member since ${testimonial.member_since}</p>` : ''}
+                ${testimonial.member_since ? `<p class="text-gray-500 text-xs mt-1">${testimonial.member_since}</p>` : ''}
               </div>
             </div>
           `;
@@ -1171,6 +1210,10 @@
     }
 
     async function checkForPackages() {
+      if (window.CKO_LOCATION && window.CKO_LOCATION.show_memberships === false) {
+        return;
+      }
+
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/packages?location_slug=eq.${slug}&is_active=eq.true&select=count`, {
           method: 'HEAD',
@@ -1186,10 +1229,10 @@
           if (countHeader) {
             const count = parseInt(countHeader.split('/')[1]);
             if (count > 0) {
-              const joinSection = document.getElementById('join-now-section');
-              const joinBtn = document.getElementById('join-now-btn');
-              joinSection.classList.remove('hidden');
-              joinBtn.href = `checkout-page.html?slug=${slug}`;
+              const membershipsSection = document.getElementById('memberships');
+              if (membershipsSection) {
+                membershipsSection.classList.remove('hidden');
+              }
             }
           }
         }

@@ -75,7 +75,21 @@
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         </button>
+
+        <div class="text-center">
+          <button
+            type="button"
+            id="forgot-password-btn"
+            class="text-accent hover:text-[#e5b000] text-sm transition-colors"
+          >
+            Forgot password?
+          </button>
+        </div>
       </form>
+
+      <div id="reset-success" class="hidden mt-4 text-green-500 text-sm bg-green-500/10 border border-green-500/20 rounded-lg px-4 py-3">
+        Password reset email sent. Check your inbox.
+      </div>
     </div>
 
     <p class="text-center text-gray-500 text-sm mt-6">
@@ -154,6 +168,33 @@
         submitBtn.disabled = false;
         submitText.textContent = 'Sign In';
         loadingSpinner.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('forgot-password-btn').addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      if (!email) {
+        alert('Please enter your email address first');
+        return;
+      }
+
+      try {
+        await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY
+          },
+          body: JSON.stringify({ email })
+        });
+
+        document.getElementById('reset-success').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('reset-success').classList.add('hidden');
+        }, 5000);
+      } catch (error) {
+        console.error('Password reset error:', error);
+        alert('Failed to send password reset email. Please try again.');
       }
     });
   </script>
