@@ -160,6 +160,16 @@ caret-color: white !important;
                   <span>Find Your Location</span>
                 </button>
               </form>
+
+              <!-- Search Results Section -->
+              <div id="search-results-section" class="hidden mt-6">
+                <div class="text-center mb-4">
+                  <button type="button" id="back-to-search-btn" class="text-gray-400 hover:text-[#fec400] text-sm transition-colors">
+                    ← Search a different zip
+                  </button>
+                </div>
+                <div id="search-results-container"></div>
+              </div>
             </div>
 
             <!-- Step 2: Lead Capture Form (Initially Hidden) -->
@@ -806,8 +816,8 @@ caret-color: white !important;
       }
 
       // Render location cards
-      function renderLocationCards(locations) {
-        const container = document.getElementById('location-match-message');
+      function renderLocationCards(locations, targetContainerId = 'search-results-container') {
+        const container = document.getElementById(targetContainerId);
 
         const cardsHTML = locations.map((loc, index) => {
           const address = loc.address || '';
@@ -846,6 +856,17 @@ caret-color: white !important;
             ${cardsHTML}
           </div>
         `;
+      }
+
+      // Show search results
+      function showSearchResults() {
+        document.getElementById('search-results-section').classList.remove('hidden');
+      }
+
+      // Hide search results
+      function hideSearchResults() {
+        document.getElementById('search-results-section').classList.add('hidden');
+        document.getElementById('search-results-container').innerHTML = '';
       }
 
       // Phone number live formatting
@@ -932,8 +953,17 @@ caret-color: white !important;
           const data = await res.json();
           if (!data.latitude || !data.longitude) return null;
 
-          // Query Supabase for active locations
-          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,hours,phone,lat,lng`, {
+          const userLat = data.latitude;
+          const userLng = data.longitude;
+
+          // Calculate bounding box
+          const latMin = userLat - 0.5;
+          const latMax = userLat + 0.5;
+          const lngMin = userLng - 0.8;
+          const lngMax = userLng + 0.8;
+
+          // Query Supabase with bounding box filter
+          let locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&lat=gte.${latMin}&lat=lte.${latMax}&lng=gte.${lngMin}&lng=lte.${lngMax}&select=name,slug,address,city,state,hours,phone,lat,lng`, {
             headers: {
               'apikey': SUPABASE_ANON_KEY,
               'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -942,12 +972,25 @@ caret-color: white !important;
 
           if (!locationsRes.ok) return null;
 
-          const locations = await locationsRes.json();
+          let locations = await locationsRes.json();
+
+          // Fallback: if bounding box returns 0 results, fetch all locations
+          if (locations.length === 0) {
+            locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,hours,phone,lat,lng`, {
+              headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+              }
+            });
+
+            if (!locationsRes.ok) return null;
+            locations = await locationsRes.json();
+          }
 
           // Calculate distances and find nearest locations
           const locationsWithDistance = locations.map(loc => ({
             ...loc,
-            miles: getMilesBetween(data.latitude, data.longitude, parseFloat(loc.lat), parseFloat(loc.lng))
+            miles: getMilesBetween(userLat, userLng, parseFloat(loc.lat), parseFloat(loc.lng))
           })).sort((a, b) => a.miles - b.miles);
 
           // Check if any locations within max radius
@@ -988,7 +1031,8 @@ caret-color: white !important;
             detectedByIP: true
           };
 
-          renderLocationCards(ipLocations);
+          document.getElementById('location-match-message').innerHTML =
+            `📍 CKO ${ipLocations[0].name} is ${ipLocations[0].miles.toFixed(1)} miles away — First Class Is Free`;
 
           document.getElementById('ip-detection-note').classList.remove('hidden');
 
@@ -1019,7 +1063,7 @@ caret-color: white !important;
 
         // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Searching...</span>';
+        submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Searching...</span>';
 
         try {
           // Convert ZIP to coordinates
@@ -1035,8 +1079,14 @@ caret-color: white !important;
           const visitorLat = parseFloat(zipData.places[0].latitude);
           const visitorLng = parseFloat(zipData.places[0].longitude);
 
-          // Query active locations from Supabase
-          const locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,hours,phone,lat,lng`, {
+          // Calculate bounding box
+          const latMin = visitorLat - 0.5;
+          const latMax = visitorLat + 0.5;
+          const lngMin = visitorLng - 0.8;
+          const lngMax = visitorLng + 0.8;
+
+          // Query active locations from Supabase with bounding box filter
+          let locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&lat=gte.${latMin}&lat=lte.${latMax}&lng=gte.${lngMin}&lng=lte.${lngMax}&select=name,slug,address,city,state,hours,phone,lat,lng`, {
             headers: {
               'apikey': SUPABASE_ANON_KEY,
               'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
@@ -1047,7 +1097,23 @@ caret-color: white !important;
             throw new Error('Failed to fetch locations');
           }
 
-          const locations = await locationsRes.json();
+          let locations = await locationsRes.json();
+
+          // Fallback: if bounding box returns 0 results, fetch all locations
+          if (locations.length === 0) {
+            locationsRes = await fetch(`${SUPABASE_URL}/rest/v1/locations?is_active=eq.true&select=name,slug,address,city,state,hours,phone,lat,lng`, {
+              headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+              }
+            });
+
+            if (!locationsRes.ok) {
+              throw new Error('Failed to fetch locations');
+            }
+
+            locations = await locationsRes.json();
+          }
 
           // Calculate distances and find nearest locations
           const locationsWithDistance = locations.map(loc => ({
@@ -1067,9 +1133,7 @@ caret-color: white !important;
               detectedByIP: false
             };
             window.CKO_MATCHED_LOCATIONS = [];
-            document.getElementById('location-match-message').innerHTML =
-              "We're expanding! Leave your info and we'll notify you when CKO opens near you.";
-            document.getElementById('ip-detection-note').classList.add('hidden');
+            showError('zip-error', "We're expanding! No locations found within 50 miles. Leave your info and we'll notify you when CKO opens near you.");
           } else {
             // Get locations within primary radius
             const withinPrimaryRadius = locationsWithDistance.filter(loc => loc.miles <= RADIUS_MILES);
@@ -1088,14 +1152,12 @@ caret-color: white !important;
             };
 
             renderLocationCards(matchedLocations);
-            document.getElementById('ip-detection-note').classList.add('hidden');
+            showSearchResults();
           }
 
-          // Update UI with matched location
-          updatePostMatchUI();
-
-          // Transition to Step 2
-          showStep2();
+          // Re-enable button
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Find Your Location</span>';
 
         } catch (error) {
           console.error('Error:', error);
@@ -1109,6 +1171,13 @@ caret-color: white !important;
       document.getElementById('lead-phone').addEventListener('input', (e) => {
         const formatted = formatPhoneInput(e.target.value);
         e.target.value = formatted;
+      });
+
+      // Back to search button
+      document.getElementById('back-to-search-btn').addEventListener('click', () => {
+        hideSearchResults();
+        hideError('zip-error');
+        // Keep the ZIP value in the input for easy modification
       });
 
       // Reset buttons
