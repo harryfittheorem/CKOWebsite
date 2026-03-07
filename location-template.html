@@ -333,7 +333,7 @@
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
-          <div class="reveal-on-scroll">
+          <div id="about-gallery-wrapper" class="reveal-on-scroll" style="display:none">
             <div id="about-gallery" class="about-gallery-grid">
               <!-- Gallery images will be loaded dynamically from location_media -->
             </div>
@@ -932,17 +932,27 @@
       // Load gallery images
       const galleryItems = mediaItems.filter(m => m.media_type === 'gallery').slice(0, 4);
       const galleryContainer = document.getElementById('about-gallery');
+      const galleryWrapper = document.getElementById('about-gallery-wrapper');
+      const aboutGrid = galleryWrapper?.closest('.grid');
 
       if (galleryContainer && galleryItems.length > 0) {
+        // Has images — populate grid normally
         galleryContainer.innerHTML = '';
-
         galleryItems.forEach((item, index) => {
           const img = document.createElement('img');
           img.src = item.url;
-          img.alt = item.alt_text || `CKO ${window.CKO_LOCATION?.name || 'Kickboxing'} - Gallery ${index + 1}`;
+          img.alt = item.alt_text || `CKO ${window.CKO_LOCATION?.name || 'Kickboxing'} - Photo ${index + 1}`;
           img.loading = 'lazy';
           galleryContainer.appendChild(img);
         });
+        galleryWrapper.style.display = 'block';
+      } else {
+        // No images — hide the gallery column and go full-width
+        if (galleryWrapper) galleryWrapper.style.display = 'none';
+        if (aboutGrid) {
+          aboutGrid.classList.remove('lg:grid-cols-2');
+          aboutGrid.classList.add('lg:grid-cols-1', 'max-w-3xl', 'mx-auto');
+        }
       }
     }
 
