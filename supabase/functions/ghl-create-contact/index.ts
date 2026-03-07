@@ -145,11 +145,10 @@ Deno.serve(async (req: Request) => {
 
     console.log("Pushing to GHL:", ghlPayload);
 
-    const ghlResponse = await fetch("https://services.leadconnectorhq.com/contacts/", {
+    const ghlResponse = await fetch("https://rest.gohighlevel.com/v1/contacts/", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${ghlApiKey}`,
-        "Version": "2021-07-28",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(ghlPayload),
