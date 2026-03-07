@@ -800,10 +800,6 @@
         document.getElementById('programs').classList.remove('hidden');
       }
 
-      if (location.show_testimonials !== false) {
-        document.getElementById('testimonials').classList.remove('hidden');
-      }
-
       if (location.show_contact_form !== false || location.show_map !== false) {
         document.getElementById('contact').classList.remove('hidden');
       }
@@ -1200,33 +1196,34 @@
     }
 
     async function loadTestimonials() {
-      if (window.CKO_LOCATION.show_testimonials === false) return;
+      if (window.CKO_LOCATION?.show_testimonials === false) return;
 
       try {
         // Stage 1 — location-specific reviews
-        const response = await fetch(
-          `${SUPABASE_URL}/rest/v1/testimonials?location_slug=eq.${window.CKO_LOCATION.slug}&is_active=eq.true&order=display_order.asc,created_at.desc&select=*`,
+        let response = await fetch(
+          `${SUPABASE_URL}/rest/v1/testimonials?location_slug=eq.${window.CKO_LOCATION.slug}&is_active=eq.true&order=display_order.asc,created_at.desc`,
           { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
         );
         let testimonials = await response.json();
 
-        // Stage 2 — corporate defaults if none found
-        if (!testimonials || testimonials.length === 0) {
-          const fallbackResponse = await fetch(
-            `${SUPABASE_URL}/rest/v1/testimonials?is_corporate_default=eq.true&is_active=eq.true&order=display_order.asc&limit=3&select=*`,
+        // Stage 2 — fall back to corporate defaults if none found
+        if (!Array.isArray(testimonials) || testimonials.length === 0) {
+          response = await fetch(
+            `${SUPABASE_URL}/rest/v1/testimonials?is_corporate_default=eq.true&is_active=eq.true&order=display_order.asc&limit=3`,
             { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
           );
-          testimonials = await fallbackResponse.json();
+          testimonials = await response.json();
         }
 
-        if (!testimonials || testimonials.length === 0) return;
+        if (!Array.isArray(testimonials) || testimonials.length === 0) return;
 
-        const testimonialsSection = document.getElementById('testimonials');
-        const testimonialsContainer = document.getElementById('testimonials-container');
+        const section = document.getElementById('testimonials');
+        const container = document.getElementById('testimonials-container');
+        if (!section || !container) return;
 
-        testimonialsContainer.innerHTML = testimonials.map(t => `
-          <div class="bg-[#0a0a0a] border border-white/10 p-8 reveal-on-scroll">
-            ${t.rating ? `<div class="text-accent text-xl mb-4">${'★'.repeat(t.rating)}</div>` : ''}
+        container.innerHTML = testimonials.map(t => `
+          <div class="bg-[#111] border border-white/10 p-8 rounded-sm reveal-on-scroll">
+            <div class="text-accent text-xl mb-4">${'★'.repeat(t.rating || 5)}</div>
             <p class="text-gray-300 text-base leading-relaxed mb-6 font-light italic">"${t.quote}"</p>
             <div>
               <p class="text-white font-semibold text-sm">${t.member_name}</p>
@@ -1235,10 +1232,10 @@
           </div>
         `).join('');
 
-        testimonialsSection.classList.remove('hidden');
+        section.classList.remove('hidden');
 
-      } catch (error) {
-        console.error('Error loading testimonials:', error);
+      } catch (err) {
+        console.error('loadTestimonials error:', err);
       }
     }
 
