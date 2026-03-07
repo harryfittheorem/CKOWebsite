@@ -34,6 +34,7 @@ Deno.serve(async (req: Request) => {
       cardCvv,
       cardholderName,
       billingZip,
+      location_slug,
     } = requestBody;
 
     if (!clubreadyUserId || !packageId || !cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
@@ -53,41 +54,64 @@ Deno.serve(async (req: Request) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { data: config, error: configError } = await supabase
-      .from("clubready_config")
-      .select("*")
-      .eq("id", 1)
-      .maybeSingle();
+    let clubreadyApiKey = "";
+    let clubreadyStoreId = "";
+    let clubreadyChainId = "";
+    let clubreadyApiUrl = "";
 
-    if (configError || !config) {
-      const duration = Date.now() - startTime;
-      await logApiCall(supabase, {
-        endpoint: "/sales/member/*/payment/makepayment",
-        step: "process_payment",
-        api_url: "N/A",
-        request_body: sanitizeRequestBody(requestBody),
-        http_status: 500,
-        error_message: "ClubReady configuration not found",
-        error_details: configError,
-        duration_ms: duration,
-      });
+    if (location_slug) {
+      const { data: location, error: locationError } = await supabase
+        .from("locations")
+        .select("clubready_api_key, clubready_site_id, clubready_chain_id")
+        .eq("slug", location_slug)
+        .maybeSingle();
 
-      return new Response(
-        JSON.stringify({ error: "ClubReady configuration not found" }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      if (location && location.clubready_api_key) {
+        clubreadyApiKey = location.clubready_api_key;
+        clubreadyStoreId = location.clubready_site_id || "";
+        clubreadyChainId = location.clubready_chain_id || "";
+      }
     }
 
-    const clubreadyApiKey = config.api_key;
-    const clubreadyChainId = config.chain_id;
-    const clubreadyStoreId = config.store_id;
-    const clubreadyApiUrl = config.api_url;
+    if (!clubreadyApiKey) {
+      const { data: config, error: configError } = await supabase
+        .from("clubready_config")
+        .select("*")
+        .eq("id", 1)
+        .maybeSingle();
+
+      if (configError || !config) {
+        const duration = Date.now() - startTime;
+        await logApiCall(supabase, {
+          endpoint: "/sales/member/*/payment/makepayment",
+          step: "process_payment",
+          api_url: "N/A",
+          request_body: sanitizeRequestBody(requestBody),
+          http_status: 500,
+          error_message: "ClubReady configuration not found",
+          error_details: configError,
+          duration_ms: duration,
+        });
+
+        return new Response(
+          JSON.stringify({ error: "ClubReady configuration not found" }),
+          {
+            status: 500,
+            headers: {
+              ...corsHeaders,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+
+      clubreadyApiKey = config.api_key;
+      clubreadyChainId = config.chain_id;
+      clubreadyStoreId = config.store_id;
+      clubreadyApiUrl = config.api_url;
+    } else {
+      clubreadyApiUrl = "https://api.clubready.com/api/v2";
+    }
 
     const { data: packageData, error: packageError } = await supabase
       .from("packages")

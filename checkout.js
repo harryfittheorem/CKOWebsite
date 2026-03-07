@@ -5,6 +5,9 @@ const TEST_MODE = new URLSearchParams(window.location.search).has('test') ||
                   window.location.hostname === 'localhost' ||
                   import.meta.env.VITE_TEST_MODE === 'true';
 
+const urlParams = new URLSearchParams(window.location.search);
+const locationSlug = urlParams.get('slug') || null;
+
 let currentStep = 1;
 let selectedPackage = null;
 let prospectId = null;
@@ -127,7 +130,11 @@ function goToStep2FromPayment() {
 
 async function loadPackages() {
   try {
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/clubready-get-packages`, {
+    const url = locationSlug
+      ? `${SUPABASE_URL}/functions/v1/clubready-get-packages?location_slug=${locationSlug}`
+      : `${SUPABASE_URL}/functions/v1/clubready-get-packages`;
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
@@ -142,6 +149,14 @@ async function loadPackages() {
     }
 
     packages = data.packages || [];
+
+    if (data.location && data.location.name) {
+      const locationDisplay = document.getElementById('location-display');
+      const locationName = document.getElementById('location-name');
+      locationName.textContent = data.location.name;
+      locationDisplay.classList.remove('hidden');
+    }
+
     renderPackages();
   } catch (error) {
     console.error('Error loading packages:', error);
@@ -271,6 +286,7 @@ async function searchOrCreateProspect() {
         email,
         phone,
         dateOfBirth,
+        location_slug: locationSlug,
       }),
     });
 
@@ -363,6 +379,7 @@ async function processPayment() {
         cardCvv,
         cardholderName,
         billingZip,
+        location_slug: locationSlug,
       }),
     });
 

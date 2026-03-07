@@ -20,18 +20,39 @@ Deno.serve(async (req: Request) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { data: packages, error } = await supabase
+    const url = new URL(req.url);
+    const locationSlug = url.searchParams.get("location_slug");
+
+    let query = supabase
       .from("packages")
       .select("*")
-      .eq("is_active", true)
-      .order("display_order", { ascending: true });
+      .eq("is_active", true);
+
+    if (locationSlug) {
+      query = query.eq("location_slug", locationSlug);
+    }
+
+    const { data: packages, error } = await query.order("display_order", { ascending: true });
 
     if (error) {
       throw error;
     }
 
+    let locationData = null;
+    if (locationSlug) {
+      const { data: location, error: locationError } = await supabase
+        .from("locations")
+        .select("clubready_site_id, name")
+        .eq("slug", locationSlug)
+        .maybeSingle();
+
+      if (!locationError && location) {
+        locationData = location;
+      }
+    }
+
     return new Response(
-      JSON.stringify({ packages }),
+      JSON.stringify({ packages, location: locationData }),
       {
         headers: {
           ...corsHeaders,
