@@ -374,13 +374,17 @@
 
         const card = document.createElement('div');
         card.className = 'location-card p-4';
+        const cityStateZip = location.city && location.state && location.zip
+          ? `${location.city}, ${location.state} ${location.zip}`
+          : '';
+
         card.innerHTML = `
           <h3 class="font-bold text-lg mb-2">${location.name}</h3>
           <p class="text-sm text-gray-300 mb-1">${location.address}</p>
-          <p class="text-sm text-gray-300 mb-3">${location.city}, ${location.state} ${location.zip}</p>
+          ${cityStateZip ? `<p class="text-sm text-gray-300 mb-3">${cityStateZip}</p>` : ''}
           <p class="text-xs text-accent mb-3">${Math.round(distance)} MILES AWAY</p>
           <a href="tel:${location.phone}" class="text-accent font-bold hover:text-yellow-500 transition block mb-3">${location.phone}</a>
-          <a href="form-submit-page.html?location=${encodeURIComponent(location.name)}&studio=${encodeURIComponent(location.city)}" class="w-full bg-accent text-black font-bold py-2 hover:bg-yellow-500 transition block text-center mb-2">BOOK CLASS →</a>
+          <a href="form-submit-page.html?location=${encodeURIComponent(location.name)}&studio=${encodeURIComponent(location.city || location.name)}" class="w-full bg-accent text-black font-bold py-2 hover:bg-yellow-500 transition block text-center mb-2">BOOK CLASS →</a>
           <a href="location-template.html?slug=${location.slug}" class="w-full bg-gray-700 text-white font-bold py-2 hover:bg-gray-600 transition block text-center">VIEW LOCATION</a>
         `;
         list.appendChild(card);

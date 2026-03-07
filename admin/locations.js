@@ -176,8 +176,9 @@ async function loadLocations() {
     }
 
     tbody.innerHTML = locations.map(loc => {
-      const addressParts = loc.address.split(',');
-      const cityState = addressParts.length >= 3 ? `${addressParts[addressParts.length - 2].trim()}, ${addressParts[addressParts.length - 1].trim()}` : loc.address;
+      const cityState = loc.city && loc.state
+        ? `${loc.city}, ${loc.state}`
+        : loc.address;
 
       return `
         <tr class="hover:bg-gray-800/50 transition-colors">
@@ -231,19 +232,10 @@ window.editLocation = async function(locationId) {
     document.getElementById('input-slug').readOnly = true;
     document.getElementById('input-slug').classList.add('bg-gray-700', 'cursor-not-allowed');
 
-    const addressParts = currentLocation.address.split(',');
-    if (addressParts.length >= 3) {
-      document.getElementById('input-address').value = addressParts[0].trim();
-      document.getElementById('input-city').value = addressParts[1].trim();
-      const lastPart = addressParts[2].trim().split(' ');
-      document.getElementById('input-state').value = lastPart[0] || '';
-      document.getElementById('input-zip').value = lastPart[1] || '';
-    } else {
-      document.getElementById('input-address').value = currentLocation.address || '';
-      document.getElementById('input-city').value = '';
-      document.getElementById('input-state').value = '';
-      document.getElementById('input-zip').value = '';
-    }
+    document.getElementById('input-address').value = currentLocation.address || '';
+    document.getElementById('input-city').value = currentLocation.city || '';
+    document.getElementById('input-state').value = currentLocation.state || '';
+    document.getElementById('input-zip').value = currentLocation.zip || '';
 
     document.getElementById('input-phone').value = currentLocation.phone || '';
     document.getElementById('input-email').value = currentLocation.email || '';
@@ -322,12 +314,13 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     return;
   }
 
-  const fullAddress = `${streetAddress}, ${city}, ${state} ${zip}`;
-
   const locationData = {
     name,
     slug,
-    address: fullAddress,
+    address: streetAddress,
+    city,
+    state,
+    zip,
     phone,
     email,
     hours: document.getElementById('input-hours').value.trim(),

@@ -793,6 +793,11 @@
     }
 
     function hydratePageContent(location) {
+      // Build full address with graceful fallback
+      const fullAddress = location.city && location.state && location.zip
+        ? `${location.address}, ${location.city}, ${location.state} ${location.zip}`
+        : location.address;
+
       // Page title
       document.getElementById('page-title').textContent = `CKO Kickboxing - ${location.name}`;
 
@@ -809,7 +814,7 @@
       // Info bar
       document.getElementById('info-phone-link').href = `tel:${location.phone.replace(/[^0-9+]/g, '')}`;
       document.getElementById('info-phone-text').textContent = location.phone;
-      document.getElementById('info-address').textContent = location.address;
+      document.getElementById('info-address').textContent = fullAddress;
       document.getElementById('info-hours').textContent = location.hours || 'Mon-Fri: 5AM-9PM | Sat-Sun: 7AM-6PM';
 
       // About section
@@ -819,7 +824,7 @@
       }
 
       // Contact section
-      document.getElementById('contact-address').textContent = location.address;
+      document.getElementById('contact-address').textContent = fullAddress;
       document.getElementById('contact-hours').textContent = location.hours || 'Mon-Fri: 5AM-9PM | Sat-Sun: 7AM-6PM';
       document.getElementById('contact-phone-link').href = `tel:${location.phone.replace(/[^0-9+]/g, '')}`;
       document.getElementById('contact-phone-text').textContent = location.phone;
@@ -842,7 +847,7 @@
       document.getElementById('footer-phone-text').textContent = location.phone;
       document.getElementById('footer-email-link').href = `mailto:${location.email || 'info@ckokickboxing.com'}`;
       document.getElementById('footer-email-text').textContent = location.email || 'info@ckokickboxing.com';
-      document.getElementById('footer-address').textContent = location.address;
+      document.getElementById('footer-address').textContent = fullAddress;
     }
 
     function hideLoading() {
