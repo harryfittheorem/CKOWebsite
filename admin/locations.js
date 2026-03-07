@@ -27,8 +27,10 @@ const editPanel = document.getElementById('edit-panel');
 const closeBtn = document.getElementById('close-panel-btn');
 const detailsTabBtn = document.getElementById('details-tab-btn');
 const scheduleTabBtn = document.getElementById('schedule-tab-btn');
+const mediaTabBtn = document.getElementById('media-tab-btn');
 const detailsTab = document.getElementById('details-tab');
 const scheduleTab = document.getElementById('schedule-tab');
+const mediaTab = document.getElementById('media-tab');
 
 function openPanel() {
   overlay.classList.add('open');
@@ -52,8 +54,11 @@ detailsTabBtn.addEventListener('click', () => {
   detailsTabBtn.classList.remove('text-gray-400');
   scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
   scheduleTabBtn.classList.add('text-gray-400');
+  mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  mediaTabBtn.classList.add('text-gray-400');
   detailsTab.classList.remove('hidden');
   scheduleTab.classList.add('hidden');
+  mediaTab.classList.add('hidden');
 });
 
 scheduleTabBtn.addEventListener('click', () => {
@@ -61,11 +66,30 @@ scheduleTabBtn.addEventListener('click', () => {
   scheduleTabBtn.classList.remove('text-gray-400');
   detailsTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
   detailsTabBtn.classList.add('text-gray-400');
+  mediaTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  mediaTabBtn.classList.add('text-gray-400');
   scheduleTab.classList.remove('hidden');
   detailsTab.classList.add('hidden');
+  mediaTab.classList.add('hidden');
 
   if (currentLocation) {
     loadSchedule(currentLocation.slug);
+  }
+});
+
+mediaTabBtn.addEventListener('click', () => {
+  mediaTabBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  mediaTabBtn.classList.remove('text-gray-400');
+  detailsTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  detailsTabBtn.classList.add('text-gray-400');
+  scheduleTabBtn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
+  scheduleTabBtn.classList.add('text-gray-400');
+  mediaTab.classList.remove('hidden');
+  detailsTab.classList.add('hidden');
+  scheduleTab.classList.add('hidden');
+
+  if (currentLocation) {
+    loadMedia(currentLocation.slug);
   }
 });
 
@@ -451,6 +475,142 @@ document.getElementById('add-class-form').addEventListener('submit', async (e) =
   } catch (error) {
     console.error('Error adding class:', error);
     alert(`Failed to add class: ${error.message}`);
+  }
+});
+
+async function loadMedia(locationSlug) {
+  const mediaList = document.getElementById('media-list');
+  mediaList.innerHTML = `
+    <div class="text-center text-gray-500 py-8">
+      <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Loading media...
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/location_media?location_slug=eq.${locationSlug}&is_active=eq.true&order=display_order.asc,created_at.asc&select=*`, {
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch media');
+
+    const mediaItems = await response.json();
+
+    if (mediaItems.length === 0) {
+      mediaList.innerHTML = `
+        <div class="text-center text-gray-500 py-8">
+          No media added yet. Add your first media item below.
+        </div>
+      `;
+      return;
+    }
+
+    const getMediaTypeBadge = (type) => {
+      const badges = {
+        hero_image: 'bg-blue-500/10 text-blue-400',
+        hero_video_id: 'bg-purple-500/10 text-purple-400',
+        gallery: 'bg-green-500/10 text-green-400'
+      };
+      return badges[type] || 'bg-gray-500/10 text-gray-400';
+    };
+
+    const truncateUrl = (url, maxLength = 40) => {
+      return url.length > maxLength ? url.substring(0, maxLength) + '...' : url;
+    };
+
+    mediaList.innerHTML = mediaItems.map(media => `
+      <div class="bg-gray-800 rounded-lg p-4 flex justify-between items-start">
+        <div class="flex-1 space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getMediaTypeBadge(media.media_type)}">
+              ${media.media_type}
+            </span>
+            <span class="text-gray-500 text-xs">Order: ${media.display_order}</span>
+          </div>
+          <div>
+            <p class="text-white font-mono text-sm">${truncateUrl(media.url)}</p>
+            ${media.alt_text ? `<p class="text-gray-400 text-sm mt-1">${media.alt_text}</p>` : ''}
+          </div>
+        </div>
+        <button onclick="deleteMedia('${media.id}')" class="text-red-400 hover:text-red-300 transition-colors ml-4">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </button>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading media:', error);
+    mediaList.innerHTML = `
+      <div class="text-center text-red-400 py-8">
+        Error loading media. Please try again.
+      </div>
+    `;
+  }
+}
+
+window.deleteMedia = async function(mediaId) {
+  if (!confirm('Are you sure you want to delete this media item?')) return;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/location_media?id=eq.${mediaId}`, {
+      method: 'PATCH',
+      headers: {
+        ...headers,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ is_active: false })
+    });
+
+    if (!response.ok) throw new Error('Failed to delete media');
+
+    showToast('Media deleted successfully!');
+    loadMedia(currentLocation.slug);
+  } catch (error) {
+    console.error('Error deleting media:', error);
+    alert('Failed to delete media');
+  }
+};
+
+document.getElementById('add-media-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!currentLocation) {
+    alert('Please save the location first before adding media');
+    return;
+  }
+
+  const mediaData = {
+    location_slug: currentLocation.slug,
+    media_type: document.getElementById('media-type').value,
+    url: document.getElementById('media-url').value.trim(),
+    alt_text: document.getElementById('media-alt-text').value.trim() || null,
+    display_order: parseInt(document.getElementById('media-display-order').value) || 0,
+    is_active: true
+  };
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/location_media`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(mediaData)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to add media');
+    }
+
+    showToast('Media added successfully!');
+    document.getElementById('add-media-form').reset();
+    document.getElementById('media-display-order').value = '0';
+    loadMedia(currentLocation.slug);
+  } catch (error) {
+    console.error('Error adding media:', error);
+    alert(`Failed to add media: ${error.message}`);
   }
 });
 
