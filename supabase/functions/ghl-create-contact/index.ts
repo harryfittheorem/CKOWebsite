@@ -33,14 +33,14 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const agencyToken = Deno.env.get("GHL_AGENCY_TOKEN");
-    const companyId = Deno.env.get("GHL_COMPANY_ID");
+    const companyId = Deno.env.get("GHL_COMPANY_ID") || null;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    if (!agencyToken || !companyId) {
-      console.error("GHL_AGENCY_TOKEN or GHL_COMPANY_ID not configured");
+    if (!agencyToken) {
+      console.error("GHL_AGENCY_TOKEN not configured");
       return new Response(
-        JSON.stringify({ error: "GHL agency credentials not configured" }),
+        JSON.stringify({ error: "GHL agency token not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -80,6 +80,12 @@ Deno.serve(async (req: Request) => {
     }
 
     console.log("Getting location token for:", location.ghl_location_id);
+
+    const tokenBody: Record<string, string> = {
+      locationId: location.ghl_location_id,
+    };
+    if (companyId) tokenBody.companyId = companyId;
+
     const tokenResponse = await fetch(
       "https://services.leadconnectorhq.com/oauth/locationToken",
       {
@@ -89,10 +95,7 @@ Deno.serve(async (req: Request) => {
           "Content-Type": "application/json",
           "Version": "2021-07-28",
         },
-        body: JSON.stringify({
-          locationId: location.ghl_location_id,
-          companyId: companyId,
-        }),
+        body: JSON.stringify(tokenBody),
       }
     );
 
@@ -124,6 +127,8 @@ Deno.serve(async (req: Request) => {
       source: leadData.source,
     };
     if (lastName) ghlPayload.lastName = lastName;
+
+    console.log("Creating contact in GHL for location:", location.ghl_location_id);
 
     const ghlResponse = await fetch("https://services.leadconnectorhq.com/contacts/", {
       method: "POST",
