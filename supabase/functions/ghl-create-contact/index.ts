@@ -33,7 +33,6 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const agencyToken = Deno.env.get("GHL_AGENCY_TOKEN");
-    const companyId = Deno.env.get("GHL_COMPANY_ID") || null;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -79,39 +78,6 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    console.log("Getting location token for:", location.ghl_location_id);
-
-    const tokenBody: Record<string, string> = {
-      locationId: location.ghl_location_id,
-    };
-    if (companyId) tokenBody.companyId = companyId;
-
-    const tokenResponse = await fetch(
-      "https://services.leadconnectorhq.com/oauth/locationToken",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${agencyToken}`,
-          "Content-Type": "application/json",
-          "Version": "2021-07-28",
-        },
-        body: JSON.stringify(tokenBody),
-      }
-    );
-
-    if (!tokenResponse.ok) {
-      const errText = await tokenResponse.text();
-      console.error("Failed to get location token:", tokenResponse.status, errText);
-      await supabase.from("leads").update({ ghl_push_status: "failed" }).eq("id", leadData.id);
-      return new Response(
-        JSON.stringify({ success: true, message: "Failed to get GHL location token" }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const { access_token: locationToken } = await tokenResponse.json();
-    console.log("Location token obtained successfully");
-
     const nameParts = leadData.name.trim().split(/\s+/);
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : undefined;
@@ -128,12 +94,12 @@ Deno.serve(async (req: Request) => {
     };
     if (lastName) ghlPayload.lastName = lastName;
 
-    console.log("Creating contact in GHL for location:", location.ghl_location_id);
+    console.log("Creating GHL contact for location:", location.ghl_location_id);
 
     const ghlResponse = await fetch("https://services.leadconnectorhq.com/contacts/", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${locationToken}`,
+        "Authorization": `Bearer ${agencyToken}`,
         "Content-Type": "application/json",
         "Version": "2021-07-28",
       },
