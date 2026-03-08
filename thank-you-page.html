@@ -627,12 +627,12 @@ font-family: "DM Sans", sans-serif !important;
           if (userName) {
             headline.innerHTML = `
               You're all set, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">${userName}!</span><br>
-              Welcome to CKO ${location.name}
+              Welcome to ${location.name}
             `;
           } else {
             headline.innerHTML = `
               You're all set!<br>
-              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">Welcome to CKO ${location.name}</span>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fec400] to-yellow-200">Welcome to ${location.name}</span>
             `;
           }
         }
@@ -652,13 +652,13 @@ font-family: "DM Sans", sans-serif !important;
                 Book Your First Class Now →
               </a>
               <a href="location-template.html?slug=${locationSlug}" class="text-white/60 hover:text-accent text-sm uppercase tracking-widest transition-colors underline underline-offset-4 block mt-4">
-                Explore Your CKO ${location.name} →
+                Explore Your ${location.name} →
               </a>
             `;
           } else {
             actionsContainer.innerHTML = `
               <a href="location-template.html?slug=${locationSlug}" class="text-white/60 hover:text-accent text-sm uppercase tracking-widest transition-colors underline underline-offset-4">
-                Explore Your CKO ${location.name} →
+                Explore Your ${location.name} →
               </a>
             `;
           }
