@@ -226,6 +226,7 @@ window.editLocation = async function(locationId) {
     document.getElementById('input-google-maps-url').value = currentLocation.google_maps_embed_url || '';
     document.getElementById('input-ghl-calendar-url').value = currentLocation.ghl_calendar_url || '';
     document.getElementById('input-ghl-location-id').value = currentLocation.ghl_location_id || '';
+    document.getElementById('input-ghl-webhook-url').value = currentLocation.ghl_webhook_url || '';
     document.getElementById('input-ghl-api-key').value = currentLocation.ghl_api_key || '';
     document.getElementById('input-clubready-site-id').value = currentLocation.clubready_site_id || '';
     document.getElementById('input-clubready-api-key').value = currentLocation.clubready_api_key || '';
@@ -275,6 +276,7 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('input-google-maps-url').value = '';
   document.getElementById('input-ghl-calendar-url').value = '';
   document.getElementById('input-ghl-location-id').value = '';
+  document.getElementById('input-ghl-webhook-url').value = '';
   document.getElementById('input-ghl-api-key').value = '';
   document.getElementById('input-clubready-site-id').value = '';
   document.getElementById('input-clubready-api-key').value = '';
@@ -384,6 +386,7 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     google_maps_embed_url: document.getElementById('input-google-maps-url').value.trim(),
     ghl_calendar_url: document.getElementById('input-ghl-calendar-url').value.trim(),
     ghl_location_id: document.getElementById('input-ghl-location-id').value.trim(),
+    ghl_webhook_url: document.getElementById('input-ghl-webhook-url').value.trim() || null,
     ghl_api_key: document.getElementById('input-ghl-api-key').value.trim() || null,
     clubready_site_id: document.getElementById('input-clubready-site-id').value.trim(),
     clubready_api_key: document.getElementById('input-clubready-api-key').value.trim() || null,
