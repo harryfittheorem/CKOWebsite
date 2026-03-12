@@ -181,6 +181,9 @@
       <button id="packages-tab-btn" class="flex-1 px-6 py-4 text-gray-400 font-medium hover:text-white transition-colors">
         Packages
       </button>
+      <button id="events-tab-btn" class="flex-1 px-6 py-4 text-gray-400 font-medium hover:text-white transition-colors">
+        Events
+      </button>
       <button id="users-tab-btn" class="flex-1 px-6 py-4 text-gray-400 font-medium hover:text-white transition-colors">
         Access & Users
       </button>
@@ -619,6 +622,70 @@
 
           <button type="submit" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-all">
             Add Package
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="events-tab" class="p-6 space-y-4 hidden">
+      <div class="space-y-2" id="events-list">
+        <div class="text-center text-gray-500 py-8">
+          <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Loading events...
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-4 mt-6">
+        <h4 class="text-white font-semibold mb-4">Add Event</h4>
+        <form id="add-event-form" class="space-y-3">
+          <input type="hidden" id="event-id" value="">
+
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">Title *</label>
+            <input type="text" id="event-title" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">Description</label>
+            <textarea id="event-description" rows="3" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Event Date *</label>
+              <input type="date" id="event-date" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            </div>
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">End Date</label>
+              <input type="date" id="event-end-date" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">CTA Label</label>
+            <input type="text" id="event-cta-label" placeholder="Register Now" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">CTA URL</label>
+            <input type="url" id="event-cta-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">Image URL</label>
+            <input type="url" id="event-image-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+            <label class="text-white text-sm font-medium">Active</label>
+            <input type="checkbox" id="event-active" checked class="w-5 h-5 bg-gray-700 border-gray-600 rounded text-accent focus:ring-accent">
+          </div>
+
+          <button type="submit" id="event-submit-btn" class="w-full bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-all">
+            Add Event
           </button>
         </form>
       </div>

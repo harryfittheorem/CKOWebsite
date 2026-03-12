@@ -35,11 +35,13 @@ const detailsTabBtn = document.getElementById('details-tab-btn');
 const scheduleTabBtn = document.getElementById('schedule-tab-btn');
 const mediaTabBtn = document.getElementById('media-tab-btn');
 const packagesTabBtn = document.getElementById('packages-tab-btn');
+const eventsTabBtn = document.getElementById('events-tab-btn');
 const usersTabBtn = document.getElementById('users-tab-btn');
 const detailsTab = document.getElementById('details-tab');
 const scheduleTab = document.getElementById('schedule-tab');
 const mediaTab = document.getElementById('media-tab');
 const packagesTab = document.getElementById('packages-tab');
+const eventsTab = document.getElementById('events-tab');
 const usersTab = document.getElementById('users-tab');
 
 function openPanel() {
@@ -60,11 +62,11 @@ overlay.addEventListener('click', closePanel);
 closeBtn.addEventListener('click', closePanel);
 
 function switchTab(activeBtn, activeTab) {
-  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, usersTabBtn].forEach(btn => {
+  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, eventsTabBtn, usersTabBtn].forEach(btn => {
     btn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
     btn.classList.add('text-gray-400');
   });
-  [detailsTab, scheduleTab, mediaTab, packagesTab, usersTab].forEach(tab => {
+  [detailsTab, scheduleTab, mediaTab, packagesTab, eventsTab, usersTab].forEach(tab => {
     tab.classList.add('hidden');
   });
   activeBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
@@ -94,6 +96,13 @@ packagesTabBtn.addEventListener('click', () => {
   switchTab(packagesTabBtn, packagesTab);
   if (currentLocation) {
     loadPackages(currentLocation.slug);
+  }
+});
+
+eventsTabBtn.addEventListener('click', () => {
+  switchTab(eventsTabBtn, eventsTab);
+  if (currentLocation) {
+    loadEvents(currentLocation.slug);
   }
 });
 
@@ -1350,6 +1359,188 @@ document.getElementById('corporate-event-form').addEventListener('submit', async
   } catch (error) {
     console.error('Error saving corporate event:', error);
     alert('Failed to save event. Please try again.');
+  }
+});
+
+async function loadEvents(locationSlug) {
+  const eventsList = document.getElementById('events-list');
+  eventsList.innerHTML = `
+    <div class="text-center text-gray-500 py-8">
+      <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Loading events...
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?location_slug=eq.${locationSlug}&order=event_date.asc`, {
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch events');
+
+    const events = await response.json();
+
+    if (events.length === 0) {
+      eventsList.innerHTML = `
+        <div class="text-center text-gray-500 py-8">
+          No events found for this location. Add one below.
+        </div>
+      `;
+      return;
+    }
+
+    eventsList.innerHTML = events.map(event => {
+      const eventDate = new Date(event.event_date);
+      const formattedDate = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+      return `
+        <div class="bg-gray-800 rounded-lg p-4 flex justify-between items-start">
+          <div class="flex-1 space-y-2">
+            <div class="flex items-center gap-3">
+              <h4 class="text-white font-medium">${event.title}</h4>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${event.is_active ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}">
+                ${event.is_active ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            <p class="text-gray-400 text-sm">${formattedDate}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="editEvent('${event.id}')" class="text-accent hover:text-accent/80 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+            </button>
+            <button onclick="deleteEvent('${event.id}')" class="text-red-400 hover:text-red-300 transition-colors ml-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading events:', error);
+    eventsList.innerHTML = `
+      <div class="text-center text-red-400 py-8">
+        Error loading events. Please try again.
+      </div>
+    `;
+  }
+}
+
+window.editEvent = async function(eventId) {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch event');
+
+    const events = await response.json();
+    if (events.length === 0) throw new Error('Event not found');
+
+    const event = events[0];
+
+    document.getElementById('event-id').value = event.id;
+    document.getElementById('event-title').value = event.title || '';
+    document.getElementById('event-description').value = event.description || '';
+    document.getElementById('event-date').value = event.event_date || '';
+    document.getElementById('event-end-date').value = event.end_date || '';
+    document.getElementById('event-cta-label').value = event.cta_label || '';
+    document.getElementById('event-cta-url').value = event.cta_url || '';
+    document.getElementById('event-image-url').value = event.image_url || '';
+    document.getElementById('event-active').checked = event.is_active !== false;
+
+    document.getElementById('event-submit-btn').textContent = 'Update Event';
+  } catch (error) {
+    console.error('Error loading event:', error);
+    alert('Failed to load event details');
+  }
+};
+
+window.deleteEvent = async function(eventId) {
+  if (!confirm('Are you sure you want to delete this event?')) return;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+      method: 'DELETE',
+      headers: {
+        ...headers,
+        'Prefer': 'return=minimal'
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to delete event');
+
+    showToast('Event deleted successfully!');
+    loadEvents(currentLocation.slug);
+  } catch (error) {
+    console.error('Error deleting event:', error);
+    alert('Failed to delete event');
+  }
+};
+
+document.getElementById('add-event-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!currentLocation) {
+    alert('Please save the location first before adding events');
+    return;
+  }
+
+  const eventId = document.getElementById('event-id').value;
+  const isEdit = !!eventId;
+
+  const eventData = {
+    location_slug: currentLocation.slug,
+    title: document.getElementById('event-title').value.trim(),
+    description: document.getElementById('event-description').value.trim() || null,
+    event_date: document.getElementById('event-date').value,
+    end_date: document.getElementById('event-end-date').value || null,
+    cta_label: document.getElementById('event-cta-label').value.trim() || null,
+    cta_url: document.getElementById('event-cta-url').value.trim() || null,
+    image_url: document.getElementById('event-image-url').value.trim() || null,
+    is_active: document.getElementById('event-active').checked,
+    is_corporate_template: false
+  };
+
+  try {
+    let response;
+
+    if (isEdit) {
+      response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+        method: 'PATCH',
+        headers: {
+          ...headers,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(eventData)
+      });
+    } else {
+      response = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(eventData)
+      });
+    }
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to save event');
+    }
+
+    showToast(isEdit ? 'Event updated successfully!' : 'Event added successfully!');
+    document.getElementById('add-event-form').reset();
+    document.getElementById('event-id').value = '';
+    document.getElementById('event-submit-btn').textContent = 'Add Event';
+    loadEvents(currentLocation.slug);
+  } catch (error) {
+    console.error('Error saving event:', error);
+    alert(`Failed to save event: ${error.message}`);
   }
 });
 
