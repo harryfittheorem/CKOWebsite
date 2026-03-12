@@ -260,6 +260,12 @@
       </div>
     </section>
 
+    <!-- Events Banner -->
+    <div id="events-banner" style="display:none" class="bg-accent text-black py-3 px-6 text-center">
+      <span id="events-banner-text" class="font-semibold"></span>
+      <a id="events-banner-cta" href="#" class="ml-4 underline font-bold hidden"></a>
+    </div>
+
     <!-- Location Info Bar -->
     <section class="bg-accent py-4">
       <div class="max-w-[1600px] mx-auto px-6">
@@ -450,6 +456,17 @@
             View Full Schedule
             <i data-lucide="calendar" class="w-4 h-4"></i>
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events-section" style="display:none" class="py-16 bg-[#0a0a0a]">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-heading font-bold uppercase text-white mb-10">
+          Upcoming Events
+        </h2>
+        <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         </div>
       </div>
     </section>
@@ -867,7 +884,138 @@
       loadScheduleFromDatabase();
       loadLocationMedia();
       loadTestimonials();
+      loadEvents(window.CKO_LOCATION.slug);
       checkForPackages();
+    }
+
+    async function loadEvents(slug) {
+      if (!window.CKO_LOCATION || window.CKO_LOCATION.show_events === false) {
+        return;
+      }
+
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/events?location_slug=eq.${slug}&is_active=eq.true&event_date=gte.${today}&order=event_date.asc`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch events');
+
+        const events = await response.json();
+
+        if (!Array.isArray(events) || events.length === 0) {
+          return;
+        }
+
+        const banner = document.getElementById('events-banner');
+        const bannerText = document.getElementById('events-banner-text');
+        const bannerCta = document.getElementById('events-banner-cta');
+        const eventsSection = document.getElementById('events-section');
+        const eventsContainer = document.getElementById('events-container');
+
+        if (events.length === 1) {
+          const event = events[0];
+          const eventDate = new Date(event.event_date);
+          const formattedDate = eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+          bannerText.textContent = `🥊 ${event.title} — ${formattedDate}`;
+
+          if (event.cta_label && event.cta_url) {
+            bannerCta.textContent = event.cta_label;
+            bannerCta.href = event.cta_url;
+            bannerCta.classList.remove('hidden');
+          } else {
+            bannerCta.classList.add('hidden');
+          }
+
+          banner.style.display = 'block';
+        } else if (events.length >= 2) {
+          const firstEvent = events[0];
+          const eventDate = new Date(firstEvent.event_date);
+          const formattedDate = eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+          bannerText.textContent = `🥊 ${firstEvent.title} — ${formattedDate}`;
+
+          if (firstEvent.cta_label && firstEvent.cta_url) {
+            bannerCta.textContent = firstEvent.cta_label;
+            bannerCta.href = firstEvent.cta_url;
+            bannerCta.classList.remove('hidden');
+          } else {
+            bannerCta.classList.add('hidden');
+          }
+
+          banner.style.display = 'block';
+
+          eventsContainer.innerHTML = '';
+          events.forEach(event => {
+            const card = document.createElement('div');
+            card.className = 'bg-black border border-white/10 rounded-sm overflow-hidden hover:border-accent/50 transition-all';
+
+            if (event.image_url) {
+              const imgWrapper = document.createElement('div');
+              imgWrapper.className = 'w-full h-48 overflow-hidden';
+              const img = document.createElement('img');
+              img.src = event.image_url;
+              img.alt = event.title;
+              img.className = 'w-full h-full object-cover';
+              imgWrapper.appendChild(img);
+              card.appendChild(imgWrapper);
+            }
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'p-6';
+
+            const title = document.createElement('h3');
+            title.className = 'text-xl font-heading font-semibold uppercase text-white mb-2';
+            title.textContent = event.title;
+            contentDiv.appendChild(title);
+
+            const eventDate = new Date(event.event_date);
+            let dateText = eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+            if (event.end_date) {
+              const endDate = new Date(event.end_date);
+              dateText += ' - ' + endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            }
+
+            const dateP = document.createElement('p');
+            dateP.className = 'text-accent text-sm font-semibold mb-3';
+            dateP.textContent = dateText;
+            contentDiv.appendChild(dateP);
+
+            if (event.description) {
+              const desc = document.createElement('p');
+              desc.className = 'text-gray-400 text-sm leading-relaxed mb-4';
+              desc.textContent = event.description;
+              contentDiv.appendChild(desc);
+            }
+
+            if (event.cta_label && event.cta_url) {
+              const ctaLink = document.createElement('a');
+              ctaLink.href = event.cta_url;
+              ctaLink.target = '_blank';
+              ctaLink.rel = 'noopener noreferrer';
+              ctaLink.className = 'inline-block bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all';
+              ctaLink.textContent = event.cta_label;
+              contentDiv.appendChild(ctaLink);
+            }
+
+            card.appendChild(contentDiv);
+            eventsContainer.appendChild(card);
+          });
+
+          eventsSection.style.display = 'block';
+        }
+
+      } catch (err) {
+        console.error('loadEvents error:', err);
+      }
     }
 
     async function loadLocationMedia() {

@@ -391,6 +391,17 @@
 
           <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
             <div>
+              <p class="text-white text-sm font-medium">Events</p>
+              <p class="text-gray-500 text-xs">Show events banner and section</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="toggle-show-events" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+            <div>
               <p class="text-white text-sm font-medium">Gallery</p>
               <p class="text-gray-500 text-xs">Show photo gallery</p>
             </div>
@@ -400,6 +411,17 @@
             </label>
           </div>
         </div>
+      </div>
+
+      <div class="border-t border-gray-700 pt-4 mt-6">
+        <h4 class="text-white font-semibold mb-3">Corporate Event Templates</h4>
+        <button id="manage-corporate-events-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          Manage Corporate Event Templates
+        </button>
+        <p class="text-gray-500 text-xs mt-2">Create master event templates that franchisees can enable for their locations</p>
       </div>
 
       <div class="border-t border-gray-700 pt-4 mt-6">

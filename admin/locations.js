@@ -243,6 +243,7 @@ window.editLocation = async function(locationId) {
     document.getElementById('toggle-show-map').checked = currentLocation.show_map !== false;
     document.getElementById('toggle-show-contact-form').checked = currentLocation.show_contact_form !== false;
     document.getElementById('toggle-show-gallery').checked = currentLocation.show_gallery !== false;
+    document.getElementById('toggle-show-events').checked = currentLocation.show_events !== false;
 
     updateToggleUI();
     openPanel();
@@ -293,6 +294,7 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('toggle-show-map').checked = true;
   document.getElementById('toggle-show-contact-form').checked = true;
   document.getElementById('toggle-show-gallery').checked = true;
+  document.getElementById('toggle-show-events').checked = false;
 
   updateToggleUI();
   openPanel();
@@ -402,7 +404,8 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     show_testimonials: document.getElementById('toggle-show-testimonials').checked,
     show_map: document.getElementById('toggle-show-map').checked,
     show_contact_form: document.getElementById('toggle-show-contact-form').checked,
-    show_gallery: document.getElementById('toggle-show-gallery').checked
+    show_gallery: document.getElementById('toggle-show-gallery').checked,
+    show_events: document.getElementById('toggle-show-events').checked
   };
 
   try {
@@ -1122,6 +1125,10 @@ document.getElementById('bulk-import-reviews-btn').addEventListener('click', asy
       Import Google Reviews for All Locations
     `;
   }
+});
+
+document.getElementById('manage-corporate-events-btn').addEventListener('click', () => {
+  alert('Corporate Event Templates feature coming soon!\n\nThis will allow you to create master event templates (with location_slug=NULL and is_corporate_template=true) that franchisees can enable for their locations.');
 });
 
 loadLocations();

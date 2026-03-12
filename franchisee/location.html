@@ -315,6 +315,17 @@
               </label>
             </div>
 
+            <div class="flex items-center justify-between py-3 border-b border-gray-800">
+              <div>
+                <p class="text-white font-medium">Events</p>
+                <p class="text-gray-400 text-sm">Show upcoming events banner and section</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggle-show-events" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
             <div class="flex items-center justify-between py-3">
               <div>
                 <p class="text-white font-medium">Gallery</p>
@@ -324,6 +335,98 @@
                 <input type="checkbox" id="toggle-show-gallery" class="sr-only peer">
                 <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
               </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mt-6">
+          <h3 class="text-white font-semibold text-lg mb-4">Events</h3>
+
+          <div class="flex items-center justify-between py-3 mb-6 bg-gray-800 rounded-lg px-4">
+            <div>
+              <p class="text-white font-medium">Show Events on my page</p>
+              <p class="text-gray-400 text-sm" id="events-visibility-notice">Events section is hidden on your page. Toggle to make it visible.</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="events-section-toggle" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-700 peer-checked:bg-accent rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+            </label>
+          </div>
+
+          <div class="mb-4">
+            <button id="add-event-btn" class="w-full bg-accent hover:bg-accent/90 text-black font-semibold py-3 rounded-lg transition-colors">
+              Add Event
+            </button>
+          </div>
+
+          <div id="events-list" class="space-y-3">
+            <div class="text-center text-gray-500 py-8">Loading events...</div>
+          </div>
+
+          <div id="event-form-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <div class="flex justify-between items-center mb-6">
+                <h4 id="event-form-title" class="text-white font-semibold text-lg">Add Event</h4>
+                <button id="close-event-form" class="text-gray-400 hover:text-white transition-colors">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <form id="event-form" class="space-y-4">
+                <input type="hidden" id="event-id" value="">
+
+                <div>
+                  <label class="block text-gray-300 text-sm font-medium mb-2">Title *</label>
+                  <input type="text" id="event-title" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                </div>
+
+                <div>
+                  <label class="block text-gray-300 text-sm font-medium mb-2">Description</label>
+                  <textarea id="event-description" rows="3" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Event Date *</label>
+                    <input type="date" id="event-date" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                  </div>
+                  <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">End Date</label>
+                    <input type="date" id="event-end-date" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-gray-300 text-sm font-medium mb-2">CTA Label</label>
+                  <input type="text" id="event-cta-label" placeholder="Register Now" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                </div>
+
+                <div>
+                  <label class="block text-gray-300 text-sm font-medium mb-2">CTA URL</label>
+                  <input type="url" id="event-cta-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                </div>
+
+                <div>
+                  <label class="block text-gray-300 text-sm font-medium mb-2">Image URL</label>
+                  <input type="url" id="event-image-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                </div>
+
+                <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                  <label class="text-white text-sm font-medium">Active</label>
+                  <input type="checkbox" id="event-active" checked class="w-5 h-5 bg-gray-700 border-gray-600 rounded text-accent focus:ring-accent">
+                </div>
+
+                <div class="flex gap-3 pt-4">
+                  <button type="submit" class="flex-1 bg-accent hover:bg-accent/90 text-black font-semibold py-3 rounded-lg transition-colors">
+                    Save Event
+                  </button>
+                  <button type="button" id="cancel-event-form" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -393,12 +496,268 @@
         document.getElementById('toggle-show-map').checked = location.show_map !== false;
         document.getElementById('toggle-show-contact-form').checked = location.show_contact_form !== false;
         document.getElementById('toggle-show-gallery').checked = location.show_gallery !== false;
+        document.getElementById('toggle-show-events').checked = location.show_events !== false;
+
+        document.getElementById('events-section-toggle').checked = location.show_events !== false;
+        updateEventsVisibilityNotice(location.show_events !== false);
+
+        loadEvents();
 
       } catch (error) {
         console.error('Error loading location:', error);
         alert('Failed to load location data');
       }
     }
+
+    function updateEventsVisibilityNotice(isVisible) {
+      const notice = document.getElementById('events-visibility-notice');
+      if (isVisible) {
+        notice.textContent = 'Events section is visible on your page.';
+        notice.classList.remove('text-gray-400');
+        notice.classList.add('text-green-400');
+      } else {
+        notice.textContent = 'Events section is hidden on your page. Toggle to make it visible.';
+        notice.classList.remove('text-green-400');
+        notice.classList.add('text-gray-400');
+      }
+    }
+
+    document.getElementById('events-section-toggle').addEventListener('change', async (e) => {
+      const isChecked = e.target.checked;
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/locations?slug=eq.${locationSlug}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ show_events: isChecked })
+        });
+
+        if (!response.ok) throw new Error('Failed to update');
+
+        updateEventsVisibilityNotice(isChecked);
+      } catch (error) {
+        console.error('Error updating events visibility:', error);
+        e.target.checked = !isChecked;
+        alert('Failed to update events visibility');
+      }
+    });
+
+    async function loadEvents() {
+      const eventsList = document.getElementById('events-list');
+      eventsList.innerHTML = '<div class="text-center text-gray-500 py-4">Loading events...</div>';
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/events?location_slug=eq.${locationSlug}&order=event_date.asc`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch events');
+
+        const events = await response.json();
+
+        if (events.length === 0) {
+          eventsList.innerHTML = '<div class="text-center text-gray-500 py-8">No events yet. Click "Add Event" to create one.</div>';
+          return;
+        }
+
+        eventsList.innerHTML = events.map(event => {
+          const eventDate = new Date(event.event_date);
+          const formattedDate = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+          return `
+            <div class="bg-gray-800 rounded-lg p-4 flex justify-between items-center">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="text-white font-medium">${event.title}</span>
+                  <span class="text-xs px-2 py-1 rounded ${event.is_active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">
+                    ${event.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
+                <p class="text-gray-400 text-sm">${formattedDate}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="toggleEventActive('${event.id}', ${!event.is_active})" class="text-gray-400 hover:text-accent transition-colors p-2" title="${event.is_active ? 'Deactivate' : 'Activate'}">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${event.is_active ? 'M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21' : 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'}"></path>
+                  </svg>
+                </button>
+                <button onclick="editEvent('${event.id}')" class="text-accent hover:text-accent/80 transition-colors p-2" title="Edit">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  </svg>
+                </button>
+                <button onclick="deleteEvent('${event.id}')" class="text-red-400 hover:text-red-300 transition-colors p-2" title="Delete">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Error loading events:', error);
+        eventsList.innerHTML = '<div class="text-center text-red-400 py-8">Error loading events. Please try again.</div>';
+      }
+    }
+
+    window.toggleEventActive = async function(eventId, newStatus) {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ is_active: newStatus })
+        });
+
+        if (!response.ok) throw new Error('Failed to toggle event status');
+
+        loadEvents();
+      } catch (error) {
+        console.error('Error toggling event:', error);
+        alert('Failed to update event status');
+      }
+    };
+
+    window.editEvent = async function(eventId) {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch event');
+
+        const events = await response.json();
+        if (events.length === 0) throw new Error('Event not found');
+
+        const event = events[0];
+
+        document.getElementById('event-form-title').textContent = 'Edit Event';
+        document.getElementById('event-id').value = event.id;
+        document.getElementById('event-title').value = event.title || '';
+        document.getElementById('event-description').value = event.description || '';
+        document.getElementById('event-date').value = event.event_date || '';
+        document.getElementById('event-end-date').value = event.end_date || '';
+        document.getElementById('event-cta-label').value = event.cta_label || '';
+        document.getElementById('event-cta-url').value = event.cta_url || '';
+        document.getElementById('event-image-url').value = event.image_url || '';
+        document.getElementById('event-active').checked = event.is_active !== false;
+
+        document.getElementById('event-form-modal').classList.remove('hidden');
+      } catch (error) {
+        console.error('Error loading event:', error);
+        alert('Failed to load event details');
+      }
+    };
+
+    window.deleteEvent = async function(eventId) {
+      if (!confirm('Are you sure you want to delete this event?')) return;
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Prefer': 'return=minimal'
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to delete event');
+
+        loadEvents();
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        alert('Failed to delete event');
+      }
+    };
+
+    document.getElementById('add-event-btn').addEventListener('click', () => {
+      document.getElementById('event-form-title').textContent = 'Add Event';
+      document.getElementById('event-form').reset();
+      document.getElementById('event-id').value = '';
+      document.getElementById('event-active').checked = true;
+      document.getElementById('event-form-modal').classList.remove('hidden');
+    });
+
+    document.getElementById('close-event-form').addEventListener('click', () => {
+      document.getElementById('event-form-modal').classList.add('hidden');
+    });
+
+    document.getElementById('cancel-event-form').addEventListener('click', () => {
+      document.getElementById('event-form-modal').classList.add('hidden');
+    });
+
+    document.getElementById('event-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const eventId = document.getElementById('event-id').value;
+      const isEdit = !!eventId;
+
+      const eventData = {
+        location_slug: locationSlug,
+        title: document.getElementById('event-title').value.trim(),
+        description: document.getElementById('event-description').value.trim() || null,
+        event_date: document.getElementById('event-date').value,
+        end_date: document.getElementById('event-end-date').value || null,
+        cta_label: document.getElementById('event-cta-label').value.trim() || null,
+        cta_url: document.getElementById('event-cta-url').value.trim() || null,
+        image_url: document.getElementById('event-image-url').value.trim() || null,
+        is_active: document.getElementById('event-active').checked
+      };
+
+      try {
+        let response;
+
+        if (isEdit) {
+          response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(eventData)
+          });
+        } else {
+          response = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(eventData)
+          });
+        }
+
+        if (!response.ok) throw new Error('Failed to save event');
+
+        document.getElementById('event-form-modal').classList.add('hidden');
+        loadEvents();
+
+      } catch (error) {
+        console.error('Error saving event:', error);
+        alert('Failed to save event. Please try again.');
+      }
+    });
 
     document.getElementById('location-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -439,6 +798,7 @@
             show_map: document.getElementById('toggle-show-map').checked,
             show_contact_form: document.getElementById('toggle-show-contact-form').checked,
             show_gallery: document.getElementById('toggle-show-gallery').checked,
+            show_events: document.getElementById('toggle-show-events').checked,
           })
         });
 
