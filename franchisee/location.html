@@ -106,8 +106,26 @@
           <p class="text-gray-400">Update your location information and settings.</p>
         </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
-          <form id="location-form" class="space-y-4">
+        <div class="border-b border-gray-800 mb-6">
+          <nav class="flex gap-2">
+            <button onclick="switchTab('location-info')" id="tab-location-info" class="tab-btn px-6 py-3 font-medium text-white border-b-2 border-accent">
+              Location Info
+            </button>
+            <button onclick="switchTab('page-sections')" id="tab-page-sections" class="tab-btn px-6 py-3 font-medium text-gray-400 border-b-2 border-transparent hover:text-white hover:border-gray-700 transition-colors">
+              Page Sections
+            </button>
+            <button onclick="switchTab('events')" id="tab-events" class="tab-btn px-6 py-3 font-medium text-gray-400 border-b-2 border-transparent hover:text-white hover:border-gray-700 transition-colors">
+              Events
+            </button>
+            <button onclick="switchTab('google-reviews')" id="tab-google-reviews" class="tab-btn px-6 py-3 font-medium text-gray-400 border-b-2 border-transparent hover:text-white hover:border-gray-700 transition-colors">
+              Google Reviews
+            </button>
+          </nav>
+        </div>
+
+        <div id="panel-location-info" class="tab-panel">
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <form id="location-form" class="space-y-4">
             <div>
               <label class="block text-gray-300 text-sm font-medium mb-2">Name</label>
               <input type="text" id="input-name" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
@@ -244,9 +262,11 @@
             </div>
           </form>
         </div>
+        </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mt-6">
-          <h3 class="text-white font-semibold text-lg mb-6">Page Sections</h3>
+        <div id="panel-page-sections" class="tab-panel hidden">
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <h3 class="text-white font-semibold text-lg mb-6">Page Sections</h3>
           <p class="text-gray-400 text-sm mb-6">Control which sections appear on your location page</p>
           <div class="space-y-4">
             <div class="flex items-center justify-between py-3 border-b border-gray-800">
@@ -338,9 +358,11 @@
             </div>
           </div>
         </div>
+        </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mt-6">
-          <h3 class="text-white font-semibold text-lg mb-4">Events</h3>
+        <div id="panel-events" class="tab-panel hidden">
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <h3 class="text-white font-semibold text-lg mb-4">Events</h3>
 
           <div class="flex items-center justify-between py-3 mb-4 bg-gray-800 rounded-lg px-4">
             <div>
@@ -447,6 +469,17 @@
             </div>
           </div>
         </div>
+        </div>
+
+        <div id="panel-google-reviews" class="tab-panel hidden">
+          <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <h3 class="text-white font-semibold text-lg mb-4">Google Reviews</h3>
+            <p class="text-gray-400 mb-6">Import and manage Google Reviews for your location.</p>
+            <div class="text-center py-8 text-gray-500">
+              Google Reviews feature coming soon.
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -467,6 +500,23 @@
       sessionStorage.clear();
       window.location.href = '../admin/index.html';
     });
+
+    window.switchTab = function(tabName) {
+      const allPanels = document.querySelectorAll('.tab-panel');
+      allPanels.forEach(panel => panel.classList.add('hidden'));
+
+      const allTabs = document.querySelectorAll('.tab-btn');
+      allTabs.forEach(tab => {
+        tab.classList.remove('text-white', 'border-accent');
+        tab.classList.add('text-gray-400', 'border-transparent');
+      });
+
+      document.getElementById(`panel-${tabName}`).classList.remove('hidden');
+
+      const activeTab = document.getElementById(`tab-${tabName}`);
+      activeTab.classList.remove('text-gray-400', 'border-transparent');
+      activeTab.classList.add('text-white', 'border-accent');
+    };
 
     async function loadLocation() {
       try {
