@@ -63,15 +63,25 @@ closeBtn.addEventListener('click', closePanel);
 
 function switchTab(activeBtn, activeTab) {
   [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, eventsTabBtn, usersTabBtn].forEach(btn => {
-    btn.classList.remove('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-    btn.classList.add('text-gray-400');
+    btn.classList.remove('text-white', 'border-accent');
+    btn.classList.add('text-gray-400', 'border-transparent');
   });
   [detailsTab, scheduleTab, mediaTab, packagesTab, eventsTab, usersTab].forEach(tab => {
     tab.classList.add('hidden');
   });
-  activeBtn.classList.add('bg-gray-800', 'border-b-2', 'border-accent', 'text-white');
-  activeBtn.classList.remove('text-gray-400');
+
+  const detailsFooter = document.getElementById('details-footer');
+  if (detailsFooter) {
+    detailsFooter.classList.add('hidden');
+  }
+
+  activeBtn.classList.remove('text-gray-400', 'border-transparent');
+  activeBtn.classList.add('text-white', 'border-accent');
   activeTab.classList.remove('hidden');
+
+  if (activeTab === detailsTab && detailsFooter) {
+    detailsFooter.classList.remove('hidden');
+  }
 }
 
 detailsTabBtn.addEventListener('click', () => {
