@@ -422,6 +422,25 @@
           Manage Corporate Event Templates
         </button>
         <p class="text-gray-500 text-xs mt-2">Create master event templates that franchisees can enable for their locations</p>
+
+        <div id="corporate-events-panel" class="hidden mt-4 bg-gray-800 border border-gray-700 rounded-lg p-4">
+          <div class="flex justify-between items-center mb-4">
+            <h5 class="text-white font-semibold">Corporate Event Templates</h5>
+            <button id="close-corporate-events-panel" class="text-gray-400 hover:text-white transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+
+          <button id="add-corporate-event-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg transition-colors mb-4">
+            + Add Corporate Template
+          </button>
+
+          <div id="corporate-events-list" class="space-y-3">
+            <div class="text-center text-gray-500 py-4">Loading templates...</div>
+          </div>
+        </div>
       </div>
 
       <div class="border-t border-gray-700 pt-4 mt-6">
@@ -638,6 +657,74 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
     </svg>
     <span id="toast-message">Success!</span>
+  </div>
+
+  <!-- Corporate Event Form Modal -->
+  <div id="corporate-event-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h4 id="corporate-event-form-title" class="text-white font-semibold text-lg">Add Corporate Event Template</h4>
+        <button id="close-corporate-event-form" class="text-gray-400 hover:text-white transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="corporate-event-form" class="space-y-4">
+        <input type="hidden" id="corporate-event-id" value="">
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Title *</label>
+          <input type="text" id="corporate-event-title" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Description</label>
+          <textarea id="corporate-event-description" rows="3" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">Event Date *</label>
+            <input type="date" id="corporate-event-date" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+          <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2">End Date</label>
+            <input type="date" id="corporate-event-end-date" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">CTA Label</label>
+          <input type="text" id="corporate-event-cta-label" placeholder="Register Now" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">CTA URL</label>
+          <input type="url" id="corporate-event-cta-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Image URL</label>
+          <input type="url" id="corporate-event-image-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+          <label class="text-white text-sm font-medium">Active</label>
+          <input type="checkbox" id="corporate-event-active" checked class="w-5 h-5 bg-gray-700 border-gray-600 rounded text-accent focus:ring-accent">
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors">
+            Save Template
+          </button>
+          <button type="button" id="cancel-corporate-event-form" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="/admin/locations.js"></script>

@@ -1128,7 +1128,229 @@ document.getElementById('bulk-import-reviews-btn').addEventListener('click', asy
 });
 
 document.getElementById('manage-corporate-events-btn').addEventListener('click', () => {
-  alert('Corporate Event Templates feature coming soon!\n\nThis will allow you to create master event templates (with location_slug=NULL and is_corporate_template=true) that franchisees can enable for their locations.');
+  const panel = document.getElementById('corporate-events-panel');
+  panel.classList.toggle('hidden');
+  if (!panel.classList.contains('hidden')) {
+    loadCorporateEvents();
+  }
+});
+
+document.getElementById('close-corporate-events-panel').addEventListener('click', () => {
+  document.getElementById('corporate-events-panel').classList.add('hidden');
+});
+
+async function loadCorporateEvents() {
+  const list = document.getElementById('corporate-events-list');
+  list.innerHTML = '<div class="text-center text-gray-500 py-4">Loading templates...</div>';
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?is_corporate_template=eq.true&location_slug=is.null&order=event_date.asc`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch corporate events');
+
+    const events = await response.json();
+
+    if (events.length === 0) {
+      list.innerHTML = '<div class="text-center text-gray-500 py-4">No corporate templates yet. Click "+ Add Corporate Template" to create one.</div>';
+      return;
+    }
+
+    list.innerHTML = events.map(event => {
+      const eventDate = new Date(event.event_date);
+      const formattedDate = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+      return `
+        <div class="bg-gray-900 rounded-lg p-3 flex justify-between items-center">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-white font-medium text-sm">${event.title}</span>
+              <span class="text-xs px-2 py-1 rounded ${event.is_active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">
+                ${event.is_active ? 'Active' : 'Inactive'}
+              </span>
+            </div>
+            <p class="text-gray-400 text-xs">${formattedDate}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="toggleCorporateEventActive('${event.id}', ${!event.is_active})" class="text-gray-400 hover:text-accent transition-colors p-1" title="${event.is_active ? 'Deactivate' : 'Activate'}">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${event.is_active ? 'M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21' : 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'}"></path>
+              </svg>
+            </button>
+            <button onclick="editCorporateEvent('${event.id}')" class="text-accent hover:text-accent/80 transition-colors p-1" title="Edit">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+            </button>
+            <button onclick="deleteCorporateEvent('${event.id}')" class="text-red-400 hover:text-red-300 transition-colors p-1" title="Delete">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+  } catch (error) {
+    console.error('Error loading corporate events:', error);
+    list.innerHTML = '<div class="text-center text-red-400 py-4">Error loading templates. Please try again.</div>';
+  }
+}
+
+window.toggleCorporateEventActive = async function(eventId, newStatus) {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ is_active: newStatus })
+    });
+
+    if (!response.ok) throw new Error('Failed to toggle event status');
+
+    loadCorporateEvents();
+  } catch (error) {
+    console.error('Error toggling corporate event:', error);
+    alert('Failed to update event status');
+  }
+};
+
+window.editCorporateEvent = async function(eventId) {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch event');
+
+    const events = await response.json();
+    if (events.length === 0) throw new Error('Event not found');
+
+    const event = events[0];
+
+    document.getElementById('corporate-event-form-title').textContent = 'Edit Corporate Event Template';
+    document.getElementById('corporate-event-id').value = event.id;
+    document.getElementById('corporate-event-title').value = event.title || '';
+    document.getElementById('corporate-event-description').value = event.description || '';
+    document.getElementById('corporate-event-date').value = event.event_date || '';
+    document.getElementById('corporate-event-end-date').value = event.end_date || '';
+    document.getElementById('corporate-event-cta-label').value = event.cta_label || '';
+    document.getElementById('corporate-event-cta-url').value = event.cta_url || '';
+    document.getElementById('corporate-event-image-url').value = event.image_url || '';
+    document.getElementById('corporate-event-active').checked = event.is_active !== false;
+
+    document.getElementById('corporate-event-modal').classList.remove('hidden');
+  } catch (error) {
+    console.error('Error loading corporate event:', error);
+    alert('Failed to load event details');
+  }
+};
+
+window.deleteCorporateEvent = async function(eventId) {
+  if (!confirm('Are you sure you want to delete this corporate event template?')) return;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
+        'Prefer': 'return=minimal'
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to delete event');
+
+    loadCorporateEvents();
+  } catch (error) {
+    console.error('Error deleting corporate event:', error);
+    alert('Failed to delete event');
+  }
+};
+
+document.getElementById('add-corporate-event-btn').addEventListener('click', () => {
+  document.getElementById('corporate-event-form-title').textContent = 'Add Corporate Event Template';
+  document.getElementById('corporate-event-form').reset();
+  document.getElementById('corporate-event-id').value = '';
+  document.getElementById('corporate-event-active').checked = true;
+  document.getElementById('corporate-event-modal').classList.remove('hidden');
+});
+
+document.getElementById('close-corporate-event-form').addEventListener('click', () => {
+  document.getElementById('corporate-event-modal').classList.add('hidden');
+});
+
+document.getElementById('cancel-corporate-event-form').addEventListener('click', () => {
+  document.getElementById('corporate-event-modal').classList.add('hidden');
+});
+
+document.getElementById('corporate-event-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const eventId = document.getElementById('corporate-event-id').value;
+  const isEdit = !!eventId;
+
+  const eventData = {
+    title: document.getElementById('corporate-event-title').value.trim(),
+    description: document.getElementById('corporate-event-description').value.trim() || null,
+    event_date: document.getElementById('corporate-event-date').value,
+    end_date: document.getElementById('corporate-event-end-date').value || null,
+    cta_label: document.getElementById('corporate-event-cta-label').value.trim() || null,
+    cta_url: document.getElementById('corporate-event-cta-url').value.trim() || null,
+    image_url: document.getElementById('corporate-event-image-url').value.trim() || null,
+    is_active: document.getElementById('corporate-event-active').checked,
+    is_corporate_template: true,
+    location_slug: null
+  };
+
+  try {
+    let response;
+
+    if (isEdit) {
+      response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(eventData)
+      });
+    } else {
+      response = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(eventData)
+      });
+    }
+
+    if (!response.ok) throw new Error('Failed to save corporate event');
+
+    document.getElementById('corporate-event-modal').classList.add('hidden');
+    loadCorporateEvents();
+
+  } catch (error) {
+    console.error('Error saving corporate event:', error);
+    alert('Failed to save event. Please try again.');
+  }
 });
 
 loadLocations();
