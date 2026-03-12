@@ -716,8 +716,14 @@
           </div>
 
           <div>
-            <label class="block text-gray-300 text-sm font-medium mb-2">Image URL</label>
-            <input type="url" id="event-image-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            <label class="block text-gray-300 text-sm font-medium mb-2">Event Image</label>
+            <div id="event-image-preview-container" class="hidden mb-2">
+              <img id="event-image-preview" src="" alt="Preview" class="w-full h-32 object-cover rounded-lg">
+            </div>
+            <input type="file" id="event-image-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+            <input type="hidden" id="event-image-url" value="">
+            <p class="text-gray-500 text-xs mt-1">Supported: JPG, PNG, WebP. Max 5MB.</p>
+            <p id="event-upload-status" class="text-xs mt-1 hidden"></p>
           </div>
 
           <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
@@ -815,8 +821,14 @@
         </div>
 
         <div>
-          <label class="block text-gray-300 text-sm font-medium mb-2">Image URL</label>
-          <input type="url" id="corporate-event-image-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          <label class="block text-gray-300 text-sm font-medium mb-2">Event Image</label>
+          <div id="corporate-event-image-preview-container" class="hidden mb-2">
+            <img id="corporate-event-image-preview" src="" alt="Preview" class="w-full h-32 object-cover rounded-lg">
+          </div>
+          <input type="file" id="corporate-event-image-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          <input type="hidden" id="corporate-event-image-url" value="">
+          <p class="text-gray-500 text-xs mt-1">Supported: JPG, PNG, WebP. Max 5MB.</p>
+          <p id="corporate-event-upload-status" class="text-xs mt-1 hidden"></p>
         </div>
 
         <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">

@@ -448,8 +448,14 @@
                 </div>
 
                 <div>
-                  <label class="block text-gray-300 text-sm font-medium mb-2">Image URL</label>
-                  <input type="url" id="event-image-url" placeholder="https://..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                  <label class="block text-gray-300 text-sm font-medium mb-2">Event Image</label>
+                  <div id="event-image-preview-container" class="hidden mb-2">
+                    <img id="event-image-preview" src="" alt="Preview" class="w-full h-32 object-cover rounded-lg">
+                  </div>
+                  <input type="file" id="event-image-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+                  <input type="hidden" id="event-image-url" value="">
+                  <p class="text-gray-500 text-xs mt-1">Supported: JPG, PNG, WebP. Max 5MB.</p>
+                  <p id="event-upload-status" class="text-xs mt-1 hidden"></p>
                 </div>
 
                 <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
@@ -849,6 +855,17 @@
         document.getElementById('event-image-url').value = event.image_url || '';
         document.getElementById('event-active').checked = event.is_active !== false;
 
+        if (event.image_url) {
+          const previewContainer = document.getElementById('event-image-preview-container');
+          const preview = document.getElementById('event-image-preview');
+          preview.src = event.image_url;
+          previewContainer.classList.remove('hidden');
+          const statusEl = document.getElementById('event-upload-status');
+          statusEl.textContent = 'Current image (upload new to replace)';
+          statusEl.className = 'text-xs mt-1 text-gray-400';
+          statusEl.classList.remove('hidden');
+        }
+
         document.getElementById('event-form-modal').classList.remove('hidden');
       } catch (error) {
         console.error('Error loading event:', error);
@@ -892,6 +909,58 @@
 
     document.getElementById('cancel-event-form').addEventListener('click', () => {
       document.getElementById('event-form-modal').classList.add('hidden');
+    });
+
+    document.getElementById('event-image-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        e.target.value = '';
+        return;
+      }
+
+      const previewContainer = document.getElementById('event-image-preview-container');
+      const preview = document.getElementById('event-image-preview');
+      const statusEl = document.getElementById('event-upload-status');
+      const hiddenInput = document.getElementById('event-image-url');
+
+      preview.src = URL.createObjectURL(file);
+      previewContainer.classList.remove('hidden');
+      statusEl.textContent = 'Uploading...';
+      statusEl.className = 'text-xs mt-1 text-yellow-400';
+      statusEl.classList.remove('hidden');
+
+      try {
+        const timestamp = Date.now();
+        const filename = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+        const path = `events/${filename}`;
+
+        const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${path}`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': file.type
+          },
+          body: file
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Upload failed');
+        }
+
+        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/location-media/${path}`;
+        hiddenInput.value = publicUrl;
+        statusEl.textContent = 'Uploaded ✓';
+        statusEl.className = 'text-xs mt-1 text-green-400';
+      } catch (error) {
+        console.error('Upload error:', error);
+        statusEl.textContent = 'Upload failed. Try again.';
+        statusEl.className = 'text-xs mt-1 text-red-400';
+        hiddenInput.value = '';
+      }
     });
 
     document.getElementById('event-form').addEventListener('submit', async (e) => {

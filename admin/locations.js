@@ -1270,6 +1270,17 @@ window.editCorporateEvent = async function(eventId) {
     document.getElementById('corporate-event-image-url').value = event.image_url || '';
     document.getElementById('corporate-event-active').checked = event.is_active !== false;
 
+    if (event.image_url) {
+      const previewContainer = document.getElementById('corporate-event-image-preview-container');
+      const preview = document.getElementById('corporate-event-image-preview');
+      preview.src = event.image_url;
+      previewContainer.classList.remove('hidden');
+      const statusEl = document.getElementById('corporate-event-upload-status');
+      statusEl.textContent = 'Current image (upload new to replace)';
+      statusEl.className = 'text-xs mt-1 text-gray-400';
+      statusEl.classList.remove('hidden');
+    }
+
     document.getElementById('corporate-event-modal').classList.remove('hidden');
   } catch (error) {
     console.error('Error loading corporate event:', error);
@@ -1313,6 +1324,58 @@ document.getElementById('close-corporate-event-form').addEventListener('click', 
 
 document.getElementById('cancel-corporate-event-form').addEventListener('click', () => {
   document.getElementById('corporate-event-modal').classList.add('hidden');
+});
+
+document.getElementById('corporate-event-image-upload').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('File size must be less than 5MB');
+    e.target.value = '';
+    return;
+  }
+
+  const previewContainer = document.getElementById('corporate-event-image-preview-container');
+  const preview = document.getElementById('corporate-event-image-preview');
+  const statusEl = document.getElementById('corporate-event-upload-status');
+  const hiddenInput = document.getElementById('corporate-event-image-url');
+
+  preview.src = URL.createObjectURL(file);
+  previewContainer.classList.remove('hidden');
+  statusEl.textContent = 'Uploading...';
+  statusEl.className = 'text-xs mt-1 text-yellow-400';
+  statusEl.classList.remove('hidden');
+
+  try {
+    const timestamp = Date.now();
+    const filename = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+    const path = `events/${filename}`;
+
+    const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${path}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': file.type
+      },
+      body: file
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/location-media/${path}`;
+    hiddenInput.value = publicUrl;
+    statusEl.textContent = 'Uploaded ✓';
+    statusEl.className = 'text-xs mt-1 text-green-400';
+  } catch (error) {
+    console.error('Upload error:', error);
+    statusEl.textContent = 'Upload failed. Try again.';
+    statusEl.className = 'text-xs mt-1 text-red-400';
+    hiddenInput.value = '';
+  }
 });
 
 document.getElementById('corporate-event-form').addEventListener('submit', async (e) => {
@@ -1465,6 +1528,17 @@ window.editEvent = async function(eventId) {
     document.getElementById('event-image-url').value = event.image_url || '';
     document.getElementById('event-active').checked = event.is_active !== false;
 
+    if (event.image_url) {
+      const previewContainer = document.getElementById('event-image-preview-container');
+      const preview = document.getElementById('event-image-preview');
+      preview.src = event.image_url;
+      previewContainer.classList.remove('hidden');
+      const statusEl = document.getElementById('event-upload-status');
+      statusEl.textContent = 'Current image (upload new to replace)';
+      statusEl.className = 'text-xs mt-1 text-gray-400';
+      statusEl.classList.remove('hidden');
+    }
+
     document.getElementById('event-submit-btn').textContent = 'Update Event';
   } catch (error) {
     console.error('Error loading event:', error);
@@ -1493,6 +1567,58 @@ window.deleteEvent = async function(eventId) {
     alert('Failed to delete event');
   }
 };
+
+document.getElementById('event-image-upload').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('File size must be less than 5MB');
+    e.target.value = '';
+    return;
+  }
+
+  const previewContainer = document.getElementById('event-image-preview-container');
+  const preview = document.getElementById('event-image-preview');
+  const statusEl = document.getElementById('event-upload-status');
+  const hiddenInput = document.getElementById('event-image-url');
+
+  preview.src = URL.createObjectURL(file);
+  previewContainer.classList.remove('hidden');
+  statusEl.textContent = 'Uploading...';
+  statusEl.className = 'text-xs mt-1 text-yellow-400';
+  statusEl.classList.remove('hidden');
+
+  try {
+    const timestamp = Date.now();
+    const filename = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+    const path = `events/${filename}`;
+
+    const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${path}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': file.type
+      },
+      body: file
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/location-media/${path}`;
+    hiddenInput.value = publicUrl;
+    statusEl.textContent = 'Uploaded ✓';
+    statusEl.className = 'text-xs mt-1 text-green-400';
+  } catch (error) {
+    console.error('Upload error:', error);
+    statusEl.textContent = 'Upload failed. Try again.';
+    statusEl.className = 'text-xs mt-1 text-red-400';
+    hiddenInput.value = '';
+  }
+});
 
 document.getElementById('add-event-form').addEventListener('submit', async (e) => {
   e.preventDefault();

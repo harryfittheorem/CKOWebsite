@@ -929,6 +929,8 @@
           if (event.cta_label && event.cta_url) {
             bannerCta.textContent = event.cta_label;
             bannerCta.href = event.cta_url;
+            bannerCta.target = '_blank';
+            bannerCta.rel = 'noopener noreferrer';
             bannerCta.classList.remove('hidden');
           } else {
             bannerCta.classList.add('hidden');
@@ -945,6 +947,8 @@
           if (firstEvent.cta_label && firstEvent.cta_url) {
             bannerCta.textContent = firstEvent.cta_label;
             bannerCta.href = firstEvent.cta_url;
+            bannerCta.target = '_blank';
+            bannerCta.rel = 'noopener noreferrer';
             bannerCta.classList.remove('hidden');
           } else {
             bannerCta.classList.add('hidden');
@@ -958,14 +962,11 @@
             card.className = 'bg-black border border-white/10 rounded-sm overflow-hidden hover:border-accent/50 transition-all';
 
             if (event.image_url) {
-              const imgWrapper = document.createElement('div');
-              imgWrapper.className = 'w-full h-48 overflow-hidden';
               const img = document.createElement('img');
               img.src = event.image_url;
               img.alt = event.title;
-              img.className = 'w-full h-full object-cover';
-              imgWrapper.appendChild(img);
-              card.appendChild(imgWrapper);
+              img.className = 'w-full h-48 object-cover rounded-lg mb-4';
+              card.appendChild(img);
             }
 
             const contentDiv = document.createElement('div');
