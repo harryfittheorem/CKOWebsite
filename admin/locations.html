@@ -189,6 +189,12 @@
       <button id="instructors-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
         Instructors
       </button>
+      <button id="programs-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
+        Programs
+      </button>
+      <button id="success-stories-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
+        Success Stories
+      </button>
       <button id="users-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
         Access & Users
       </button>
@@ -771,6 +777,49 @@
       </div>
     </div>
 
+    <div id="programs-tab" class="p-8 space-y-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white font-semibold text-xl">Programs</h3>
+        <div class="flex gap-2">
+          <button id="add-corporate-program-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg transition-all text-sm">
+            + Add Corporate Template
+          </button>
+          <button id="add-program-btn" class="bg-accent hover:bg-[#e5b000] text-black font-semibold px-4 py-2 rounded-lg transition-all text-sm">
+            + Add Program
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-2" id="programs-list">
+        <div class="text-center text-gray-500 py-8">
+          <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Loading programs...
+        </div>
+      </div>
+    </div>
+
+    <div id="success-stories-tab" class="p-8 space-y-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white font-semibold text-xl">Success Stories</h3>
+        <button id="add-success-story-btn" class="bg-accent hover:bg-[#e5b000] text-black font-semibold px-4 py-2 rounded-lg transition-all text-sm">
+          + Add Success Story
+        </button>
+      </div>
+
+      <div class="space-y-2" id="success-stories-list">
+        <div class="text-center text-gray-500 py-8">
+          <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Loading success stories...
+        </div>
+      </div>
+    </div>
+
     <div id="users-tab" class="p-8 space-y-6 hidden">
       <div class="space-y-3" id="users-list">
         <div class="text-center text-gray-500 py-8">
@@ -954,7 +1003,163 @@
     </div>
   </div>
 
+  <div id="program-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h4 id="program-form-title" class="text-white font-semibold text-lg">Add Program</h4>
+        <button id="close-program-form" class="text-gray-400 hover:text-white transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="program-form" class="space-y-4">
+        <input type="hidden" id="program-id" value="">
+        <input type="hidden" id="program-is-corporate" value="false">
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Name *</label>
+          <input type="text" id="program-name" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Duration</label>
+          <input type="text" id="program-duration" placeholder="e.g., 6 Weeks, 30 Days" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Description</label>
+          <textarea id="program-description" rows="3" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">What's Included</label>
+          <textarea id="program-whats-included" rows="3" placeholder="One item per line" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">CTA Label</label>
+          <input type="text" id="program-cta-label" placeholder="e.g., Get Started" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">CTA URL</label>
+          <input type="text" id="program-cta-url" placeholder="https://" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Image</label>
+          <div id="program-image-preview-container" class="hidden mb-2">
+            <img id="program-image-preview" src="" alt="Preview" class="w-full h-32 object-cover rounded">
+          </div>
+          <input type="file" id="program-image-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          <input type="hidden" id="program-image-url" value="">
+          <p class="text-gray-500 text-xs mt-1">Supported: JPG, PNG, WebP. Max 5MB.</p>
+          <p id="program-upload-status" class="text-xs mt-1 hidden"></p>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Display Order</label>
+          <input type="number" id="program-display-order" value="0" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+          <label class="text-white text-sm font-medium">Active</label>
+          <input type="checkbox" id="program-active" checked class="w-5 h-5 bg-gray-700 border-gray-600 rounded text-accent focus:ring-accent">
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="submit" id="program-submit-btn" class="flex-1 bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-colors">
+            Add Program
+          </button>
+          <button type="button" id="cancel-program-form" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="success-story-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h4 id="success-story-form-title" class="text-white font-semibold text-lg">Add Success Story</h4>
+        <button id="close-success-story-form" class="text-gray-400 hover:text-white transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="success-story-form" class="space-y-4">
+        <input type="hidden" id="success-story-id" value="">
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Member Name *</label>
+          <input type="text" id="success-story-member-name" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Program Name</label>
+          <input type="text" id="success-story-program-name" placeholder="e.g., 6-Week Challenge" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Story</label>
+          <textarea id="success-story-story" rows="4" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Result Stat</label>
+          <input type="text" id="success-story-result-stat" placeholder="e.g., Lost 22 lbs in 6 weeks" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Before Photo</label>
+          <div id="success-story-before-preview-container" class="hidden mb-2">
+            <img id="success-story-before-preview" src="" alt="Before Preview" class="w-full h-32 object-cover rounded">
+          </div>
+          <input type="file" id="success-story-before-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          <input type="hidden" id="success-story-before-url" value="">
+          <p id="success-story-before-status" class="text-xs mt-1 hidden"></p>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">After Photo</label>
+          <div id="success-story-after-preview-container" class="hidden mb-2">
+            <img id="success-story-after-preview" src="" alt="After Preview" class="w-full h-32 object-cover rounded">
+          </div>
+          <input type="file" id="success-story-after-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          <input type="hidden" id="success-story-after-url" value="">
+          <p class="text-gray-500 text-xs mt-1">Supported: JPG, PNG, WebP. Max 5MB each.</p>
+          <p id="success-story-after-status" class="text-xs mt-1 hidden"></p>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Display Order</label>
+          <input type="number" id="success-story-display-order" value="0" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+          <label class="text-white text-sm font-medium">Active</label>
+          <input type="checkbox" id="success-story-active" checked class="w-5 h-5 bg-gray-700 border-gray-600 rounded text-accent focus:ring-accent">
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="submit" id="success-story-submit-btn" class="flex-1 bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-colors">
+            Add Success Story
+          </button>
+          <button type="button" id="cancel-success-story-form" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="/admin/locations.js"></script>
+  <script src="/admin/programs-success-stories.js"></script>
 
 </body>
 </html>

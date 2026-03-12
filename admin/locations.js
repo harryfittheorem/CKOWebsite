@@ -37,6 +37,8 @@ const mediaTabBtn = document.getElementById('media-tab-btn');
 const packagesTabBtn = document.getElementById('packages-tab-btn');
 const eventsTabBtn = document.getElementById('events-tab-btn');
 const instructorsTabBtn = document.getElementById('instructors-tab-btn');
+const programsTabBtn = document.getElementById('programs-tab-btn');
+const successStoriesTabBtn = document.getElementById('success-stories-tab-btn');
 const usersTabBtn = document.getElementById('users-tab-btn');
 const detailsTab = document.getElementById('details-tab');
 const scheduleTab = document.getElementById('schedule-tab');
@@ -44,6 +46,8 @@ const mediaTab = document.getElementById('media-tab');
 const packagesTab = document.getElementById('packages-tab');
 const eventsTab = document.getElementById('events-tab');
 const instructorsTab = document.getElementById('instructors-tab');
+const programsTab = document.getElementById('programs-tab');
+const successStoriesTab = document.getElementById('success-stories-tab');
 const usersTab = document.getElementById('users-tab');
 
 function openPanel() {
@@ -64,11 +68,11 @@ overlay.addEventListener('click', closePanel);
 closeBtn.addEventListener('click', closePanel);
 
 function switchTab(activeBtn, activeTab) {
-  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, eventsTabBtn, instructorsTabBtn, usersTabBtn].forEach(btn => {
+  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, eventsTabBtn, instructorsTabBtn, programsTabBtn, successStoriesTabBtn, usersTabBtn].forEach(btn => {
     btn.classList.remove('text-white', 'border-accent');
     btn.classList.add('text-gray-400', 'border-transparent');
   });
-  [detailsTab, scheduleTab, mediaTab, packagesTab, eventsTab, instructorsTab, usersTab].forEach(tab => {
+  [detailsTab, scheduleTab, mediaTab, packagesTab, eventsTab, instructorsTab, programsTab, successStoriesTab, usersTab].forEach(tab => {
     tab.classList.add('hidden');
   });
 
@@ -122,6 +126,20 @@ instructorsTabBtn.addEventListener('click', () => {
   switchTab(instructorsTabBtn, instructorsTab);
   if (currentLocation) {
     loadInstructors(currentLocation.slug);
+  }
+});
+
+programsTabBtn.addEventListener('click', () => {
+  switchTab(programsTabBtn, programsTab);
+  if (currentLocation) {
+    loadPrograms(currentLocation.slug);
+  }
+});
+
+successStoriesTabBtn.addEventListener('click', () => {
+  switchTab(successStoriesTabBtn, successStoriesTab);
+  if (currentLocation) {
+    loadSuccessStories(currentLocation.slug);
   }
 });
 

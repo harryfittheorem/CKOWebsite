@@ -471,11 +471,27 @@
       </div>
     </section>
 
+    <!-- Programs Section -->
+    <section id="programs-section" style="display:none" class="py-16 bg-[#0a0a0a]">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-heading font-bold uppercase text-white mb-10">Our Programs</h2>
+        <div id="programs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      </div>
+    </section>
+
     <!-- Instructors Section -->
     <section id="instructors-section" style="display:none" class="py-16 bg-black">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-3xl font-heading font-bold uppercase text-white mb-10">Meet Our Team</h2>
         <div id="instructors-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section id="success-stories-section" style="display:none" class="py-16 bg-black">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-heading font-bold uppercase text-white mb-10">Success Stories</h2>
+        <div id="success-stories-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
       </div>
     </section>
 
@@ -905,7 +921,9 @@
       loadLocationMedia();
       loadTestimonials();
       loadEvents(window.CKO_LOCATION.slug);
+      loadPrograms(window.CKO_LOCATION.slug);
       loadInstructors(window.CKO_LOCATION.slug);
+      loadSuccessStories(window.CKO_LOCATION.slug);
       checkForPackages();
     }
 
@@ -1207,6 +1225,214 @@
 
       } catch (err) {
         console.error('loadInstructors error:', err);
+      }
+    }
+
+    async function loadPrograms(slug) {
+      if (!window.CKO_LOCATION || window.CKO_LOCATION.show_programs === false) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/programs?location_slug=eq.${slug}&is_active=eq.true&order=display_order.asc`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch programs');
+
+        const programs = await response.json();
+
+        if (!Array.isArray(programs) || programs.length === 0) {
+          return;
+        }
+
+        const programsSection = document.getElementById('programs-section');
+        const programsContainer = document.getElementById('programs-container');
+
+        programsContainer.innerHTML = '';
+
+        programs.forEach(program => {
+          const card = document.createElement('div');
+          card.className = 'bg-black border border-white/10 rounded-sm overflow-hidden';
+
+          if (program.image_url) {
+            const img = document.createElement('img');
+            img.src = program.image_url;
+            img.alt = program.name;
+            img.className = 'w-full h-48 object-cover';
+            card.appendChild(img);
+          }
+
+          const content = document.createElement('div');
+          content.className = 'p-6';
+
+          const name = document.createElement('h3');
+          name.className = 'text-2xl font-heading font-bold text-white mb-2';
+          name.textContent = program.name;
+          content.appendChild(name);
+
+          if (program.duration) {
+            const duration = document.createElement('p');
+            duration.className = 'text-accent text-sm font-semibold mb-4';
+            duration.textContent = program.duration;
+            content.appendChild(duration);
+          }
+
+          if (program.description) {
+            const description = document.createElement('p');
+            description.className = 'text-gray-400 text-sm leading-relaxed mb-4';
+            description.textContent = program.description;
+            content.appendChild(description);
+          }
+
+          if (program.whats_included) {
+            const includedTitle = document.createElement('p');
+            includedTitle.className = 'text-white text-sm font-semibold mb-2';
+            includedTitle.textContent = "What's Included:";
+            content.appendChild(includedTitle);
+
+            const items = program.whats_included.split('\n').filter(item => item.trim());
+            if (items.length > 1) {
+              const list = document.createElement('ul');
+              list.className = 'text-gray-400 text-sm space-y-1 mb-4 list-disc list-inside';
+              items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.trim();
+                list.appendChild(li);
+              });
+              content.appendChild(list);
+            } else {
+              const text = document.createElement('p');
+              text.className = 'text-gray-400 text-sm mb-4';
+              text.textContent = program.whats_included;
+              content.appendChild(text);
+            }
+          }
+
+          if (program.cta_label && program.cta_url) {
+            const ctaLink = document.createElement('a');
+            ctaLink.href = program.cta_url;
+            ctaLink.target = '_blank';
+            ctaLink.rel = 'noopener noreferrer';
+            ctaLink.className = 'inline-block bg-accent hover:bg-[#e5b000] text-black font-semibold px-6 py-3 rounded transition-colors mt-4';
+            ctaLink.textContent = program.cta_label;
+            content.appendChild(ctaLink);
+          }
+
+          card.appendChild(content);
+          programsContainer.appendChild(card);
+        });
+
+        programsSection.style.display = 'block';
+
+      } catch (err) {
+        console.error('loadPrograms error:', err);
+      }
+    }
+
+    async function loadSuccessStories(slug) {
+      if (!window.CKO_LOCATION || window.CKO_LOCATION.show_success_stories === false) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/success_stories?location_slug=eq.${slug}&is_active=eq.true&order=display_order.asc`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch success stories');
+
+        const stories = await response.json();
+
+        if (!Array.isArray(stories) || stories.length < 3) {
+          return;
+        }
+
+        const storiesSection = document.getElementById('success-stories-section');
+        const storiesContainer = document.getElementById('success-stories-container');
+
+        storiesContainer.innerHTML = '';
+
+        stories.forEach(story => {
+          const card = document.createElement('div');
+          card.className = 'bg-[#0a0a0a] border border-white/10 rounded-sm p-6';
+
+          if (story.before_image_url && story.after_image_url) {
+            const imagesContainer = document.createElement('div');
+            imagesContainer.className = 'grid grid-cols-2 gap-4 mb-4';
+
+            const beforeDiv = document.createElement('div');
+            const beforeLabel = document.createElement('p');
+            beforeLabel.className = 'text-gray-400 text-xs mb-1';
+            beforeLabel.textContent = 'Before';
+            beforeDiv.appendChild(beforeLabel);
+            const beforeImg = document.createElement('img');
+            beforeImg.src = story.before_image_url;
+            beforeImg.alt = 'Before';
+            beforeImg.className = 'w-full h-48 object-cover rounded';
+            beforeDiv.appendChild(beforeImg);
+            imagesContainer.appendChild(beforeDiv);
+
+            const afterDiv = document.createElement('div');
+            const afterLabel = document.createElement('p');
+            afterLabel.className = 'text-gray-400 text-xs mb-1';
+            afterLabel.textContent = 'After';
+            afterDiv.appendChild(afterLabel);
+            const afterImg = document.createElement('img');
+            afterImg.src = story.after_image_url;
+            afterImg.alt = 'After';
+            afterImg.className = 'w-full h-48 object-cover rounded';
+            afterDiv.appendChild(afterImg);
+            imagesContainer.appendChild(afterDiv);
+
+            card.appendChild(imagesContainer);
+          }
+
+          const memberName = document.createElement('h3');
+          memberName.className = 'text-xl font-heading font-bold text-white mb-1';
+          memberName.textContent = story.member_name;
+          card.appendChild(memberName);
+
+          if (story.program_name) {
+            const programName = document.createElement('p');
+            programName.className = 'text-accent text-sm font-semibold mb-3';
+            programName.textContent = story.program_name;
+            card.appendChild(programName);
+          }
+
+          if (story.result_stat) {
+            const resultStat = document.createElement('p');
+            resultStat.className = 'text-2xl font-bold text-accent mb-3';
+            resultStat.textContent = story.result_stat;
+            card.appendChild(resultStat);
+          }
+
+          if (story.story) {
+            const storyText = document.createElement('p');
+            storyText.className = 'text-gray-400 text-sm leading-relaxed line-clamp-4';
+            storyText.textContent = story.story;
+            card.appendChild(storyText);
+          }
+
+          storiesContainer.appendChild(card);
+        });
+
+        storiesSection.style.display = 'block';
+
+      } catch (err) {
+        console.error('loadSuccessStories error:', err);
       }
     }
 
