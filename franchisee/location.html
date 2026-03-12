@@ -372,6 +372,14 @@
             <div class="text-center text-gray-500 py-8">Loading events...</div>
           </div>
 
+          <div class="mt-8 pt-8 border-t border-gray-800">
+            <h4 class="text-white font-semibold text-lg mb-4">Corporate Templates</h4>
+            <p class="text-gray-400 text-sm mb-4">Add events from corporate templates to your location</p>
+            <div id="corporate-templates-list" class="space-y-3">
+              <div class="text-center text-gray-500 py-4">Loading templates...</div>
+            </div>
+          </div>
+
           <div id="event-form-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
             <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
               <div class="flex justify-between items-center mb-6">
@@ -511,6 +519,7 @@
         updateEventsVisibilityNotice(location.show_events !== false);
 
         loadEvents();
+        loadCorporateTemplates();
 
       } catch (error) {
         console.error('Error loading location:', error);
@@ -622,6 +631,125 @@
       }
     }
 
+    async function loadCorporateTemplates() {
+      const templatesList = document.getElementById('corporate-templates-list');
+      templatesList.innerHTML = '<div class="text-center text-gray-500 py-4">Loading templates...</div>';
+
+      try {
+        const [templatesResponse, locationEventsResponse] = await Promise.all([
+          fetch(`${SUPABASE_URL}/rest/v1/events?is_corporate_template=eq.true&location_slug=is.null&order=event_date.asc`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${token}`
+            }
+          }),
+          fetch(`${SUPABASE_URL}/rest/v1/events?location_slug=eq.${locationSlug}&select=title`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${token}`
+            }
+          })
+        ]);
+
+        if (!templatesResponse.ok || !locationEventsResponse.ok) {
+          throw new Error('Failed to fetch templates');
+        }
+
+        const templates = await templatesResponse.json();
+        const locationEvents = await locationEventsResponse.json();
+        const existingTitles = new Set(locationEvents.map(e => e.title));
+
+        if (templates.length === 0) {
+          templatesList.innerHTML = '<div class="text-center text-gray-500 py-4">No corporate templates available.</div>';
+          return;
+        }
+
+        templatesList.innerHTML = templates.map(template => {
+          const eventDate = new Date(template.event_date);
+          const formattedDate = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          const alreadyAdded = existingTitles.has(template.title);
+          const descriptionPreview = template.description
+            ? (template.description.length > 100 ? template.description.substring(0, 100) + '...' : template.description)
+            : 'No description';
+
+          return `
+            <div class="bg-gray-800 rounded-lg p-4">
+              <div class="flex justify-between items-start gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <h5 class="text-white font-semibold">${template.title}</h5>
+                    ${template.is_active ? '<span class="text-xs px-2 py-1 rounded bg-green-500/20 text-green-400">Active</span>' : ''}
+                  </div>
+                  <p class="text-gray-400 text-sm mb-2">${formattedDate}</p>
+                  <p class="text-gray-500 text-sm">${descriptionPreview}</p>
+                </div>
+                <div class="flex-shrink-0">
+                  ${alreadyAdded
+                    ? '<span class="px-4 py-2 bg-gray-700 text-gray-400 rounded-lg text-sm font-medium">Already Added</span>'
+                    : `<button onclick="addTemplateToLocation('${template.id}')" class="px-4 py-2 bg-accent hover:bg-accent/90 text-black font-semibold rounded-lg transition-colors text-sm whitespace-nowrap">Add to My Location</button>`
+                  }
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Error loading corporate templates:', error);
+        templatesList.innerHTML = '<div class="text-center text-red-400 py-4">Error loading templates. Please try again.</div>';
+      }
+    }
+
+    window.addTemplateToLocation = async function(templateId) {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${templateId}`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch template');
+
+        const templates = await response.json();
+        if (templates.length === 0) throw new Error('Template not found');
+
+        const template = templates[0];
+
+        const newEvent = {
+          location_slug: locationSlug,
+          title: template.title,
+          description: template.description,
+          event_date: template.event_date,
+          end_date: template.end_date,
+          cta_label: template.cta_label,
+          cta_url: template.cta_url,
+          image_url: template.image_url,
+          is_active: template.is_active,
+          is_corporate_template: false
+        };
+
+        const createResponse = await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(newEvent)
+        });
+
+        if (!createResponse.ok) throw new Error('Failed to create event');
+
+        await Promise.all([loadEvents(), loadCorporateTemplates()]);
+
+      } catch (error) {
+        console.error('Error adding template to location:', error);
+        alert('Failed to add event. Please try again.');
+      }
+    };
+
     window.toggleEventActive = async function(eventId, newStatus) {
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${eventId}`, {
@@ -637,7 +765,7 @@
 
         if (!response.ok) throw new Error('Failed to toggle event status');
 
-        loadEvents();
+        await Promise.all([loadEvents(), loadCorporateTemplates()]);
       } catch (error) {
         console.error('Error toggling event:', error);
         alert('Failed to update event status');
@@ -693,7 +821,7 @@
 
         if (!response.ok) throw new Error('Failed to delete event');
 
-        loadEvents();
+        await Promise.all([loadEvents(), loadCorporateTemplates()]);
       } catch (error) {
         console.error('Error deleting event:', error);
         alert('Failed to delete event');
@@ -764,7 +892,7 @@
         if (!response.ok) throw new Error('Failed to save event');
 
         document.getElementById('event-form-modal').classList.add('hidden');
-        loadEvents();
+        await Promise.all([loadEvents(), loadCorporateTemplates()]);
 
       } catch (error) {
         console.error('Error saving event:', error);
