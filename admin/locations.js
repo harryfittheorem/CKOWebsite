@@ -36,12 +36,14 @@ const scheduleTabBtn = document.getElementById('schedule-tab-btn');
 const mediaTabBtn = document.getElementById('media-tab-btn');
 const packagesTabBtn = document.getElementById('packages-tab-btn');
 const eventsTabBtn = document.getElementById('events-tab-btn');
+const instructorsTabBtn = document.getElementById('instructors-tab-btn');
 const usersTabBtn = document.getElementById('users-tab-btn');
 const detailsTab = document.getElementById('details-tab');
 const scheduleTab = document.getElementById('schedule-tab');
 const mediaTab = document.getElementById('media-tab');
 const packagesTab = document.getElementById('packages-tab');
 const eventsTab = document.getElementById('events-tab');
+const instructorsTab = document.getElementById('instructors-tab');
 const usersTab = document.getElementById('users-tab');
 
 function openPanel() {
@@ -62,11 +64,11 @@ overlay.addEventListener('click', closePanel);
 closeBtn.addEventListener('click', closePanel);
 
 function switchTab(activeBtn, activeTab) {
-  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, eventsTabBtn, usersTabBtn].forEach(btn => {
+  [detailsTabBtn, scheduleTabBtn, mediaTabBtn, packagesTabBtn, eventsTabBtn, instructorsTabBtn, usersTabBtn].forEach(btn => {
     btn.classList.remove('text-white', 'border-accent');
     btn.classList.add('text-gray-400', 'border-transparent');
   });
-  [detailsTab, scheduleTab, mediaTab, packagesTab, eventsTab, usersTab].forEach(tab => {
+  [detailsTab, scheduleTab, mediaTab, packagesTab, eventsTab, instructorsTab, usersTab].forEach(tab => {
     tab.classList.add('hidden');
   });
 
@@ -113,6 +115,13 @@ eventsTabBtn.addEventListener('click', () => {
   switchTab(eventsTabBtn, eventsTab);
   if (currentLocation) {
     loadEvents(currentLocation.slug);
+  }
+});
+
+instructorsTabBtn.addEventListener('click', () => {
+  switchTab(instructorsTabBtn, instructorsTab);
+  if (currentLocation) {
+    loadInstructors(currentLocation.slug);
   }
 });
 
@@ -1677,6 +1686,268 @@ document.getElementById('add-event-form').addEventListener('submit', async (e) =
   } catch (error) {
     console.error('Error saving event:', error);
     alert(`Failed to save event: ${error.message}`);
+  }
+});
+
+// Instructors Management
+async function loadInstructors(locationSlug) {
+  const instructorsList = document.getElementById('instructors-list');
+  instructorsList.innerHTML = `
+    <div class="text-center text-gray-500 py-8">
+      <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Loading instructors...
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/instructors?location_slug=eq.${locationSlug}&order=display_order.asc`, {
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch instructors');
+
+    const instructors = await response.json();
+
+    if (instructors.length === 0) {
+      instructorsList.innerHTML = `
+        <div class="text-center text-gray-500 py-8">
+          No instructors found for this location.
+        </div>
+      `;
+      return;
+    }
+
+    instructorsList.innerHTML = instructors.map(instructor => {
+      const initials = instructor.name.split(' ').map(n => n[0]).join('').toUpperCase();
+      return `
+        <div class="flex items-center justify-between bg-gray-800 rounded-lg p-4">
+          <div class="flex items-center gap-4">
+            ${instructor.photo_url
+              ? `<img src="${instructor.photo_url}" alt="${instructor.name}" class="w-12 h-12 rounded-full object-cover">`
+              : `<div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-white font-semibold">${initials}</div>`
+            }
+            <div>
+              <h4 class="text-white font-medium">${instructor.name}</h4>
+              ${instructor.title ? `<p class="text-gray-400 text-sm">${instructor.title}</p>` : ''}
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-full text-xs font-medium ${instructor.is_active ? 'bg-green-900 text-green-300' : 'bg-gray-700 text-gray-400'}">
+              ${instructor.is_active ? 'Active' : 'Inactive'}
+            </span>
+            <button onclick="editInstructor(${instructor.id})" class="text-accent hover:text-[#e5b000] transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+            </button>
+            <button onclick="deleteInstructor(${instructor.id})" class="text-red-400 hover:text-red-300 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Error loading instructors:', error);
+    instructorsList.innerHTML = `
+      <div class="text-center text-red-400 py-8">
+        Failed to load instructors. Please try again.
+      </div>
+    `;
+  }
+}
+
+document.getElementById('add-instructor-btn').addEventListener('click', () => {
+  document.getElementById('instructor-form-title').textContent = 'Add Instructor';
+  document.getElementById('instructor-submit-btn').textContent = 'Add Instructor';
+  document.getElementById('instructor-form').reset();
+  document.getElementById('instructor-id').value = '';
+  document.getElementById('instructor-photo-url').value = '';
+  document.getElementById('instructor-photo-preview-container').classList.add('hidden');
+  document.getElementById('instructor-modal').classList.remove('hidden');
+});
+
+document.getElementById('close-instructor-form').addEventListener('click', () => {
+  document.getElementById('instructor-modal').classList.add('hidden');
+});
+
+document.getElementById('cancel-instructor-form').addEventListener('click', () => {
+  document.getElementById('instructor-modal').classList.add('hidden');
+});
+
+window.editInstructor = async function(instructorId) {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/instructors?id=eq.${instructorId}`, {
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch instructor');
+
+    const instructors = await response.json();
+    if (instructors.length === 0) throw new Error('Instructor not found');
+
+    const instructor = instructors[0];
+
+    document.getElementById('instructor-id').value = instructor.id;
+    document.getElementById('instructor-name').value = instructor.name || '';
+    document.getElementById('instructor-title').value = instructor.title || '';
+    document.getElementById('instructor-bio').value = instructor.bio || '';
+    document.getElementById('instructor-certifications').value = instructor.certifications || '';
+    document.getElementById('instructor-specialties').value = instructor.specialties || '';
+    document.getElementById('instructor-display-order').value = instructor.display_order || 0;
+    document.getElementById('instructor-active').checked = instructor.is_active;
+    document.getElementById('instructor-photo-url').value = instructor.photo_url || '';
+
+    if (instructor.photo_url) {
+      document.getElementById('instructor-photo-preview').src = instructor.photo_url;
+      document.getElementById('instructor-photo-preview-container').classList.remove('hidden');
+    } else {
+      document.getElementById('instructor-photo-preview-container').classList.add('hidden');
+    }
+
+    document.getElementById('instructor-form-title').textContent = 'Edit Instructor';
+    document.getElementById('instructor-submit-btn').textContent = 'Update Instructor';
+    document.getElementById('instructor-modal').classList.remove('hidden');
+  } catch (error) {
+    console.error('Error loading instructor:', error);
+    alert('Failed to load instructor details.');
+  }
+};
+
+window.deleteInstructor = async function(instructorId) {
+  if (!confirm('Are you sure you want to delete this instructor?')) return;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/instructors?id=eq.${instructorId}`, {
+      method: 'DELETE',
+      headers
+    });
+
+    if (!response.ok) throw new Error('Failed to delete instructor');
+
+    showToast('Instructor deleted successfully!');
+    loadInstructors(currentLocation.slug);
+  } catch (error) {
+    console.error('Error deleting instructor:', error);
+    alert('Failed to delete instructor. Please try again.');
+  }
+};
+
+document.getElementById('instructor-photo-upload').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  const statusEl = document.getElementById('instructor-upload-status');
+
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    statusEl.textContent = 'File too large. Max size: 5MB';
+    statusEl.className = 'text-red-400 text-xs mt-1';
+    statusEl.classList.remove('hidden');
+    return;
+  }
+
+  statusEl.textContent = 'Uploading...';
+  statusEl.className = 'text-accent text-xs mt-1';
+  statusEl.classList.remove('hidden');
+
+  try {
+    const timestamp = Date.now();
+    const fileName = `${timestamp}-${file.name}`;
+    const filePath = `instructors/${fileName}`;
+
+    const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${filePath}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': file.type
+      },
+      body: file
+    });
+
+    if (!uploadResponse.ok) {
+      const error = await uploadResponse.json();
+      throw new Error(error.message || 'Upload failed');
+    }
+
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/location-media/${filePath}`;
+
+    document.getElementById('instructor-photo-url').value = publicUrl;
+    document.getElementById('instructor-photo-preview').src = publicUrl;
+    document.getElementById('instructor-photo-preview-container').classList.remove('hidden');
+
+    statusEl.textContent = 'Upload complete!';
+    statusEl.className = 'text-green-400 text-xs mt-1';
+
+    setTimeout(() => {
+      statusEl.classList.add('hidden');
+    }, 3000);
+  } catch (error) {
+    console.error('Upload error:', error);
+    statusEl.textContent = `Upload failed: ${error.message}`;
+    statusEl.className = 'text-red-400 text-xs mt-1';
+  }
+});
+
+document.getElementById('instructor-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (!currentLocation) {
+    alert('No location selected');
+    return;
+  }
+
+  const instructorId = document.getElementById('instructor-id').value;
+  const isEdit = !!instructorId;
+
+  const instructorData = {
+    location_slug: currentLocation.slug,
+    name: document.getElementById('instructor-name').value.trim(),
+    title: document.getElementById('instructor-title').value.trim() || null,
+    bio: document.getElementById('instructor-bio').value.trim() || null,
+    certifications: document.getElementById('instructor-certifications').value.trim() || null,
+    specialties: document.getElementById('instructor-specialties').value.trim() || null,
+    photo_url: document.getElementById('instructor-photo-url').value.trim() || null,
+    display_order: parseInt(document.getElementById('instructor-display-order').value) || 0,
+    is_active: document.getElementById('instructor-active').checked
+  };
+
+  try {
+    let response;
+
+    if (isEdit) {
+      response = await fetch(`${SUPABASE_URL}/rest/v1/instructors?id=eq.${instructorId}`, {
+        method: 'PATCH',
+        headers: {
+          ...headers,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(instructorData)
+      });
+    } else {
+      response = await fetch(`${SUPABASE_URL}/rest/v1/instructors`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(instructorData)
+      });
+    }
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to save instructor');
+    }
+
+    showToast(isEdit ? 'Instructor updated successfully!' : 'Instructor added successfully!');
+    document.getElementById('instructor-modal').classList.add('hidden');
+    loadInstructors(currentLocation.slug);
+  } catch (error) {
+    console.error('Error saving instructor:', error);
+    alert(`Failed to save instructor: ${error.message}`);
   }
 });
 

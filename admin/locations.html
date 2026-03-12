@@ -186,6 +186,9 @@
       <button id="events-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
         Events
       </button>
+      <button id="instructors-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
+        Instructors
+      </button>
       <button id="users-tab-btn" class="px-6 py-4 text-gray-400 font-medium whitespace-nowrap border-b-2 border-transparent hover:text-white transition-colors">
         Access & Users
       </button>
@@ -738,6 +741,25 @@
       </div>
     </div>
 
+    <div id="instructors-tab" class="p-8 space-y-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white font-semibold text-xl">Instructors</h3>
+        <button id="add-instructor-btn" class="bg-accent hover:bg-[#e5b000] text-black font-semibold px-4 py-2 rounded-lg transition-all text-sm">
+          + Add Instructor
+        </button>
+      </div>
+
+      <div class="space-y-2" id="instructors-list">
+        <div class="text-center text-gray-500 py-8">
+          <svg class="animate-spin h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Loading instructors...
+        </div>
+      </div>
+    </div>
+
     <div id="users-tab" class="p-8 space-y-6 hidden">
       <div class="space-y-3" id="users-list">
         <div class="text-center text-gray-500 py-8">
@@ -841,6 +863,79 @@
             Save Template
           </button>
           <button type="button" id="cancel-corporate-event-form" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Instructor Modal -->
+  <div id="instructor-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h4 id="instructor-form-title" class="text-white font-semibold text-lg">Add Instructor</h4>
+        <button id="close-instructor-form" class="text-gray-400 hover:text-white transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="instructor-form" class="space-y-4">
+        <input type="hidden" id="instructor-id" value="">
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Name *</label>
+          <input type="text" id="instructor-name" required class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Title</label>
+          <input type="text" id="instructor-title" placeholder="e.g., Head Coach" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Bio</label>
+          <textarea id="instructor-bio" rows="3" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Certifications</label>
+          <input type="text" id="instructor-certifications" placeholder="e.g., CPT, CKT" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Specialties</label>
+          <input type="text" id="instructor-specialties" placeholder="e.g., Boxing, HIIT" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Photo</label>
+          <div id="instructor-photo-preview-container" class="hidden mb-2">
+            <img id="instructor-photo-preview" src="" alt="Preview" class="w-24 h-24 rounded-full object-cover mx-auto">
+          </div>
+          <input type="file" id="instructor-photo-upload" accept="image/*" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+          <input type="hidden" id="instructor-photo-url" value="">
+          <p class="text-gray-500 text-xs mt-1">Supported: JPG, PNG, WebP. Max 5MB.</p>
+          <p id="instructor-upload-status" class="text-xs mt-1 hidden"></p>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 text-sm font-medium mb-2">Display Order</label>
+          <input type="number" id="instructor-display-order" value="0" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-accent">
+        </div>
+
+        <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+          <label class="text-white text-sm font-medium">Active</label>
+          <input type="checkbox" id="instructor-active" checked class="w-5 h-5 bg-gray-700 border-gray-600 rounded text-accent focus:ring-accent">
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="submit" id="instructor-submit-btn" class="flex-1 bg-accent hover:bg-[#e5b000] text-black font-semibold py-3 rounded-lg transition-colors">
+            Add Instructor
+          </button>
+          <button type="button" id="cancel-instructor-form" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
             Cancel
           </button>
         </div>
