@@ -674,6 +674,18 @@
     </footer>
   </div>
 
+  <!-- Event Details Modal -->
+  <div id="event-details-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+    <div class="bg-black border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+      <button id="close-event-modal" class="absolute top-4 right-4 text-white hover:text-accent transition-colors z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <div id="event-modal-content"></div>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = 'https://nfxpqhsnakrrjnfqlkgy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5meHBxaHNuYWtycmpuZnFsa2d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NTQ1MDAsImV4cCI6MjA4ODQzMDUwMH0.j1ZuiqGObosV37GH5W9rzWowrBgea5FLwL84EPLpaZc';
@@ -888,6 +900,74 @@
       checkForPackages();
     }
 
+    function openEventModal(event) {
+      const modal = document.getElementById('event-details-modal');
+      const modalContent = document.getElementById('event-modal-content');
+
+      modalContent.innerHTML = '';
+
+      if (event.image_url) {
+        const img = document.createElement('img');
+        img.src = event.image_url;
+        img.alt = event.title;
+        img.className = 'w-full h-64 object-cover rounded-t-lg';
+        modalContent.appendChild(img);
+      }
+
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'p-8';
+
+      const title = document.createElement('h2');
+      title.className = 'text-3xl font-heading font-bold uppercase text-white mb-4';
+      title.textContent = event.title;
+      contentDiv.appendChild(title);
+
+      const eventDate = new Date(event.event_date);
+      let dateText = eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      if (event.end_date) {
+        const endDate = new Date(event.end_date);
+        dateText += ' – ' + endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      }
+
+      const dateP = document.createElement('p');
+      dateP.className = 'text-accent text-lg font-semibold mb-6';
+      dateP.textContent = dateText;
+      contentDiv.appendChild(dateP);
+
+      if (event.description) {
+        const desc = document.createElement('p');
+        desc.className = 'text-gray-300 text-base leading-relaxed mb-8';
+        desc.textContent = event.description;
+        contentDiv.appendChild(desc);
+      }
+
+      if (event.cta_label && event.cta_url) {
+        const ctaLink = document.createElement('a');
+        ctaLink.href = event.cta_url;
+        ctaLink.target = '_blank';
+        ctaLink.rel = 'noopener noreferrer';
+        ctaLink.className = 'inline-block bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-3 px-8 text-sm rounded-sm transition-all';
+        ctaLink.textContent = event.cta_label;
+        contentDiv.appendChild(ctaLink);
+      }
+
+      modalContent.appendChild(contentDiv);
+      modal.classList.remove('hidden');
+    }
+
+    function closeEventModal() {
+      document.getElementById('event-details-modal').classList.add('hidden');
+    }
+
+    document.getElementById('close-event-modal').addEventListener('click', closeEventModal);
+
+    document.getElementById('event-details-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'event-details-modal') {
+        closeEventModal();
+      }
+    });
+
     async function loadEvents(slug) {
       if (!window.CKO_LOCATION || window.CKO_LOCATION.show_events === false) {
         return;
@@ -928,13 +1008,16 @@
 
           if (event.cta_label && event.cta_url) {
             bannerCta.textContent = event.cta_label;
-            bannerCta.href = event.cta_url;
-            bannerCta.target = '_blank';
-            bannerCta.rel = 'noopener noreferrer';
             bannerCta.classList.remove('hidden');
           } else {
             bannerCta.classList.add('hidden');
           }
+
+          banner.style.cursor = 'pointer';
+          banner.onclick = (e) => {
+            e.preventDefault();
+            openEventModal(event);
+          };
 
           banner.style.display = 'block';
         } else if (events.length >= 2) {
@@ -944,22 +1027,25 @@
 
           bannerText.textContent = `🥊 ${firstEvent.title} — ${formattedDate}`;
 
-          if (firstEvent.cta_label && firstEvent.cta_url) {
-            bannerCta.textContent = firstEvent.cta_label;
-            bannerCta.href = firstEvent.cta_url;
-            bannerCta.target = '_blank';
-            bannerCta.rel = 'noopener noreferrer';
-            bannerCta.classList.remove('hidden');
-          } else {
-            bannerCta.classList.add('hidden');
-          }
+          bannerCta.textContent = 'See All Events →';
+          bannerCta.classList.remove('hidden');
+
+          banner.style.cursor = 'pointer';
+          banner.onclick = (e) => {
+            e.preventDefault();
+            document.getElementById('events-section').scrollIntoView({ behavior: 'smooth' });
+          };
 
           banner.style.display = 'block';
 
           eventsContainer.innerHTML = '';
           events.forEach(event => {
             const card = document.createElement('div');
-            card.className = 'bg-black border border-white/10 rounded-sm overflow-hidden hover:border-accent/50 transition-all';
+            card.className = 'bg-black border border-white/10 rounded-sm overflow-hidden hover:border-accent/50 transition-all cursor-pointer';
+
+            card.onclick = () => {
+              openEventModal(event);
+            };
 
             if (event.image_url) {
               const img = document.createElement('img');
@@ -982,7 +1068,7 @@
 
             if (event.end_date) {
               const endDate = new Date(event.end_date);
-              dateText += ' - ' + endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+              dateText += ' – ' + endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
             }
 
             const dateP = document.createElement('p');
@@ -992,19 +1078,9 @@
 
             if (event.description) {
               const desc = document.createElement('p');
-              desc.className = 'text-gray-400 text-sm leading-relaxed mb-4';
+              desc.className = 'text-gray-400 text-sm leading-relaxed';
               desc.textContent = event.description;
               contentDiv.appendChild(desc);
-            }
-
-            if (event.cta_label && event.cta_url) {
-              const ctaLink = document.createElement('a');
-              ctaLink.href = event.cta_url;
-              ctaLink.target = '_blank';
-              ctaLink.rel = 'noopener noreferrer';
-              ctaLink.className = 'inline-block bg-accent hover:bg-[#e5b000] text-black font-semibold uppercase tracking-wider py-2 px-6 text-xs rounded-sm transition-all';
-              ctaLink.textContent = event.cta_label;
-              contentDiv.appendChild(ctaLink);
             }
 
             card.appendChild(contentDiv);
