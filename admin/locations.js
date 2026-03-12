@@ -272,6 +272,7 @@ window.editLocation = async function(locationId) {
     document.getElementById('toggle-show-contact-form').checked = currentLocation.show_contact_form !== false;
     document.getElementById('toggle-show-gallery').checked = currentLocation.show_gallery !== false;
     document.getElementById('toggle-show-events').checked = currentLocation.show_events !== false;
+    document.getElementById('toggle-show-instructors').checked = currentLocation.show_instructors !== false;
 
     updateToggleUI();
     openPanel();
@@ -323,6 +324,7 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('toggle-show-contact-form').checked = true;
   document.getElementById('toggle-show-gallery').checked = true;
   document.getElementById('toggle-show-events').checked = false;
+  document.getElementById('toggle-show-instructors').checked = true;
 
   updateToggleUI();
   openPanel();
@@ -433,7 +435,8 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     show_map: document.getElementById('toggle-show-map').checked,
     show_contact_form: document.getElementById('toggle-show-contact-form').checked,
     show_gallery: document.getElementById('toggle-show-gallery').checked,
-    show_events: document.getElementById('toggle-show-events').checked
+    show_events: document.getElementById('toggle-show-events').checked,
+    show_instructors: document.getElementById('toggle-show-instructors').checked
   };
 
   try {
