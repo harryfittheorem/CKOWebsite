@@ -1153,21 +1153,21 @@
 
         instructors.forEach(instructor => {
           const card = document.createElement('div');
-          card.className = 'bg-gray-900/50 rounded-xl overflow-hidden flex flex-row gap-4 p-4';
+          card.className = 'bg-gray-900 border border-gray-800 border-l-4 border-l-accent rounded-xl overflow-hidden flex flex-row gap-4 p-4';
 
           const photoContainer = document.createElement('div');
-          photoContainer.className = 'w-32 h-32 flex-shrink-0';
+          photoContainer.className = 'w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden';
 
           if (instructor.photo_url) {
             const img = document.createElement('img');
             img.src = instructor.photo_url;
             img.alt = instructor.name;
-            img.className = 'w-full h-full rounded-xl object-cover';
+            img.className = 'w-full h-full object-cover object-top';
             photoContainer.appendChild(img);
           } else {
             const initials = instructor.name.split(' ').map(n => n[0]).join('').toUpperCase();
             const placeholder = document.createElement('div');
-            placeholder.className = 'w-full h-full rounded-xl bg-gray-700 flex items-center justify-center';
+            placeholder.className = 'w-full h-full bg-gray-700 flex items-center justify-center';
             const initialsText = document.createElement('span');
             initialsText.className = 'text-white text-3xl font-semibold';
             initialsText.textContent = initials;
@@ -1267,30 +1267,40 @@
 
         programs.forEach(program => {
           const card = document.createElement('div');
-          card.className = 'bg-gray-900/50 rounded-xl overflow-hidden flex flex-col md:flex-row';
+          card.className = 'bg-gray-900 border border-gray-800 border-l-4 border-l-accent rounded-xl overflow-hidden flex flex-col md:flex-row';
 
           const imageContainer = document.createElement('div');
-          imageContainer.className = 'w-full md:w-48 h-48 md:h-auto md:min-h-48 flex-shrink-0';
+          imageContainer.className = 'w-full md:w-80 flex-shrink-0 relative';
+
+          const aspectRatioWrapper = document.createElement('div');
+          aspectRatioWrapper.className = 'relative w-full';
+          aspectRatioWrapper.style.paddingTop = '56.25%';
 
           if (program.image_url) {
             const img = document.createElement('img');
             img.src = program.image_url;
             img.alt = program.name;
-            img.className = 'w-full h-full object-cover';
-            imageContainer.appendChild(img);
+            img.className = 'absolute inset-0 w-full h-full object-cover';
+            aspectRatioWrapper.appendChild(img);
+
+            const gradient = document.createElement('div');
+            gradient.className = 'absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none';
+            aspectRatioWrapper.appendChild(gradient);
           } else {
             const placeholder = document.createElement('div');
-            placeholder.className = 'w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center';
+            placeholder.className = 'absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center';
             const placeholderText = document.createElement('span');
             placeholderText.className = 'text-gray-600 text-4xl font-bold';
             placeholderText.textContent = 'CKO';
             placeholder.appendChild(placeholderText);
-            imageContainer.appendChild(placeholder);
+            aspectRatioWrapper.appendChild(placeholder);
           }
+
+          imageContainer.appendChild(aspectRatioWrapper);
           card.appendChild(imageContainer);
 
           const content = document.createElement('div');
-          content.className = 'p-6 flex-1 border-l-4 border-accent flex flex-col';
+          content.className = 'p-6 flex-1 flex flex-col';
 
           const header = document.createElement('div');
           header.className = 'mb-4';
