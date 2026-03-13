@@ -233,24 +233,36 @@ document.getElementById('program-image-upload').addEventListener('change', async
   const previewContainer = document.getElementById('program-image-preview-container');
   const preview = document.getElementById('program-image-preview');
 
+  if (file.size > 5 * 1024 * 1024) {
+    statusEl.textContent = 'File too large. Max size: 5MB';
+    statusEl.className = 'text-red-400 text-xs mt-1';
+    statusEl.classList.remove('hidden');
+    return;
+  }
+
   statusEl.textContent = 'Uploading...';
   statusEl.className = 'text-xs mt-1 text-blue-400';
   statusEl.classList.remove('hidden');
 
   try {
+    const token = sessionStorage.getItem('cko_admin_token');
     const timestamp = Date.now();
     const filePath = `programs/${timestamp}-${file.name}`;
 
     const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${filePath}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': file.type
       },
       body: file
     });
 
-    if (!uploadResponse.ok) throw new Error('Upload failed');
+    if (!uploadResponse.ok) {
+      const error = await uploadResponse.json();
+      throw new Error(error.message || 'Upload failed');
+    }
 
     const publicURL = `${SUPABASE_URL}/storage/v1/object/public/location-media/${filePath}`;
     document.getElementById('program-image-url').value = publicURL;
@@ -419,24 +431,36 @@ document.getElementById('success-story-before-upload').addEventListener('change'
   const previewContainer = document.getElementById('success-story-before-preview-container');
   const preview = document.getElementById('success-story-before-preview');
 
+  if (file.size > 5 * 1024 * 1024) {
+    statusEl.textContent = 'File too large. Max size: 5MB';
+    statusEl.className = 'text-red-400 text-xs mt-1';
+    statusEl.classList.remove('hidden');
+    return;
+  }
+
   statusEl.textContent = 'Uploading...';
   statusEl.className = 'text-xs mt-1 text-blue-400';
   statusEl.classList.remove('hidden');
 
   try {
+    const token = sessionStorage.getItem('cko_admin_token');
     const timestamp = Date.now();
     const filePath = `success-stories/before-${timestamp}-${file.name}`;
 
     const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${filePath}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': file.type
       },
       body: file
     });
 
-    if (!uploadResponse.ok) throw new Error('Upload failed');
+    if (!uploadResponse.ok) {
+      const error = await uploadResponse.json();
+      throw new Error(error.message || 'Upload failed');
+    }
 
     const publicURL = `${SUPABASE_URL}/storage/v1/object/public/location-media/${filePath}`;
     document.getElementById('success-story-before-url').value = publicURL;
@@ -465,24 +489,36 @@ document.getElementById('success-story-after-upload').addEventListener('change',
   const previewContainer = document.getElementById('success-story-after-preview-container');
   const preview = document.getElementById('success-story-after-preview');
 
+  if (file.size > 5 * 1024 * 1024) {
+    statusEl.textContent = 'File too large. Max size: 5MB';
+    statusEl.className = 'text-red-400 text-xs mt-1';
+    statusEl.classList.remove('hidden');
+    return;
+  }
+
   statusEl.textContent = 'Uploading...';
   statusEl.className = 'text-xs mt-1 text-blue-400';
   statusEl.classList.remove('hidden');
 
   try {
+    const token = sessionStorage.getItem('cko_admin_token');
     const timestamp = Date.now();
     const filePath = `success-stories/after-${timestamp}-${file.name}`;
 
     const uploadResponse = await fetch(`${SUPABASE_URL}/storage/v1/object/location-media/${filePath}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': file.type
       },
       body: file
     });
 
-    if (!uploadResponse.ok) throw new Error('Upload failed');
+    if (!uploadResponse.ok) {
+      const error = await uploadResponse.json();
+      throw new Error(error.message || 'Upload failed');
+    }
 
     const publicURL = `${SUPABASE_URL}/storage/v1/object/public/location-media/${filePath}`;
     document.getElementById('success-story-after-url').value = publicURL;
