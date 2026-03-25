@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKO Kickboxing - Kickboxing Classes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Oswald:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body {
+font-family: "Inter", sans-serif;
+font-feature-settings: "cv11", "ss01";
+-webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+font-family: "Oswald", sans-serif;
+}
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-track {
+background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+background: #fec400;
+border-radius: 4px;
+}
+.text-accent {
+color: #fec400;
+}
+.bg-accent {
+background-color: #fec400;
+}
+.border-accent {
+border-color: #fec400;
+}
+.reveal-on-scroll {
+opacity: 0;
+transform: translateY(30px);
+transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-on-scroll.is-visible {
+opacity: 1;
+transform: translateY(0);
+}
+.delay-100 {
+transition-delay: 100ms;
+}
+.delay-200 {
+transition-delay: 200ms;
+}
+.delay-300 {
+transition-delay: 300ms;
+}
+</style>
+<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-geist">
+.font-geist {
+font-family: "Geist", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-roboto">
+.font-roboto {
+font-family: "Roboto", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-montserrat">
+.font-montserrat {
+font-family: "Montserrat", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-poppins">
+.font-poppins {
+font-family: "Poppins", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap">
+<style id="all-fonts-style-font-playfair">
+.font-playfair {
+font-family: "Playfair Display", serif !important;
+}
+</style>
+<link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-instrument-serif">
+.font-instrument-serif {
+font-family: "Instrument Serif", serif !important;
+}
+</style>
+<link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap">
+<style id="all-fonts-style-font-merriweather">
+.font-merriweather {
+font-family: "Merriweather", serif !important;
+}
+</style>
+<link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-bricolage">
+.font-bricolage {
+font-family: "Bricolage Grotesque", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap">
+<style id="all-fonts-style-font-jakarta">
+.font-jakarta {
+font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap">
+<style id="all-fonts-style-font-manrope">
+.font-manrope {
+font-family: "Manrope", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-space-grotesk">
+.font-space-grotesk {
+font-family: "Space Grotesk", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap">
+<style id="all-fonts-style-font-work-sans">
+.font-work-sans {
+font-family: "Work Sans", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap">
+<style id="all-fonts-style-font-pt-serif">
+.font-pt-serif {
+font-family: "PT Serif", serif !important;
+}
+</style>
+<link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-geist-mono">
+.font-geist-mono {
+font-family: "Geist Mono", monospace !important;
+}
+</style>
+<link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap">
+<style id="all-fonts-style-font-space-mono">
+.font-space-mono {
+font-family: "Space Mono", monospace !important;
+}
+</style>
+<link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-quicksand">
+.font-quicksand {
+font-family: "Quicksand", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap">
+<style id="all-fonts-style-font-nunito">
+.font-nunito {
+font-family: "Nunito", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-newsreader" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap">
+<style id="all-fonts-style-font-newsreader">
+.font-newsreader {
+font-family: "Newsreader", serif !important;
+}
+</style>
+<link id="all-fonts-link-font-google-sans-flex" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-google-sans-flex">
+.font-google-sans-flex {
+font-family: "Google Sans Flex", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-oswald" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-oswald">
+.font-oswald {
+font-family: "Oswald", sans-serif !important;
+}
+</style>
+<link id="all-fonts-link-font-dm-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap">
+<style id="all-fonts-style-font-dm-sans">
+.font-dm-sans {
+font-family: "DM Sans", sans-serif !important;
+}
+</style></head>
+
+  <body class="antialiased text-white bg-black">
+    <!-- Top Bar -->
+    <div class="hidden md:flex text-[10px] uppercase z-50 font-semibold text-gray-400 tracking-[0.15em] bg-[#0a0a0a] border-white/5 border-b pt-2 pr-8 pb-2 pl-8 relative items-center justify-end">
+      <div class="flex items-center gap-8">
+        <a href="franchise-page.html" class="hover:text-white transition-colors">Own a Franchise</a>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky w-full top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10 shadow-2xl">
+      <div class="flex h-16 max-w-[1600px] mr-auto ml-auto pr-6 pl-6 relative items-center justify-between">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center group z-50 shrink-0">
+          <img src="https://i.ibb.co/rRwkwHR2/cko-logo-2.png" alt="CKO Kickboxing" class="h-10 w-auto md:h-12 object-contain">
+        </a>
+
+        <!-- Desktop Links - Centered -->
+        <div class="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <a href="index.html" class="uppercase hover:text-accent transition-colors text-xs font-medium text-white tracking-[0.15em]">Home</a>
+          <a href="about-page.html" class="uppercase hover:text-accent transition-colors text-xs font-medium text-white tracking-[0.15em]">About</a>
+          <a href="kickboxing.html" class="uppercase text-accent transition-colors text-xs font-medium tracking-[0.15em]">Kickboxing</a>
+          <a href="group-fitness.html" class="uppercase hover:text-accent transition-colors text-xs font-medium text-white tracking-[0.15em]">Group Fitness</a>
+        </div>
+
+        <!-- Desktop CTA -->
+        <div class="hidden md:flex items-center shrink-0">
+          <!-- Added button -->
+          <a href="find-your-location.html" class="bg-accent text-black font-semibold uppercase tracking-[0.15em] text-xs px-5 py-2.5 hover:brightness-110 transition">
+            Find a Location
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 text-white hover:text-accent transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" id="menu-icon" class="lucide lucide-menu w-6 h-6">
+            <path d="M4 5h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 19h16"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" id="close-icon" class="lucide lucide-x w-6 h-6 hidden">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden lg:hidden bg-black text-white absolute w-full top-20 left-0 px-6 pb-8 border-b border-white/10 shadow-2xl">
+        <div class="flex flex-col space-y-6 pt-8 text-xl font-heading font-semibold uppercase tracking-widest text-center">
+          <a href="#" class="block hover:text-accent transition-colors">Home</a>
+          <a href="#" class="block hover:text-accent transition-colors">About</a>
+          <a href="#" class="block text-accent">Kickboxing</a>
+          <a href="#" class="block hover:text-accent transition-colors">Group Fitness</a>
+          <a href="#" class="block hover:text-accent transition-colors">Community</a>
+          <a href="#" class="block hover:text-accent transition-colors">Results</a>
+          <!-- Updated redirect -->
+          <a href="find-your-location.html" class="mt-4 w-full bg-accent text-black font-semibold py-4 uppercase tracking-widest block">
+            Find a Location
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden">
+      <!-- Background Image -->
+      <div class="absolute inset-0 z-0">
+        <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="Kickboxing Classes" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="relative z-10 max-w-[1600px] mx-auto px-6 w-full">
+        <div class="max-w-2xl ml-auto text-right">
+          <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-semibold text-white uppercase tracking-tight leading-[0.9] reveal-on-scroll is-visible">
+            Kickboxing Classes
+          </h1>
+
+          <!-- Added hero button -->
+          <div class="mt-8 reveal-on-scroll is-visible">
+            <a href="find-your-location.html" class="inline-flex items-center justify-center bg-accent text-black font-semibold uppercase tracking-[0.15em] text-xs px-7 py-4 hover:brightness-110 transition">
+              Find a Location
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="bg-[#0a0a0a] py-4 border-b border-white/10">
+      <div class="max-w-[1400px] mx-auto px-6">
+        <nav class="text-sm text-gray-400">
+          <a href="#" class="hover:text-accent transition-colors underline">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-white">Kickboxing</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <section class="py-20 bg-[#0a0a0a]">
+      <div class="max-w-[1400px] mx-auto px-6">
+        <!-- Intro Section -->
+        <div class="mb-20 reveal-on-scroll is-visible">
+          <h2 class="font-heading text-4xl md:text-5xl font-semibold uppercase text-white tracking-tight mb-8 leading-tight">
+            High-Energy Kickboxing Training for All Fitness Levels
+          </h2>
+
+          <div class="space-y-6 text-gray-300 text-base leading-relaxed font-light">
+            <p>
+              It's time to break out of your boring fitness routine and discover the possibility of a fun, high-energy and rewarding workout.
+              CKO Kickboxing offers classes that keep you coming back day after day wanting more. Discover why we're different by joining
+              thousands of REAL people, hitting REAL heavy bags to get REAL results.
+            </p>
+            <p>
+              Get ready to reduce stress and burn calories with one of the best cardio exercises available. Kickboxing training is a form of
+              high intensity interval training (HIIT) led by qualified and engaged instructors. We utilize a combination of both plyometric and
+              calisthenic exercises to create the most exciting workout. These exercises encourage your muscles to exert maximum force for short
+              intervals of time. The moves you'll learn are rhythmic and packed into each workout. Our kickboxing classes are designed this way
+              to not only build strength, but also to increase your overall muscle endurance.
+            </p>
+          </div>
+
+          <!-- Added CTA button (minimal change, placed after intro text) -->
+          <div class="mt-10">
+            <a href="find-your-location.html" class="inline-flex items-center justify-center bg-accent text-black font-semibold uppercase tracking-[0.15em] text-xs px-7 py-4 hover:brightness-110 transition">
+              Find a Location
+            </a>
+          </div>
+        </div>
+
+        <!-- Content Block 1 -->
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24 reveal-on-scroll">
+          <div class="order-2 lg:order-1">
+            <h3 class="font-heading text-3xl md:text-4xl font-semibold uppercase text-white tracking-tight mb-2 leading-tight">
+              Discover Your New Fitness
+            </h3>
+            <div class="inline-block bg-accent px-4 py-1 mb-6">
+              <span class="font-heading text-2xl md:text-3xl font-semibold uppercase text-black tracking-tight">Routine</span>
+            </div>
+
+            <p class="text-gray-300 text-base leading-relaxed font-light">
+              It's time to break out of your boring fitness routine and discover the possibility of a fun, high-energy and rewarding workout.
+              CKO Kickboxing offers classes that keep you coming back day after day wanting more. Discover why we're different by joining
+              thousands of REAL people, hitting REAL heavy bags to get REAL results.
+            </p>
+
+            <!-- Added button -->
+            <div class="mt-8">
+              <a href="find-your-location.html" class="inline-flex items-center justify-center bg-accent text-black font-semibold uppercase tracking-[0.15em] text-xs px-6 py-3 hover:brightness-110 transition">
+                Find a Location
+              </a>
+            </div>
+          </div>
+
+          <div class="order-1 lg:order-2">
+            <div class="relative overflow-hidden">
+              <img src="https://i.ibb.co/xtDQMgVY/home-section-1.jpg" alt="Fitness Routine" class="w-full h-80 lg:h-96 object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Block 2 -->
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24 reveal-on-scroll">
+          <div>
+            <div class="relative overflow-hidden">
+              <img src="https://i.ibb.co/0VZVLQgz/cko-new-banner-22.jpg" alt="CKO Difference" class="w-full h-80 lg:h-96 object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-heading text-3xl md:text-4xl font-semibold uppercase text-white tracking-tight mb-2 leading-tight">The CKO</h3>
+            <div class="inline-block bg-accent px-4 py-1 mb-6">
+              <span class="font-heading text-2xl md:text-3xl font-semibold uppercase text-black tracking-tight">Difference</span>
+            </div>
+
+            <p class="text-gray-300 text-base leading-relaxed font-light">
+              Get ready to reduce stress and burn calories with one of the best cardio exercises available. Kickboxing training is a form of high
+              intensity interval training (HIIT) led by qualified and engaged instructors. We utilize a combination of both plyometric and
+              calisthenic exercises to create the most exciting workout. These exercises encourage your muscles to exert maximum force for short
+              intervals of time. The moves you'll learn are rhythmic and packed into each workout. Our kickboxing classes are designed this way
+              to not only build strength, but also to increase your overall muscle endurance.
+            </p>
+
+            <!-- Added button -->
+            <div class="mt-8">
+              <a href="find-your-location.html" class="inline-flex items-center justify-center bg-accent text-black font-semibold uppercase tracking-[0.15em] text-xs px-6 py-3 hover:brightness-110 transition">
+                Find a Location
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Block 3 -->
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24 reveal-on-scroll">
+          <div class="order-2 lg:order-1">
+            <h3 class="font-heading text-3xl md:text-4xl font-semibold uppercase text-white tracking-tight mb-2 leading-tight">
+              Improve Your Physical and
+            </h3>
+            <div class="inline-block bg-accent px-4 py-1 mb-6">
+              <span class="font-heading text-2xl md:text-3xl font-semibold uppercase text-black tracking-tight">Mental Health</span>
+            </div>
+
+            <p class="text-gray-300 text-base leading-relaxed font-light">
+              After just one class, you'll understand why fitness kickboxing is such a hit! Traditional gyms require you to determine your own
+              routine, which can be a real hassle – especially after a long day of work. CKO Kickboxing is different because our instructors
+              develop unique workouts for every class. All you have to do is show up and relieve stress from the day. Kickboxing helps with
+              weight loss as well as increased self-confidence. You'll leave feeling healthy, strong and ready to take on whatever life throws
+              your way.
+            </p>
+
+            <!-- Added button -->
+            <div class="mt-8">
+              <a href="find-your-location.html" class="inline-flex items-center justify-center bg-accent text-black font-semibold uppercase tracking-[0.15em] text-xs px-6 py-3 hover:brightness-110 transition">
+                Find a Location
+              </a>
+            </div>
+          </div>
+
+          <div class="order-1 lg:order-2">
+            <div class="relative overflow-hidden">
+              <img src="https://i.ibb.co/GQv9NHQZ/l.webp" alt="Mental Health" class="w-full h-80 lg:h-96 object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Block 4 -->
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center reveal-on-scroll">
+          <div>
+            <div class="relative overflow-hidden">
+              <img src="https://i.ibb.co/BH2MXFkM/section-latest-specials-img.jpg" alt="Beginners Welcome" class="w-full h-80 lg:h-96 object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-heading text-3xl md:text-4xl font-semibold uppercase text-white tracking-tight mb-2 leading-tight">
+              Beginners
+            </h3>
+            <div class="inline-block bg-accent px-4 py-1 mb-6">
+              <span class="font-heading text-2xl md:text-3xl font-semibold uppercase text-black tracking-tight">Welcome</span>
+            </div>
+
+            <p class="text-gray-300 text-base leading-relaxed font-light">
+              Don't be scared off by misconceptions of fitness-based kickboxing classes. Beginners are welcomed with open arms at CKO. In fact,
+              most of our members don'</p></div></div></div></section></body></html>
