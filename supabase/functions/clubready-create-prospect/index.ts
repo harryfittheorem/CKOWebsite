@@ -23,7 +23,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     requestBody = await req.json();
-    const { firstName, lastName, email, phone, dateOfBirth, packageId, address, city, state, zip, gender, location_slug } = requestBody;
+    const { firstName, lastName, email, phone, dateOfBirth, packageId, address, city, state, zip, gender, locationSlug } = requestBody;
 
     if (!firstName || !lastName || !email) {
       return new Response(
@@ -38,70 +38,86 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    if (!locationSlug) {
+      return new Response(
+        JSON.stringify({ error: "locationSlug is required" }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    let clubreadyApiKey = "";
-    let clubreadyStoreId = "";
-    let clubreadyChainId = "";
-    let clubreadyApiUrl = "";
-
-    if (location_slug) {
-      const { data: location, error: locationError } = await supabase
-        .from("locations")
-        .select("clubready_api_key, clubready_site_id, clubready_chain_id")
-        .eq("slug", location_slug)
-        .maybeSingle();
-
-      if (location && location.clubready_api_key) {
-        clubreadyApiKey = location.clubready_api_key;
-        clubreadyStoreId = location.clubready_site_id || "";
-        clubreadyChainId = location.clubready_chain_id || "";
-      }
-    }
-
+    const clubreadyApiKey = Deno.env.get("CLUBREADY_API_KEY");
     if (!clubreadyApiKey) {
-      const { data: config, error: configError } = await supabase
-        .from("clubready_config")
-        .select("*")
-        .eq("id", 1)
-        .maybeSingle();
+      const duration = Date.now() - startTime;
+      await logApiCall(supabase, {
+        endpoint: "/sales/agreement/addNewUser",
+        step: "create_prospect",
+        api_url: "N/A",
+        request_body: sanitizeRequestBody(requestBody),
+        http_status: 500,
+        error_message: "CLUBREADY_API_KEY not configured in Supabase secrets",
+        duration_ms: duration,
+      });
 
-      if (configError || !config) {
-        const duration = Date.now() - startTime;
-        await logApiCall(supabase, {
-          endpoint: "/sales/agreement/addNewUser",
-          step: "create_prospect",
-          api_url: "N/A",
-          request_body: sanitizeRequestBody(requestBody),
-          http_status: 500,
-          error_message: "ClubReady configuration not found",
-          error_details: configError,
-          duration_ms: duration,
-        });
-
-        return new Response(
-          JSON.stringify({ error: "ClubReady configuration not found" }),
-          {
-            status: 500,
-            headers: {
-              ...corsHeaders,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-      }
-
-      clubreadyApiKey = config.api_key;
-      clubreadyStoreId = config.store_id;
-      clubreadyApiUrl = config.api_url;
-    } else {
-      clubreadyApiUrl = "https://api.clubready.com/api/v2";
+      return new Response(
+        JSON.stringify({ error: "ClubReady API key not configured" }),
+        {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
+
+    const { data: location, error: locationError } = await supabase
+      .from("locations")
+      .select("clubready_site_id")
+      .eq("slug", locationSlug)
+      .maybeSingle();
+
+    if (locationError || !location || !location.clubready_site_id) {
+      const duration = Date.now() - startTime;
+      await logApiCall(supabase, {
+        endpoint: "/sales/agreement/addNewUser",
+        step: "create_prospect",
+        api_url: "N/A",
+        request_body: sanitizeRequestBody(requestBody),
+        http_status: 404,
+        error_message: `Location not found or missing clubready_site_id for slug: ${locationSlug}`,
+        error_details: locationError,
+        duration_ms: duration,
+      });
+
+      return new Response(
+        JSON.stringify({ error: "Location not found or ClubReady site ID not configured" }),
+        {
+          status: 404,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    const clubreadyStoreId = location.clubready_site_id;
+    const clubreadyChainId = "56";
+    const clubreadyApiUrl = "https://api.clubready.com/api/v2";
 
     const formData = new URLSearchParams({
       ApiKey: clubreadyApiKey,
+      ChainId: clubreadyChainId,
       StoreId: clubreadyStoreId,
       FirstName: firstName,
       LastName: lastName,
@@ -174,6 +190,7 @@ Deno.serve(async (req: Request) => {
         state,
         zip,
         gender,
+        chainId: clubreadyChainId,
         storeId: clubreadyStoreId,
       }),
       response_data: responseData,
