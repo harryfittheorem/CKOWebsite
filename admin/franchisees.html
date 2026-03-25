@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Franchisee Management - CKO Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-heading {
+      font-family: 'Oswald', sans-serif;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#fec400',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-black min-h-screen">
+
+  <div class="flex h-screen">
+    <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col">
+      <div class="p-6 border-b border-gray-800">
+        <h1 class="font-heading text-3xl font-bold text-white">CKO</h1>
+        <p class="text-gray-500 text-sm mt-1">Admin Portal</p>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="locations.html" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <span class="font-medium">Locations</span>
+        </a>
+
+        <a href="leads.html" class="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          <span class="font-medium">Leads</span>
+        </a>
+
+        <a href="franchisees.html" class="flex items-center gap-3 px-4 py-3 bg-gray-800 text-white rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <span class="font-medium">Franchisees</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-gray-800">
+        <button id="sign-out-btn" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-gray-300 hover:bg-red-900/20 hover:text-red-400 rounded-lg transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          <span class="font-medium">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto">
+      <div class="p-8">
+        <div class="mb-8">
+          <h2 class="font-heading text-4xl font-bold text-white mb-2">Franchisee Management</h2>
+          <p class="text-gray-400">Invite and manage franchisee accounts</p>
+        </div>
+
+        <!-- SECTION 1: Invite New Franchisee -->
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-6">
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Invite New Franchisee</h3>
+
+          <form id="invite-form" class="space-y-4">
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+              <input
+                type="email"
+                id="email"
+                required
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent"
+                placeholder="owner@gym.com"
+              >
+            </div>
+
+            <div>
+              <label for="location" class="block text-sm font-medium text-gray-300 mb-2">Location</label>
+              <select
+                id="location"
+                required
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent"
+              >
+                <option value="">Select a location...</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              class="px-6 py-2 bg-accent text-black font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
+            >
+              Send Invite
+            </button>
+          </form>
+
+          <div id="invite-message" class="mt-4 hidden"></div>
+        </div>
+
+        <!-- SECTION 2: Bulk Invite via CSV -->
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-6">
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Bulk Invite via CSV</h3>
+
+          <div class="mb-4">
+            <label for="csv-file" class="block text-sm font-medium text-gray-300 mb-2">Upload CSV File</label>
+            <input
+              type="file"
+              id="csv-file"
+              accept=".csv"
+              class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-accent file:text-black file:font-semibold hover:file:bg-yellow-500"
+            >
+          </div>
+
+          <div id="csv-preview" class="hidden mb-4">
+            <h4 class="text-lg font-semibold text-white mb-2">Preview</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead class="bg-gray-800 text-gray-300">
+                  <tr>
+                    <th class="px-4 py-2">Email</th>
+                    <th class="px-4 py-2">Location Slug</th>
+                    <th class="px-4 py-2">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="csv-preview-body" class="text-gray-400">
+                </tbody>
+              </table>
+            </div>
+            <button
+              id="send-bulk-btn"
+              class="mt-4 px-6 py-2 bg-accent text-black font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
+            >
+              Send All Invites
+            </button>
+          </div>
+
+          <div id="bulk-progress" class="hidden mt-4">
+            <div class="text-white font-semibold mb-2" id="progress-text">Sending 1 of 49...</div>
+            <div class="w-full bg-gray-800 rounded-full h-2">
+              <div id="progress-bar" class="bg-accent h-2 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div id="bulk-summary" class="hidden mt-4 p-4 rounded-lg"></div>
+        </div>
+
+        <!-- SECTION 4: Download CSV Template -->
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-6">
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Download CSV Template</h3>
+          <p class="text-gray-400 mb-4">Download a pre-filled CSV template with all location slugs to quickly add franchisee emails.</p>
+          <button
+            id="download-template-btn"
+            class="px-6 py-2 bg-accent text-black font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
+          >
+            Download Template
+          </button>
+        </div>
+
+        <!-- SECTION 3: Existing Franchisee Accounts -->
+        <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Existing Franchisee Accounts</h3>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-gray-800 text-gray-300">
+                <tr>
+                  <th class="px-4 py-3">Email</th>
+                  <th class="px-4 py-3">Location Name</th>
+                  <th class="px-4 py-3">Location Slug</th>
+                  <th class="px-4 py-3">Created Date</th>
+                  <th class="px-4 py-3">Status</th>
+                  <th class="px-4 py-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="franchisees-table" class="text-gray-400">
+                <tr>
+                  <td colspan="6" class="px-4 py-8 text-center">
+                    <span class="inline-block animate-pulse">Loading...</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://nfxpqhsnakrrjnfqlkgy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5meHBxaHNuYWtycmpuZnFsa2d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NTQ1MDAsImV4cCI6MjA4ODQzMDUwMH0.j1ZuiqGObosV37GH5W9rzWowrBgea5FLwL84EPLpaZc';
+    const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5meHBxaHNuYWtycmpuZnFsa2d5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mjg1NDUwMCwiZXhwIjoyMDg4NDMwNTAwfQ.VEB4I5WxFSH_L84-hN9mbjh4vCrSaujYzHUDNxSo5Fc';
+    const REDIRECT_URL = `${window.location.origin}/franchisee/dashboard.html`;
+
+    const ALL_LOCATION_SLUGS = [
+      'ca-lake-forest-foothill-ranch', 'ca-san-diego-miramar', 'ca-simi-valley', 'ca-lawndale-south-bay',
+      'fl-miami-brickell', 'fl-miami-doral', 'fl-miami-kendall', 'fl-miami-river-landing', 'fl-hollywood',
+      'mi-grand-rapids', 'nv-las-vegas', 'nh-londonderry', 'sc-myrtle-beach',
+      'nj-allendale', 'nj-bayonne', 'nj-cedar-grove', 'nj-chatham-township-chatham', 'nj-cherry-hill',
+      'nj-clark', 'nj-oradell-emerson', 'nj-freehold', 'nj-hamilton-township-hamilton', 'nj-harrison',
+      'nj-hoboken', 'nj-jersey-city', 'nj-roselle', 'nj-lodi', 'nj-maplewood', 'nj-middletown',
+      'nj-north-brunswick-township', 'nj-oceanport', 'nj-mount-arlington-roxbury', 'nj-toms-river',
+      'nj-wallkill', 'nj-west-new-york', 'nj-colonia-woodbridge',
+      'ny-brooklyn-clinton-hill', 'ny-croton-on-hudson', 'ny-franklin-square', 'ny-staten-island-great-kills',
+      'ny-brooklyn-park-slope', 'ny-brooklyn-sheepshead-bay', 'ny-throggs-neck', 'ny-staten-island-tottenville',
+      'ny-warwick', 'pa-philadelphia-south-philly', 'pa-yardley', 'tx-league-city', 'tx-san-antonio'
+    ];
+
+    const token = sessionStorage.getItem('cko_admin_token');
+    const userRole = sessionStorage.getItem('cko_user_role');
+
+    if (!token) {
+      window.location.href = 'index.html';
+    }
+
+    if (userRole !== 'admin') {
+      window.location.href = '../franchisee/dashboard.html';
+    }
+
+    const signOutBtn = document.getElementById('sign-out-btn');
+    signOutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('cko_admin_token');
+      sessionStorage.removeItem('cko_admin_refresh');
+      sessionStorage.removeItem('cko_user_role');
+      window.location.href = 'index.html';
+    });
+
+    let locationsData = [];
+
+    async function loadLocations() {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/locations?select=slug,name&order=name`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          locationsData = await response.json();
+          const locationSelect = document.getElementById('location');
+          locationsData.forEach(loc => {
+            const option = document.createElement('option');
+            option.value = loc.slug;
+            option.textContent = loc.name;
+            locationSelect.appendChild(option);
+          });
+        }
+      } catch (error) {
+        console.error('Error loading locations:', error);
+      }
+    }
+
+    async function sendInvite(email, locationSlug) {
+      const location = locationsData.find(l => l.slug === locationSlug);
+      if (!location) {
+        throw new Error('Location not found');
+      }
+
+      const response = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_SERVICE_ROLE_KEY,
+          'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          email_confirm: true,
+          user_metadata: {
+            role: 'franchisee',
+            location_slug: locationSlug
+          },
+          app_metadata: {
+            role: 'franchisee',
+            location_slug: locationSlug
+          }
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.msg || error.message || 'Failed to send invite');
+      }
+
+      const userData = await response.json();
+      const userId = userData.id;
+
+      const profileResponse = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_SERVICE_ROLE_KEY,
+          'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({
+          id: userId,
+          role: 'franchisee',
+          location_slug: locationSlug
+        })
+      });
+
+      if (!profileResponse.ok) {
+        const error = await profileResponse.json();
+        throw new Error(error.message || 'Failed to create user profile');
+      }
+
+      return { userId, locationName: location.name };
+    }
+
+    document.getElementById('invite-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const locationSlug = document.getElementById('location').value;
+      const messageDiv = document.getElementById('invite-message');
+
+      try {
+        const result = await sendInvite(email, locationSlug);
+
+        messageDiv.className = 'mt-4 p-4 bg-green-900/20 border border-green-700 rounded-lg text-green-400';
+        messageDiv.textContent = `Invite sent to ${email} for ${result.locationName}`;
+        messageDiv.classList.remove('hidden');
+
+        document.getElementById('invite-form').reset();
+
+        await loadFranchisees();
+
+        setTimeout(() => {
+          messageDiv.classList.add('hidden');
+        }, 5000);
+      } catch (error) {
+        messageDiv.className = 'mt-4 p-4 bg-red-900/20 border border-red-700 rounded-lg text-red-400';
+        messageDiv.textContent = `Error: ${error.message}`;
+        messageDiv.classList.remove('hidden');
+      }
+    });
+
+    let csvData = [];
+
+    document.getElementById('csv-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target.result;
+        const lines = text.split('\n').filter(line => line.trim());
+
+        csvData = [];
+        const previewBody = document.getElementById('csv-preview-body');
+        previewBody.innerHTML = '';
+
+        for (let i = 1; i < lines.length; i++) {
+          const parts = lines[i].split(',').map(p => p.trim());
+          if (parts.length >= 2 && parts[0] && parts[1]) {
+            csvData.push({ email: parts[0], location_slug: parts[1] });
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td class="px-4 py-2 border-t border-gray-800">${parts[0]}</td>
+              <td class="px-4 py-2 border-t border-gray-800">${parts[1]}</td>
+              <td class="px-4 py-2 border-t border-gray-800"><span class="text-gray-500">Pending</span></td>
+            `;
+            previewBody.appendChild(row);
+          }
+        }
+
+        if (csvData.length > 0) {
+          document.getElementById('csv-preview').classList.remove('hidden');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('send-bulk-btn').addEventListener('click', async () => {
+      if (csvData.length === 0) return;
+
+      const progressDiv = document.getElementById('bulk-progress');
+      const progressText = document.getElementById('progress-text');
+      const progressBar = document.getElementById('progress-bar');
+      const summaryDiv = document.getElementById('bulk-summary');
+      const previewBody = document.getElementById('csv-preview-body');
+
+      progressDiv.classList.remove('hidden');
+      summaryDiv.classList.add('hidden');
+      document.getElementById('send-bulk-btn').disabled = true;
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (let i = 0; i < csvData.length; i++) {
+        const { email, location_slug } = csvData[i];
+        progressText.textContent = `Sending ${i + 1} of ${csvData.length}...`;
+        progressBar.style.width = `${((i + 1) / csvData.length) * 100}%`;
+
+        const row = previewBody.children[i];
+        const statusCell = row.children[2];
+
+        try {
+          await sendInvite(email, location_slug);
+          successCount++;
+          statusCell.innerHTML = '<span class="text-green-400">✓ Sent</span>';
+        } catch (error) {
+          failCount++;
+          statusCell.innerHTML = `<span class="text-red-400">✗ ${error.message}</span>`;
+        }
+      }
+
+      progressDiv.classList.add('hidden');
+      summaryDiv.classList.remove('hidden');
+      summaryDiv.className = 'mt-4 p-4 rounded-lg ' + (failCount === 0 ? 'bg-green-900/20 border border-green-700 text-green-400' : 'bg-yellow-900/20 border border-yellow-700 text-yellow-400');
+      summaryDiv.textContent = `${successCount} invites sent successfully, ${failCount} failed`;
+
+      document.getElementById('send-bulk-btn').disabled = false;
+
+      await loadFranchisees();
+    });
+
+    document.getElementById('download-template-btn').addEventListener('click', () => {
+      const csvContent = 'email,location_slug\n' + ALL_LOCATION_SLUGS.map(slug => `,${slug}`).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'franchisee-invite-template.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+
+    async function loadFranchisees() {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?select=*,locations(name)&role=eq.franchisee&order=created_at.desc`, {
+          headers: {
+            'apikey': SUPABASE_SERVICE_ROLE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to load franchisees');
+        }
+
+        const profiles = await response.json();
+
+        const userIds = profiles.map(p => p.id).join(',');
+        let usersMap = {};
+
+        if (userIds) {
+          const usersResponse = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
+            headers: {
+              'apikey': SUPABASE_SERVICE_ROLE_KEY,
+              'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (usersResponse.ok) {
+            const usersData = await usersResponse.json();
+            usersData.users.forEach(user => {
+              usersMap[user.id] = user;
+            });
+          }
+        }
+
+        const tableBody = document.getElementById('franchisees-table');
+
+        if (profiles.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="6" class="px-4 py-8 text-center text-gray-500">No franchisee accounts found</td>
+            </tr>
+          `;
+          return;
+        }
+
+        tableBody.innerHTML = profiles.map(profile => {
+          const user = usersMap[profile.id];
+          const email = user ? user.email : 'Unknown';
+          const status = user && user.confirmed_at ? 'Active' : 'Pending';
+          const locationName = profile.locations?.name || profile.location_slug;
+          const createdDate = new Date(profile.created_at).toLocaleDateString();
+
+          return `
+            <tr>
+              <td class="px-4 py-3 border-t border-gray-800">${email}</td>
+              <td class="px-4 py-3 border-t border-gray-800">${locationName}</td>
+              <td class="px-4 py-3 border-t border-gray-800">${profile.location_slug}</td>
+              <td class="px-4 py-3 border-t border-gray-800">${createdDate}</td>
+              <td class="px-4 py-3 border-t border-gray-800">
+                <span class="px-2 py-1 text-xs font-semibold rounded ${status === 'Active' ? 'bg-green-900/20 text-green-400' : 'bg-yellow-900/20 text-yellow-400'}">
+                  ${status}
+                </span>
+              </td>
+              <td class="px-4 py-3 border-t border-gray-800">
+                <div class="flex gap-2">
+                  <button onclick="resendInvite('${profile.id}', '${email}')" class="px-3 py-1 text-xs bg-gray-800 text-gray-300 rounded hover:bg-gray-700 transition-colors">
+                    Resend Invite
+                  </button>
+                  <button onclick="removeAccess('${profile.id}', '${email}')" class="px-3 py-1 text-xs bg-red-900/20 text-red-400 rounded hover:bg-red-900/30 transition-colors">
+                    Remove Access
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Error loading franchisees:', error);
+        const tableBody = document.getElementById('franchisees-table');
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="6" class="px-4 py-8 text-center text-red-400">Error loading franchisees: ${error.message}</td>
+          </tr>
+        `;
+      }
+    }
+
+    window.resendInvite = async (userId, email) => {
+      if (!confirm(`Resend invite to ${email}?`)) return;
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${userId}/invite`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_SERVICE_ROLE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            redirect_to: REDIRECT_URL
+          })
+        });
+
+        if (response.ok) {
+          alert(`Invite resent to ${email}`);
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.msg || error.message || 'Failed to resend invite'}`);
+        }
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+    };
+
+    window.removeAccess = async (userId, email) => {
+      if (!confirm(`Remove franchisee access for ${email}? This will not delete their auth account, only their franchisee permissions.`)) return;
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${userId}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': SUPABASE_SERVICE_ROLE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          alert(`Access removed for ${email}`);
+          await loadFranchisees();
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.message || 'Failed to remove access'}`);
+        }
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+    };
+
+    loadLocations();
+    loadFranchisees();
+  </script>
+
+</body>
+</html>
