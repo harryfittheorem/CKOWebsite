@@ -75,12 +75,12 @@
       <div class="p-8">
         <div class="mb-8">
           <h2 class="font-heading text-4xl font-bold text-white mb-2">Franchisee Management</h2>
-          <p class="text-gray-400">Invite and manage franchisee accounts</p>
+          <p class="text-gray-400">Create and manage franchisee accounts</p>
         </div>
 
-        <!-- SECTION 1: Invite New Franchisee -->
+        <!-- SECTION 1: Create Franchisee Account -->
         <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-6">
-          <h3 class="font-heading text-2xl font-bold text-white mb-4">Invite New Franchisee</h3>
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Create Franchisee Account</h3>
 
           <form id="invite-form" class="space-y-4">
             <div>
@@ -91,6 +91,18 @@
                 required
                 class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent"
                 placeholder="owner@gym.com"
+              >
+            </div>
+
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Temporary Password</label>
+              <input
+                type="text"
+                id="password"
+                required
+                minlength="8"
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent"
+                placeholder="Minimum 8 characters"
               >
             </div>
 
@@ -109,16 +121,16 @@
               type="submit"
               class="px-6 py-2 bg-accent text-black font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
             >
-              Send Invite
+              Create Account
             </button>
           </form>
 
           <div id="invite-message" class="mt-4 hidden"></div>
         </div>
 
-        <!-- SECTION 2: Bulk Invite via CSV -->
+        <!-- SECTION 2: Bulk Create via CSV -->
         <div class="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-6">
-          <h3 class="font-heading text-2xl font-bold text-white mb-4">Bulk Invite via CSV</h3>
+          <h3 class="font-heading text-2xl font-bold text-white mb-4">Bulk Create via CSV</h3>
 
           <div class="mb-4">
             <label for="csv-file" class="block text-sm font-medium text-gray-300 mb-2">Upload CSV File</label>
@@ -138,6 +150,7 @@
                   <tr>
                     <th class="px-4 py-2">Email</th>
                     <th class="px-4 py-2">Location Slug</th>
+                    <th class="px-4 py-2">Password</th>
                     <th class="px-4 py-2">Status</th>
                   </tr>
                 </thead>
@@ -149,12 +162,12 @@
               id="send-bulk-btn"
               class="mt-4 px-6 py-2 bg-accent text-black font-semibold rounded-lg hover:bg-yellow-500 transition-colors"
             >
-              Send All Invites
+              Create All Accounts
             </button>
           </div>
 
           <div id="bulk-progress" class="hidden mt-4">
-            <div class="text-white font-semibold mb-2" id="progress-text">Sending 1 of 49...</div>
+            <div class="text-white font-semibold mb-2" id="progress-text">Creating 1 of 49...</div>
             <div class="w-full bg-gray-800 rounded-full h-2">
               <div id="progress-bar" class="bg-accent h-2 rounded-full transition-all" style="width: 0%"></div>
             </div>
@@ -271,7 +284,7 @@
       }
     }
 
-    async function sendInvite(email, locationSlug) {
+    async function createAccount(email, password, locationSlug) {
       const location = locationsData.find(l => l.slug === locationSlug);
       if (!location) {
         throw new Error('Location not found');
@@ -286,6 +299,7 @@
         },
         body: JSON.stringify({
           email: email,
+          password: password,
           email_confirm: true,
           user_metadata: {
             role: 'franchisee',
@@ -300,7 +314,7 @@
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.msg || error.message || 'Failed to send invite');
+        throw new Error(error.msg || error.message || 'Failed to create account');
       }
 
       const userData = await response.json();
@@ -333,23 +347,43 @@
       e.preventDefault();
 
       const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
       const locationSlug = document.getElementById('location').value;
       const messageDiv = document.getElementById('invite-message');
 
       try {
-        const result = await sendInvite(email, locationSlug);
+        const result = await createAccount(email, password, locationSlug);
+
+        const loginUrl = 'https://new.ckokickboxing.com/franchisee/dashboard.html';
 
         messageDiv.className = 'mt-4 p-4 bg-green-900/20 border border-green-700 rounded-lg text-green-400';
-        messageDiv.textContent = `Invite sent to ${email} for ${result.locationName}`;
+        messageDiv.innerHTML = `
+          <div class="space-y-2">
+            <p class="font-semibold">Account created for ${email}</p>
+            <p>Location: ${result.locationName}</p>
+            <p>Temporary Password: <span class="font-mono bg-gray-800 px-2 py-1 rounded">${password}</span></p>
+            <p>Login URL: <a href="${loginUrl}" target="_blank" class="underline">${loginUrl}</a></p>
+            <button id="copy-details-btn" class="mt-3 px-4 py-2 bg-accent text-black font-semibold rounded hover:bg-yellow-500 transition-colors">
+              Copy Login Details
+            </button>
+          </div>
+        `;
         messageDiv.classList.remove('hidden');
 
+        document.getElementById('copy-details-btn').addEventListener('click', () => {
+          const details = `Login URL: ${loginUrl}\nEmail: ${email}\nTemporary Password: ${password}`;
+          navigator.clipboard.writeText(details).then(() => {
+            const btn = document.getElementById('copy-details-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+              btn.textContent = originalText;
+            }, 2000);
+          });
+        });
+
         document.getElementById('invite-form').reset();
-
         await loadFranchisees();
-
-        setTimeout(() => {
-          messageDiv.classList.add('hidden');
-        }, 5000);
       } catch (error) {
         messageDiv.className = 'mt-4 p-4 bg-red-900/20 border border-red-700 rounded-lg text-red-400';
         messageDiv.textContent = `Error: ${error.message}`;
@@ -374,13 +408,14 @@
 
         for (let i = 1; i < lines.length; i++) {
           const parts = lines[i].split(',').map(p => p.trim());
-          if (parts.length >= 2 && parts[0] && parts[1]) {
-            csvData.push({ email: parts[0], location_slug: parts[1] });
+          if (parts.length >= 3 && parts[0] && parts[1] && parts[2]) {
+            csvData.push({ email: parts[0], location_slug: parts[1], password: parts[2] });
 
             const row = document.createElement('tr');
             row.innerHTML = `
               <td class="px-4 py-2 border-t border-gray-800">${parts[0]}</td>
               <td class="px-4 py-2 border-t border-gray-800">${parts[1]}</td>
+              <td class="px-4 py-2 border-t border-gray-800"><span class="font-mono text-sm">${parts[2]}</span></td>
               <td class="px-4 py-2 border-t border-gray-800"><span class="text-gray-500">Pending</span></td>
             `;
             previewBody.appendChild(row);
@@ -411,17 +446,17 @@
       let failCount = 0;
 
       for (let i = 0; i < csvData.length; i++) {
-        const { email, location_slug } = csvData[i];
-        progressText.textContent = `Sending ${i + 1} of ${csvData.length}...`;
+        const { email, location_slug, password } = csvData[i];
+        progressText.textContent = `Creating ${i + 1} of ${csvData.length}...`;
         progressBar.style.width = `${((i + 1) / csvData.length) * 100}%`;
 
         const row = previewBody.children[i];
-        const statusCell = row.children[2];
+        const statusCell = row.children[3];
 
         try {
-          await sendInvite(email, location_slug);
+          await createAccount(email, password, location_slug);
           successCount++;
-          statusCell.innerHTML = '<span class="text-green-400">✓ Sent</span>';
+          statusCell.innerHTML = '<span class="text-green-400">✓ Created</span>';
         } catch (error) {
           failCount++;
           statusCell.innerHTML = `<span class="text-red-400">✗ ${error.message}</span>`;
@@ -431,7 +466,7 @@
       progressDiv.classList.add('hidden');
       summaryDiv.classList.remove('hidden');
       summaryDiv.className = 'mt-4 p-4 rounded-lg ' + (failCount === 0 ? 'bg-green-900/20 border border-green-700 text-green-400' : 'bg-yellow-900/20 border border-yellow-700 text-yellow-400');
-      summaryDiv.textContent = `${successCount} invites sent successfully, ${failCount} failed`;
+      summaryDiv.textContent = `${successCount} accounts created successfully, ${failCount} failed`;
 
       document.getElementById('send-bulk-btn').disabled = false;
 
@@ -439,12 +474,12 @@
     });
 
     document.getElementById('download-template-btn').addEventListener('click', () => {
-      const csvContent = 'email,location_slug\n' + ALL_LOCATION_SLUGS.map(slug => `,${slug}`).join('\n');
+      const csvContent = 'email,location_slug,password\n' + ALL_LOCATION_SLUGS.map(slug => `,${slug},TempPass123!`).join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'franchisee-invite-template.csv';
+      a.download = 'franchisee-account-template.csv';
       a.click();
       window.URL.revokeObjectURL(url);
     });
