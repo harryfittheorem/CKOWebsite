@@ -268,6 +268,8 @@ window.editLocation = async function(locationId) {
     document.getElementById('input-email').value = currentLocation.email || '';
     document.getElementById('input-hours').value = currentLocation.hours || '';
     document.getElementById('input-hero-headline').value = currentLocation.hero_headline || '';
+    document.getElementById('input-hero-cta-label').value = currentLocation.hero_cta_label || '';
+    document.getElementById('input-hero-cta-subtext').value = currentLocation.hero_cta_subtext || '';
     document.getElementById('input-about-text').value = currentLocation.about_text || '';
     document.getElementById('input-google-maps-url').value = currentLocation.google_maps_embed_url || '';
     document.getElementById('input-ghl-calendar-url').value = currentLocation.ghl_calendar_url || '';
@@ -320,6 +322,8 @@ document.getElementById('add-location-btn').addEventListener('click', () => {
   document.getElementById('input-email').value = '';
   document.getElementById('input-hours').value = '';
   document.getElementById('input-hero-headline').value = '';
+  document.getElementById('input-hero-cta-label').value = '';
+  document.getElementById('input-hero-cta-subtext').value = '';
   document.getElementById('input-about-text').value = '';
   document.getElementById('input-google-maps-url').value = '';
   document.getElementById('input-ghl-calendar-url').value = '';
@@ -432,6 +436,8 @@ document.getElementById('save-location-btn').addEventListener('click', async () 
     email,
     hours: document.getElementById('input-hours').value.trim(),
     hero_headline: document.getElementById('input-hero-headline').value.trim(),
+    hero_cta_label: document.getElementById('input-hero-cta-label').value.trim() || null,
+    hero_cta_subtext: document.getElementById('input-hero-cta-subtext').value.trim() || null,
     about_text: document.getElementById('input-about-text').value.trim(),
     google_maps_embed_url: document.getElementById('input-google-maps-url').value.trim(),
     ghl_calendar_url: document.getElementById('input-ghl-calendar-url').value.trim(),

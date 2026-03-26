@@ -206,7 +206,7 @@
           <div id="hero-form-container" class="bg-black/60 backdrop-blur-sm border border-accent rounded-lg p-6 md:p-8">
             <div class="text-center mb-6">
               <p class="text-accent font-bold text-lg uppercase tracking-wider mb-1">This Week Only</p>
-              <p class="text-white text-2xl font-semibold">First Class Free</p>
+              <p id="hero-cta-subtext" class="text-white text-2xl font-semibold">First class is completely free</p>
             </div>
 
             <form id="hero-lead-form" class="space-y-4">
@@ -252,8 +252,6 @@
               >
                 Claim My Free Class →
               </button>
-
-              <p class="text-gray-400 text-xs text-center">No credit card. No commitment.</p>
             </form>
           </div>
         </div>
@@ -369,7 +367,7 @@
             <div class="p-8 flex flex-col flex-1">
               <h3 class="font-heading text-2xl font-semibold uppercase text-white mb-3 tracking-wide">Kickboxing</h3>
               <p class="text-gray-400 text-base leading-relaxed mb-6 font-light flex-grow">
-                Our signature 45-minute HIIT class. Burn up to 1,200 calories while learning real kickboxing techniques.
+                Our signature 45-minute HIIT class. Get a massive calorie burn in every session while learning real kickboxing techniques.
               </p>
               <div class="flex items-center justify-between mb-6">
                 <span class="text-accent font-semibold text-sm uppercase tracking-wider">45 Minutes</span>
@@ -765,7 +763,7 @@
 
       // SEO Meta Tags
       const metaTitle = `Fitness Kickboxing Classes in ${location.city || location.name} | CKO ${location.name}`;
-      const metaDescription = `CKO Kickboxing ${location.name} - Burn up to 1,200 calories per class. First class free. Located at ${fullAddress}. Call ${location.phone}.`;
+      const metaDescription = `CKO Kickboxing ${location.name} - A massive calorie burn in every session. First class free. Located at ${fullAddress}. Call ${location.phone}.`;
 
       document.getElementById('page-title').textContent = metaTitle;
       document.getElementById('meta-description').setAttribute('content', metaDescription);
@@ -775,6 +773,20 @@
       // Hero headline (use custom or default)
       if (location.hero_headline) {
         document.getElementById('hero-headline').textContent = location.hero_headline;
+      }
+
+      // Hero CTA customization
+      const heroCTALabel = location.hero_cta_label || 'Claim My Free Class';
+      const heroCTASubtext = location.hero_cta_subtext || 'First class is completely free';
+
+      const heroSubmitBtn = document.getElementById('hero-submit-btn');
+      if (heroSubmitBtn) {
+        heroSubmitBtn.textContent = heroCTALabel + ' →';
+      }
+
+      const heroCTASubtextEl = document.getElementById('hero-cta-subtext');
+      if (heroCTASubtextEl) {
+        heroCTASubtextEl.textContent = heroCTASubtext;
       }
 
       // Top bar
@@ -1661,7 +1673,8 @@
           heroErrorMessage.textContent = 'Something went wrong. Please try again.';
           heroErrorMessage.classList.remove('hidden');
           heroSubmitBtn.disabled = false;
-          heroSubmitBtn.textContent = 'Claim My Free Class →';
+          const ctaLabel = window.CKO_LOCATION?.hero_cta_label || 'Claim My Free Class';
+          heroSubmitBtn.textContent = ctaLabel + ' →';
         }
       });
     }
