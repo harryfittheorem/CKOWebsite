@@ -44,16 +44,6 @@ transform: translateY(0);
 
 <body class="antialiased bg-black text-white">
 
-  <!-- Top Bar -->
-  <div class="hidden md:flex text-[10px] uppercase z-50 font-semibold text-gray-400 tracking-[0.15em] bg-[#0a0a0a] border-white/5 border-b pt-2 pr-8 pb-2 pl-8 relative items-center justify-between">
-    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/5">
-      <iconify-icon icon="lucide:grid-3x3" width="14" height="14" style="stroke-width:1.5"></iconify-icon>
-    </button>
-    <div class="flex items-center gap-8">
-      <a href="franchise-page.html" class="hover:text-white transition-colors">Own a Franchise</a>
-    </div>
-  </div>
-
   <!-- Navigation -->
   <nav class="sticky z-50 bg-black/95 w-full border-white/10 border-b top-0 shadow-2xl backdrop-blur-sm">
     <div class="flex h-16 max-w-[1600px] mr-auto ml-auto pr-6 pl-6 relative items-center justify-between">
@@ -86,18 +76,13 @@ transform: translateY(0);
           <span style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#fec400,transparent);transform:translateX(-100%);transition:transform 0.4s ease;" class="group-hover:translate-x-0"></span>
           <span style="position:absolute;inset:0;background:radial-gradient(circle at center,rgba(254, 196, 0, 0.15),transparent 70%);opacity:0;transition:opacity 0.3s ease" class="group-hover:opacity-100"></span>
         </a>
-        <a href="kickboxing.html" class="uppercase hover:text-accent transition-colors text-xs font-medium text-white tracking-[0.15em] relative overflow-hidden group" style="transition: all 0.3s ease;">
-          <span class="z-10 relative" style="animation: textShimmer 3s ease-in-out infinite 0.4s" onclick="window.location.href='kickboxing.html'" role="button">Kickboxing</span>
-          <span style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#fec400,transparent);transform:translateX(-100%);transition:transform 0.4s ease;" class="group-hover:translate-x-0"></span>
-          <span style="position:absolute;inset:0;background:radial-gradient(circle at center,rgba(254, 196, 0, 0.15),transparent 70%);opacity:0;transition:opacity 0.3s ease" class="group-hover:opacity-100"></span>
-        </a>
-        <a href="group-fitness.html" class="uppercase text-accent transition-colors text-xs font-medium tracking-[0.15em] relative" style="text-shadow: 0 0 20px rgba(254, 196, 0, 0.5); animation: activePulse 2s ease-in-out infinite;">
-          <span style="position: relative">Group Fitness</span>
+        <a href="kickboxing.html" class="uppercase text-accent transition-colors text-xs font-medium tracking-[0.15em] relative" style="text-shadow: 0 0 20px rgba(254, 196, 0, 0.5); animation: activePulse 2s ease-in-out infinite;">
+          <span style="position: relative">Our Classes</span>
           <span style="position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:#fec400;box-shadow:0 0 10px #fec400,0 0 20px #fec400;animation:lineGlow 1.5s ease-in-out infinite;"></span>
-          <span style="position:absolute;inset:-8px;background:radial-gradient(ellipse at center,rgba(254, 196, 0, 0.1),transparent 70%);animation:glowPulse 2s ease-in-out infinite" onclick="window.location.href='group-fitness.html'" role="button" class=""></span>
+          <span style="position:absolute;inset:-8px;background:radial-gradient(ellipse at center,rgba(254, 196, 0, 0.1),transparent 70%);animation:glowPulse 2s ease-in-out infinite" onclick="window.location.href='kickboxing.html'" role="button" class=""></span>
         </a>
-        <a href="/community" class="uppercase hover:text-accent transition-colors text-xs font-medium text-white tracking-[0.15em] relative overflow-hidden group" style="transition: all 0.3s ease;">
-          
+        <a href="find-your-location.html" class="uppercase hover:text-accent transition-colors text-xs font-medium text-white tracking-[0.15em] relative overflow-hidden group" style="transition: all 0.3s ease;">
+          <span class="z-10 relative" style="animation: textShimmer 3s ease-in-out infinite 0.6s" onclick="window.location.href='find-your-location.html'" role="button">Find A Location</span>
           <span style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#fec400,transparent);transform:translateX(-100%);transition:transform 0.4s ease;" class="group-hover:translate-x-0"></span>
           <span style="position:absolute;inset:0;background:radial-gradient(circle at center,rgba(254, 196, 0, 0.15),transparent 70%);opacity:0;transition:opacity 0.3s ease" class="group-hover:opacity-100"></span>
         </a>
@@ -161,12 +146,10 @@ transform: translateY(0);
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden lg:hidden bg-black text-white absolute w-full top-20 left-0 px-6 pb-8 border-b border-white/10 shadow-2xl">
       <div class="flex flex-col space-y-6 pt-8 text-xl font-heading font-semibold uppercase tracking-widest text-center">
-        <a href="#" class="block hover:text-accent transition-colors">Home</a>
-        <a href="#" class="block hover:text-accent transition-colors">About</a>
-        <a href="#" class="block hover:text-accent transition-colors">Kickboxing</a>
-        <a href="#" class="block text-accent">Group Fitness</a>
-        <a href="#" class="block hover:text-accent transition-colors">Community</a>
-        <a href="find-your-location.html" class="mt-4 w-full bg-accent text-black font-semibold py-4 uppercase tracking-widest block">Find a Location</a>
+        <a href="index.html" class="block hover:text-accent transition-colors">Home</a>
+        <a href="about-page.html" class="block hover:text-accent transition-colors">About</a>
+        <a href="kickboxing.html" class="block text-accent">Our Classes</a>
+        <a href="find-your-location.html" class="block hover:text-accent transition-colors">Find A Location</a>
       </div>
     </div>
   </nav>
